@@ -1,0 +1,1332 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>llama.classes module &mdash; Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) 3.5.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="http://gwhen.comllama.classes.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="llama.cli module" href="llama.cli.html" />
+    <link rel="prev" title="llama.batch package" href="llama.batch.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Info for Reviewers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html">Introduction for Reviewers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#purpose">Purpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#software-documentation">Software Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#review-wikis">Review Wikis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#papers">Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#testing-on-review-server">Testing on Review Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#fake-cases">Fake cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#running-fake-cases">Running Fake Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#contents-of-the-output-folder">Contents of the Output Folder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#main-outputs">Main Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#auxilliary-outputs">Auxilliary Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#real-cases">Real cases</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Using the Docker Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-cloud">Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#getting-llama-images">Getting LLAMA Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#choosing-the-image">Choosing the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#getting-updating-the-image">Getting/Updating the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#removing-images">Removing Images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#running-a-llama-container">Running a LLAMA Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#mounting-directories">Mounting Directories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-macos-linux">Mounting in MacOS/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-windows">Mounting in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#out-of-memory-disk">Out of Memory/Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#running-on-habanero">Running on Habanero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#interactive-habanero-jobs">Interactive Habanero Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-hub-authentication-with-singularity">Docker Hub Authentication with Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#fixing-singularity-cache-on-habanero">Fixing Singularity Cache on Habanero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-singularity-module">Load Singularity Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#pull-llama-image">Pull LLAMA Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#local-installation">Local Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-conda">Installing Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#setting-up-a-production-server">Setting Up a Production Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker">Install Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker-compose">Install Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#log-in-to-docker-cloud">Log in to Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#get-docker-compose-yml">Get <cite>docker-compose.yml</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#starting-llama-production-app">Starting LLAMA Production App</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Operators' Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#how-data-is-organized">How Data is Organized</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#event-directories">Event Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#gcn-notice-archive">GCN Notice Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#log-files">Log Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-automatically">Running the Pipeline Automatically</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-manually">Running the Pipeline Manually</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#using-defaults-with-skymap-info">Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-o3b">Sensitivity and Background Studies (O3B)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-pre-o3b">Sensitivity and Background Studies (pre-O3B)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#editing-your-bashrc">Editing your .bashrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#using-the-digitalocean-api">Using the DigitalOcean API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#llama-scripts">LLAMA Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#adding-your-ssh-keys-to-the-droplets">Adding Your SSH Keys to the Droplets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#installing-requirements">Installing Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#digitalocean-administration-examples">DigitalOcean Administration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#preparing-a-server">Preparing a Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#server-preparation-overview">Server Preparation Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#moving-data-into-place">Moving Data into Place</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#running-the-analysis-in-parallel">Running the Analysis in Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#starting-the-servers">Starting the Servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#running-the-analysis">Running the Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#collecting-results">Collecting Results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#obtaining-the-llama-source-code">Obtaining the LLAMA Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#using-the-docker-dev-image">Using the Docker Dev Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#list-bin-docker-commands">List <code class="docutils literal notranslate"><span class="pre">bin/docker</span></code> Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#getting-the-latest-development-image">Getting the Latest Development Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#starting-a-dev-container">Starting a Dev Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#sketch-of-a-bug-fix">Sketch of a Bug Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#destroying-your-dev-container">Destroying your Dev Container</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html#previous-llama-versions">Previous LLAMA Versions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html">Developer Installation (Pre-O3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-llama-dependencies">Installing LLAMA Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#obtaining-the-llama-software-pre-o3">Obtaining the LLAMA Software (pre-O3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-configuration-files">Setting up Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-git-hooks">Install git Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-llama-dependencies">Install LLAMA dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-ligo-software">Install LIGO Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software">Install IceCube Offline Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-icecube-dependencies">Installing IceCube Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#entering-icecube-credentials">Entering IceCube Credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-matlab">Install MATLAB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#configuration-and-authentication">Configuration and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#generate-ssh-keys">Generate SSH Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gmail-authentication">GMail Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ligo-authentication">LIGO Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-ssl-certificates">Setting Up SSL Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-passwords-for-run-summary-pages">Setting Up Passwords for Run Summary Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#external-authentication">External Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#bitbucket-authentication">Bitbucket Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#git-ligo-org-authentication">git.ligo.org Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#twilio-authentication">Twilio Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gw-astronomy-authentication">GW Astronomy Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gcn-authentication">GCN Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#turning-on-the-pipeline">Turning on the Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#subscribing-to-lvalert-nodes">Subscribing to LVAlert Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#starting-pipeline-daemons">Starting Pipeline Daemons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#testing-lvalert">Testing LVAlert</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#viewing-active-processes">Viewing Active Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#checking-pipeline-logs">Checking Pipeline Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#killing-pipeline-daemons">Killing Pipeline Daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#deprecated-matlab-logs">Deprecated: MATLAB Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#developing-for-llama">Developing for LLAMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction-to-development">Introduction to Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#structure-of-the-pipeline">Structure of the Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#adding-functionality">Adding Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#developer-conventions-and-best-practices">Developer Conventions and Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#data-format-conventions">Data Format Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#coding-best-practices">Coding Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#migrating-to-conda">Migrating to Conda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#ligo-wiki-documentation">LIGO Wiki Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-ligo-software-via-conda">Installing LIGO Software via Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#creating-a-new-user">Creating a new user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#out-of-memory">Out of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#matlab-installation-troubleshooting">MATLAB Installation Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software-with-root">Install IceCube Offline Software with Root</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#logging-in-to-a-remote-server-using-ssh">Logging in to a Remote Server Using SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#getting-llama-software-onto-a-remote-server">Getting LLAMA Software onto a Remote Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ssh-with-x11-forwarding">SSH with X11 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#using-llama">Using LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#documenting-llama">Documenting LLAMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-to-gwhen-com-website">Publishing to gwhen.com Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-readme-to-git-host">Publishing Readme to Git Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-pdfs">Publishing PDFs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-html-web-pages">Publishing HTML Web Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-llama">Troubleshooting LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-the-review-server">Setting Up the Review Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#provisioning-the-review-server">Provisioning the review server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#running-the-review">Running the Review</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ideas-for-the-future">Ideas for the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#cvmfs">CVMFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#advantages">Advantages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#disadvantages">Disadvantages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Bibliography</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Academic Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#low-latency-algorithm-for-multi-messenger-astrophysics-llama-with-gravitational-wave-and-high-energy-neutrino-candidates">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#bayesian-multi-messenger-search-method-for-common-sources-of-gravitational-waves-and-high-energy-neutrinos">Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.html">llama package</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="llama.batch.html">llama.batch package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">llama.classes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.cli.html">llama.cli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.com.html">llama.com package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.dl.html">llama.com.dl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.do.html">llama.com.do package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.email.html">llama.com.email package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.gracedb.html">llama.com.gracedb package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.s3.html">llama.com.s3 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.slack.html">llama.com.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.utils.html">llama.com.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.detectors.html">llama.detectors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.detectors.html#available-detectors">Available Detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.dev.html">llama.dev package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.background.html">llama.dev.background package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.pvalue.html">llama.dev.background.pvalue package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table.html">llama.dev.background.table package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table_singles.html">llama.dev.background.table_singles package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.clean.html">llama.dev.clean package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.data.html">llama.dev.data package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.data.i3.html">llama.dev.data.i3 package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.docs.html">llama.dev.docs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.docs.cli.html">llama.dev.docs.cli package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.dv.html">llama.dev.dv package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.log.html">llama.dev.log package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.log.lvalert.html">llama.dev.log.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.upload.html">llama.dev.upload package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.event.html">llama.event package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.filehandler.html">llama.filehandler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.classes.html">llama.filehandler.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.mixins.html">llama.filehandler.mixins module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.files.html">llama.files package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_significance.html">llama.files.coinc_significance package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.opa.html">llama.files.coinc_significance.opa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.subthreshold.html">llama.files.coinc_significance.subthreshold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.utils.html">llama.files.coinc_significance.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.healpix.html">llama.files.healpix package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.plotters.html">llama.files.healpix.plotters module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.psf.html">llama.files.healpix.psf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.skymap.html">llama.files.healpix.skymap module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.utils.html">llama.files.healpix.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.i3.html">llama.files.i3 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.json.html">llama.files.i3.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.realtime_tools_stubs.html">llama.files.i3.realtime_tools_stubs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.tex.html">llama.files.i3.tex module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.txt.html">llama.files.i3.txt module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.utils.html">llama.files.i3.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap.html">llama.files.lvc_skymap package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.skymap_info.html">llama.files.skymap_info package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.cli.html">llama.files.skymap_info.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.utils.html">llama.files.skymap_info.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.slack.html">llama.files.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.advok.html">llama.files.advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_analyses.html">llama.files.coinc_analyses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_o2.html">llama.files.coinc_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_plots.html">llama.files.coinc_plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.fermi_grb.html">llama.files.fermi_grb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gcn_draft_o2.html">llama.files.gcn_draft_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gracedb.html">llama.files.gracedb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gwastro.html">llama.files.gwastro module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_advok.html">llama.files.lvalert_advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_json.html">llama.files.lvalert_json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_mat.html">llama.files.lvc_skymap_mat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_txt.html">llama.files.lvc_skymap_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.matlab.html">llama.files.matlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.sms_receipts.html">llama.files.sms_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.team_receipts.html">llama.files.team_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.timing_checks.html">llama.files.timing_checks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.uw_summary.html">llama.files.uw_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.ztf_trigger_list.html">llama.files.ztf_trigger_list module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.flags.html">llama.flags package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.flags.cli.html">llama.flags.cli module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.install.html">llama.install package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.install.manifest.html">llama.install.manifest module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.intent.html">llama.intent module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.io.html">llama.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.default.html">llama.io.default package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.io.default.generate.html">llama.io.default.generate module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.classes.html">llama.io.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.registry.html">llama.io.registry module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.listen.html">llama.listen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.gcn.html">llama.listen.gcn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.lvalert.html">llama.listen.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.lock.html">llama.lock module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.meta.html">llama.meta module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.pipeline.html">llama.pipeline module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.pipeline.html#pipelines">Pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.poll.html">llama.poll package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.poll.gracedb.html">llama.poll.gracedb package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.run.html">llama.run package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.serve.html">llama.serve package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.gui.html">llama.serve.gui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.wsgi.html">llama.serve.gui.wsgi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.domain.html">llama.serve.gui.domain module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.jupyter.html">llama.serve.jupyter package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.logs.html">llama.serve.jupyter.logs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.utils.html">llama.serve.jupyter.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.test.html">llama.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_files.html">llama.test.test_files package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_listeners.html">llama.test.test_listeners package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.test.test_listeners.test_gcn.html">llama.test.test_listeners.test_gcn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.classes.html">llama.test.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_bin.html">llama.test.test_bin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_filehandler.html">llama.test.test_filehandler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_pipeline.html">llama.test.test_pipeline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_utils.html">llama.test.test_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.utils.html">llama.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.version.html">llama.version module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.versioning.html">llama.versioning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.vetoes.html">llama.vetoes module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Reports</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/pytest/">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/coverage/">Code Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiling.html">Performance Profiling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-combined.html">Combined Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-combined.html#combined">combined</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-unit.html">Unit Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-default-pipeline-consistency">test_default_pipeline_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-filehandler-definition-consistency">test_filehandler_definition_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-make-grid">test_get_grid_make_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-north-pole">test_get_grid_north_pole</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-pipeline-parser">test_llama_pipeline_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-run-parser">test_llama_run_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize">test_memoize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-class">test_memoize_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-helper">test_memoize_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-mjd-interval">test_mjd_interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-rotate-angs2vec">test_rotate_angs2vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-write-gzip">test_write_gzip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.html">Doctests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.com.html">llama.com</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.com.gracedb.html">llama.com.gracedb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.com.gracedb.html#llama-com-gracedb-gracedb">llama.com.gracedb.GraceDb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.dev.html">llama.dev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.data.html">llama.dev.data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.data.i3.html">llama.dev.data.i3</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.upload.html">llama.dev.upload</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.upload.html#llama-dev-upload-upload-and-get-manifest">llama.dev.upload.upload_and_get_manifest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.filehandler.html">llama.filehandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html">llama.filehandler.JSONFile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html#llama-filehandler-jsonfile-checksum">llama.filehandler.JSONFile.checksum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.files.html">llama.files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html">llama.files.fermi_grb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html#llama-files-fermi-grb-get-grbs-from-csv">llama.files.fermi_grb.get_grbs_from_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.healpix.html">llama.files.healpix</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.HEALPixSkyMapFileHandler.html">llama.files.healpix.HEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.LvcHEALPixSkyMapFileHandler.html">llama.files.healpix.LvcHEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.psf.html">llama.files.healpix.psf</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.html">llama.files.healpix.skymap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.utils.html">llama.files.healpix.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.i3.html">llama.files.i3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.json.html">llama.files.i3.json</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.utils.html">llama.files.i3.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html#llama-files-lvc-gcn-xml-parse-ivorn">llama.files.lvc_gcn_xml.parse_ivorn</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.html">llama.files.lvc_skymap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.matlab.html">llama.files.matlab</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.matlab.html#llama-files-matlab-matlab-eval">llama.files.matlab.matlab_eval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.utils.html">llama.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-param">llama.utils.get_voevent_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-time">llama.utils.get_voevent_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-parameter-factory">llama.utils.parameter_factory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2angs">llama.utils.rotate_angs2angs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2vec">llama.utils.rotate_angs2vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-gzip">llama.utils.write_gzip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-to-zip">llama.utils.write_to_zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Source Code Plots</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command Line Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span></code> Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.batch.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">batch</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#logging settings">logging settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#simulation configuration">simulation configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.com.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.do.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.do.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">gracedb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.slack.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">slack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.dev.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.background.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.clean.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">clean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.data.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.docs.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span> <span class="pre">cli</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.dv.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.log.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.upload.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.event.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">event</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.files.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#output formats (specify at least 1)">output formats (specify at least 1)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.flags.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">flags</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.install.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">install</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.listen.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.poll.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span> <span class="pre">gracedb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.run.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.serve.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.gui.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">gui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">jupyter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>llama.classes module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/llama.classes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-llama.classes">
+<span id="llama-classes-module"></span><h1>llama.classes module<a class="headerlink" href="#module-llama.classes" title="Permalink to this headline">¶</a></h1>
+<p>Primitive base classes used throughout the pipeline.</p>
+<dl class="class">
+<dt id="llama.classes.AbstractFileHandler">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">AbstractFileHandler</code><a class="headerlink" href="#llama.classes.AbstractFileHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#llama.classes.FileHandlerTuple" title="llama.classes.FileHandlerTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.classes.FileHandlerTuple</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>An abstract <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> class defining a partial <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code>
+interface.</p>
+<dl class="method">
+<dt id="llama.classes.AbstractFileHandler.generate">
+<em class="property">abstract </em><code class="sig-name descname">generate</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.AbstractFileHandler.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a file safely.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.Colors">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">Colors</code><span class="sig-paren">(</span><em class="sig-param">BLUE</em>, <em class="sig-param">RED</em>, <em class="sig-param">GREEN</em>, <em class="sig-param">MAGENTA</em>, <em class="sig-param">YELLOW</em>, <em class="sig-param">CLEAR</em>, <em class="sig-param">BOLD</em>, <em class="sig-param">UNDERLINE</em>, <em class="sig-param">blue</em>, <em class="sig-param">red</em>, <em class="sig-param">green</em>, <em class="sig-param">magenta</em>, <em class="sig-param">yellow</em>, <em class="sig-param">bold</em>, <em class="sig-param">underline</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.Colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="method">
+<dt id="llama.classes.Colors.BLUE">
+<em class="property">property </em><code class="sig-name descname">BLUE</code><a class="headerlink" href="#llama.classes.Colors.BLUE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.BOLD">
+<em class="property">property </em><code class="sig-name descname">BOLD</code><a class="headerlink" href="#llama.classes.Colors.BOLD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 6</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.CLEAR">
+<em class="property">property </em><code class="sig-name descname">CLEAR</code><a class="headerlink" href="#llama.classes.Colors.CLEAR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.GREEN">
+<em class="property">property </em><code class="sig-name descname">GREEN</code><a class="headerlink" href="#llama.classes.Colors.GREEN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.MAGENTA">
+<em class="property">property </em><code class="sig-name descname">MAGENTA</code><a class="headerlink" href="#llama.classes.Colors.MAGENTA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.RED">
+<em class="property">property </em><code class="sig-name descname">RED</code><a class="headerlink" href="#llama.classes.Colors.RED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.UNDERLINE">
+<em class="property">property </em><code class="sig-name descname">UNDERLINE</code><a class="headerlink" href="#llama.classes.Colors.UNDERLINE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 7</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.YELLOW">
+<em class="property">property </em><code class="sig-name descname">YELLOW</code><a class="headerlink" href="#llama.classes.Colors.YELLOW" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.blue">
+<em class="property">property </em><code class="sig-name descname">blue</code><a class="headerlink" href="#llama.classes.Colors.blue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 8</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.bold">
+<em class="property">property </em><code class="sig-name descname">bold</code><a class="headerlink" href="#llama.classes.Colors.bold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 13</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.green">
+<em class="property">property </em><code class="sig-name descname">green</code><a class="headerlink" href="#llama.classes.Colors.green" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 10</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.magenta">
+<em class="property">property </em><code class="sig-name descname">magenta</code><a class="headerlink" href="#llama.classes.Colors.magenta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 11</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.red">
+<em class="property">property </em><code class="sig-name descname">red</code><a class="headerlink" href="#llama.classes.Colors.red" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 9</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.underline">
+<em class="property">property </em><code class="sig-name descname">underline</code><a class="headerlink" href="#llama.classes.Colors.underline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 14</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.Colors.yellow">
+<em class="property">property </em><code class="sig-name descname">yellow</code><a class="headerlink" href="#llama.classes.Colors.yellow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 12</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="llama.classes.CoolDownException">
+<em class="property">exception </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">CoolDownException</code><a class="headerlink" href="#llama.classes.CoolDownException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#llama.classes.GenerationError" title="llama.classes.GenerationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.classes.GenerationError</span></code></a></p>
+<p>A <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> is currently cooling down after a failed generation
+attempt and should be left alone for now.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.EnvVarRegistry">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">EnvVarRegistry</code><a class="headerlink" href="#llama.classes.EnvVarRegistry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Register environmental variables used by the pipeline in a thread safe way
+for help documentation.</p>
+<dl class="method">
+<dt id="llama.classes.EnvVarRegistry.print_and_quit">
+<em class="property">classmethod </em><code class="sig-name descname">print_and_quit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.EnvVarRegistry.print_and_quit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the list of registered environmental variables and exit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.EnvVarRegistry.register">
+<em class="property">classmethod </em><code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param">varnames: List[str], errmsg: str, values: List[str], module: str, loaded: bool</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#llama.classes.EnvVarRegistry.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register the result of a call to <code class="docutils literal notranslate"><span class="pre">optional_env_var</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.FileHandlerTuple">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">FileHandlerTuple</code><span class="sig-paren">(</span><em class="sig-param">eventid</em>, <em class="sig-param">rundir</em>, <em class="sig-param">parent</em>, <em class="sig-param">clsname</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.FileHandlerTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="method">
+<dt id="llama.classes.FileHandlerTuple.clsname">
+<em class="property">property </em><code class="sig-name descname">clsname</code><a class="headerlink" href="#llama.classes.FileHandlerTuple.clsname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.FileHandlerTuple.eventid">
+<em class="property">property </em><code class="sig-name descname">eventid</code><a class="headerlink" href="#llama.classes.FileHandlerTuple.eventid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.FileHandlerTuple.parent">
+<em class="property">property </em><code class="sig-name descname">parent</code><a class="headerlink" href="#llama.classes.FileHandlerTuple.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.FileHandlerTuple.rundir">
+<em class="property">property </em><code class="sig-name descname">rundir</code><a class="headerlink" href="#llama.classes.FileHandlerTuple.rundir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="llama.classes.GenerationError">
+<em class="property">exception </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">GenerationError</code><a class="headerlink" href="#llama.classes.GenerationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OSError</span></code></p>
+<p>An error meant to indicate that a given file could not be generated
+at the time its generate() method was called due to missing
+<code class="docutils literal notranslate"><span class="pre">DEPENDENCIES</span></code> (or some other benign failure mode).  This error should be
+thrown when behavior is otherwise nominal as an indication that a
+particular file simply could not be generated at a particular moment in
+time.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.Hdf5Storage">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">Hdf5Storage</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.Hdf5Storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for reading and writing to an HDF5 cache. Has a dictionary
+interface and abstracts away file opening and closing.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.ImmutableDict">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">ImmutableDict</code><a class="headerlink" href="#llama.classes.ImmutableDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">frozenset</span></code></p>
+<p>A hashable, immutable namespace inspired by <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code>. Initialize
+by passing a dict or an iterable of <code class="docutils literal notranslate"><span class="pre">(key,</span> <span class="pre">value)</span></code> tuples. Attributes are
+accessible using dot notation or the map interface.</p>
+<dl class="method">
+<dt id="llama.classes.ImmutableDict.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#llama.classes.ImmutableDict.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.ImmutableDict.items">
+<code class="sig-name descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.ImmutableDict.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>D.iteritems() -&gt; an iterator over the (key, value) items of D</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.ImmutableDict.keys">
+<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.ImmutableDict.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>D.iterkeys() -&gt; an iterator over the keys of D</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.ImmutableDict.values">
+<code class="sig-name descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.ImmutableDict.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>D.itervalues() -&gt; an iterator over the values of D</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="llama.classes.IntentException">
+<em class="property">exception </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">IntentException</code><a class="headerlink" href="#llama.classes.IntentException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#llama.classes.GenerationError" title="llama.classes.GenerationError"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.classes.GenerationError</span></code></a></p>
+<p>A <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> is currently being generated and should be left alone for
+now.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.JsonRiderMixin">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">JsonRiderMixin</code><a class="headerlink" href="#llama.classes.JsonRiderMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for reading and writing JSON to multiple rider files in a
+manifest.</p>
+<dl class="method">
+<dt id="llama.classes.JsonRiderMixin.read_json">
+<code class="sig-name descname">read_json</code><span class="sig-paren">(</span><em class="sig-param">err=False</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.JsonRiderMixin.read_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if none of the <code class="docutils literal notranslate"><span class="pre">fullpaths</span></code> exists, unless <code class="docutils literal notranslate"><span class="pre">err</span></code>
+is <code class="docutils literal notranslate"><span class="pre">True</span></code>, in which case a <code class="docutils literal notranslate"><span class="pre">FileNotFoundError</span></code> will be raised.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.JsonRiderMixin.write_json">
+<code class="sig-name descname">write_json</code><span class="sig-paren">(</span><em class="sig-param">outdict</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.JsonRiderMixin.write_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write <code class="docutils literal notranslate"><span class="pre">outdict</span></code> to all the files in <code class="docutils literal notranslate"><span class="pre">self.fullpaths</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.ManifestTuple">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">ManifestTuple</code><span class="sig-paren">(</span><em class="sig-param">eventdir</em>, <em class="sig-param">manifest_filehandlers</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.ManifestTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="method">
+<dt id="llama.classes.ManifestTuple.eventdir">
+<em class="property">property </em><code class="sig-name descname">eventdir</code><a class="headerlink" href="#llama.classes.ManifestTuple.eventdir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.ManifestTuple.manifest_filehandlers">
+<em class="property">property </em><code class="sig-name descname">manifest_filehandlers</code><a class="headerlink" href="#llama.classes.ManifestTuple.manifest_filehandlers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.classes.MetaClassFactory">
+<code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">MetaClassFactory</code><span class="sig-paren">(</span><em class="sig-param">function</em>, <em class="sig-param">meth_names=None</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.MetaClassFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a MetaClass that wraps all methods in <code class="docutils literal notranslate"><span class="pre">function</span></code>. Use it by
+setting <code class="docutils literal notranslate"><span class="pre">__metaclass__</span> <span class="pre">=</span> <span class="pre">&lt;your</span> <span class="pre">new</span> <span class="pre">class</span></code> when declaring a class whose
+methods should be wrapped thus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>function</strong> (<em>func</em>) – The function that should wrap each method of a class.</p></li>
+<li><p><strong>meth_names</strong> (<em>list</em><em>, </em><em>optional</em>) – If provided, only wrap these methods. Otherwise, wrap all methods.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">meth_names</span></code> is provided, all of the specified strings must refer
+    to functions in the class to be created, otherwise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> will
+    be raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.NamespaceMappable">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">NamespaceMappable</code><a class="headerlink" href="#llama.classes.NamespaceMappable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A mappable class implementing a dot-notation for accessing members.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="llama.classes.OptionalFeatureWarning">
+<em class="property">exception </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">OptionalFeatureWarning</code><a class="headerlink" href="#llama.classes.OptionalFeatureWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">UserWarning</span></code></p>
+<p>A warning indicating that an optional feature will not be available. You
+will usually want to suppress this (except when running tests, evaluating
+the status of a fresh install/upgrade, or debugging).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.RequiredAttributeMixin">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">RequiredAttributeMixin</code><a class="headerlink" href="#llama.classes.RequiredAttributeMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class with a <code class="docutils literal notranslate"><span class="pre">required_attributes</span></code> classmethod that finds all
+<code class="docutils literal notranslate"><span class="pre">_REQUIRED</span></code> attributes for itself and all superclasses. Use this feature
+to check whether subclasses have implemented all required attributes from
+their abstract superclasses.</p>
+<p>To add new required attributes, specify a <code class="docutils literal notranslate"><span class="pre">_REQUIRED</span></code> tuple listing the
+names of those attributes as <code class="docutils literal notranslate"><span class="pre">str</span></code> instances. If your superclasses
+already define other required attributes thus, there is no need to
+reinclude them in the new class’s <code class="docutils literal notranslate"><span class="pre">_REQUIRED</span></code> tuple.</p>
+<dl class="method">
+<dt id="llama.classes.RequiredAttributeMixin.required_attributes">
+<em class="property">classmethod </em><code class="sig-name descname">required_attributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.RequiredAttributeMixin.required_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively fetch a set of required attributes for this class based
+on its <code class="docutils literal notranslate"><span class="pre">_REQUIRED</span></code> attribute as well as the <code class="docutils literal notranslate"><span class="pre">required_attributes</span></code>
+class method of all of superclasses implementing it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.classes.RiderFile">
+<em class="property">class </em><code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">RiderFile</code><span class="sig-paren">(</span><em class="sig-param">eventdir</em>, <em class="sig-param">manifest_filehandlers</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.RiderFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#llama.classes.ManifestTuple" title="llama.classes.ManifestTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.classes.ManifestTuple</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A rider class that specifies <code class="docutils literal notranslate"><span class="pre">filenames</span></code> and <code class="docutils literal notranslate"><span class="pre">fullpaths</span></code> for a given
+manifest and a given <code class="docutils literal notranslate"><span class="pre">rider_fmt</span></code>.</p>
+<dl class="method">
+<dt id="llama.classes.RiderFile.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.RiderFile.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete all rider files associated with this manifest.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.RiderFile.exists">
+<code class="sig-name descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.RiderFile.exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether any of the rider files in this manifest exist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.RiderFile.filenames">
+<em class="property">property </em><code class="sig-name descname">filenames</code><a class="headerlink" href="#llama.classes.RiderFile.filenames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the name of the file indicating the cooldown status of this
+file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.RiderFile.fullpaths">
+<em class="property">property </em><code class="sig-name descname">fullpaths</code><a class="headerlink" href="#llama.classes.RiderFile.fullpaths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the full path of the file indicating the cooldown status of this
+file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.classes.RiderFile.rider_fmt">
+<em class="property">abstract property </em><code class="sig-name descname">rider_fmt</code><a class="headerlink" href="#llama.classes.RiderFile.rider_fmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>The format string for this rider file. Must be implemented by
+subclasses as a property or attribute.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.classes.optional_env_var">
+<code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">optional_env_var</code><span class="sig-paren">(</span><em class="sig-param">varnames: List[str], errmsg: str = '', defaults: List[str] = None, register: bool = True</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="headerlink" href="#llama.classes.optional_env_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get environmental variables <code class="docutils literal notranslate"><span class="pre">varnames</span></code> from <code class="docutils literal notranslate"><span class="pre">os.environ</span></code>. Log and
+warn the user with an <code class="docutils literal notranslate"><span class="pre">OptionalFeatureWarning</span></code> if the environmental
+variable is not set and return <code class="docutils literal notranslate"><span class="pre">None</span></code>; otherwise, return the value of the
+environmental variable. Registers the list of environmental variables to a
+central list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>varnames</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of environmental variables to import.</p></li>
+<li><p><strong>errmsg</strong> (<em>str</em><em>, </em><em>optional</em>) – A descriptive message to display in logs and warnings if the user has
+not configured the specified environmental variable. This will be
+printed in addition to a default message explaining which environmental
+variables were not available and which module tried to define them.</p></li>
+<li><p><strong>defaults</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of default values corresponding to <code class="docutils literal notranslate"><span class="pre">varnames</span></code>. If any of the
+variables are not defined, raise the warning and use defaults. If
+<code class="docutils literal notranslate"><span class="pre">defaults</span></code> are not defined, return <code class="docutils literal notranslate"><span class="pre">None</span></code> for each variable.</p></li>
+<li><p><strong>register</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to register the environmental variable change with
+<code class="docutils literal notranslate"><span class="pre">EnvVarRegistry</span></code> (which will allow its use to be printed at the
+command line when requesting help).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>values</strong> – The values of the environmental variables specified in <code class="docutils literal notranslate"><span class="pre">varnames</span></code>,
+with each replaced by <code class="docutils literal notranslate"><span class="pre">None</span></code> if it is not set.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">defaults</span></code> is not None but has a different length than
+    <code class="docutils literal notranslate"><span class="pre">varnames</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.classes.placeholderclass">
+<code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">placeholderclass</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">modulename</em>, <em class="sig-param">bases=&lt;class 'object'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.placeholderclass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define and return a placeholder class that raises a
+<code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> on instantiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the new class.</p></li>
+<li><p><strong>modulename</strong> (<em>str</em>) – The name of the module you would like to import from.</p></li>
+<li><p><strong>bases</strong> (<em>tuple</em>) – The base classes of the new placeholder class.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>newclass</strong> – A placeholder class that immediately raises a <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>
+when you try to instantiate it.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.classes.registerstub">
+<code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">registerstub</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">modulename</em>, <em class="sig-param">stub</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.registerstub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a stub object. Just a way to keep track of when partial
+implementations of objects have been defined as replacements for modules
+that cannot be imported for whatever reason (since these stub objects might
+not provide perfect/full functionality of the missing modules).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The variable name of the stub object.</p></li>
+<li><p><strong>modulename</strong> (<em>str</em>) – The name of the module where it is defined; you should probably set
+this to <code class="docutils literal notranslate"><span class="pre">__name__</span></code> to get the name of the defining scope for the
+stub.</p></li>
+<li><p><strong>stub</strong> (<em>function</em><em> or </em><em>type</em>) – The stub object itself.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.classes.rider_mixin_factory">
+<code class="sig-prename descclassname">llama.classes.</code><code class="sig-name descname">rider_mixin_factory</code><span class="sig-paren">(</span><em class="sig-param">classname</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.classes.rider_mixin_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a Mixin with name <code class="docutils literal notranslate"><span class="pre">classname</span></code> for <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> classes that
+provides properties with the whose names are the <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> keys and whose
+return values are <code class="docutils literal notranslate"><span class="pre">RiderFile</span></code> instances initialized to that specific
+<code class="docutils literal notranslate"><span class="pre">FileHandler</span></code>. This implies that the values of <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> are
+<code class="docutils literal notranslate"><span class="pre">RiderFile</span></code> subclasses.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="llama.cli.html" class="btn btn-neutral float-right" title="llama.cli module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="llama.batch.html" class="btn btn-neutral float-left" title="llama.batch package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2019, Stefan Trklja Countryman, Kenneth Rainer Corley, Doğa Veske
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

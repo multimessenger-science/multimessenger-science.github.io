@@ -1,0 +1,16 @@
+.. _profiling-results:
+
+Performance Profiling
+=====================
+
+This section shows a breakdown of the code executed in each test. Profiling
+results are organized by module and are auto-generated using
+`pytest-profiling <https://pypi.org/project/pytest-profiling/>`__ and
+`gprof2dot <https://github.com/jrfonseca/gprof2dot>`__.
+
+.. toctree::
+   :maxdepth: 7
+
+   test-profiling-combined
+   test-profiling-unit
+   test-profiling-llama

@@ -1,0 +1,1251 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>llama.files.gracedb module &mdash; Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) 3.5.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="http://gwhen.comllama.files.gracedb.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="llama.files.gwastro module" href="llama.files.gwastro.html" />
+    <link rel="prev" title="llama.files.gcn_draft_o2 module" href="llama.files.gcn_draft_o2.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Info for Reviewers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html">Introduction for Reviewers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#purpose">Purpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#software-documentation">Software Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#review-wikis">Review Wikis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#papers">Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#testing-on-review-server">Testing on Review Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#fake-cases">Fake cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#running-fake-cases">Running Fake Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#contents-of-the-output-folder">Contents of the Output Folder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#main-outputs">Main Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#auxilliary-outputs">Auxilliary Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#real-cases">Real cases</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Using the Docker Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-cloud">Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#getting-llama-images">Getting LLAMA Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#choosing-the-image">Choosing the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#getting-updating-the-image">Getting/Updating the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#removing-images">Removing Images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#running-a-llama-container">Running a LLAMA Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#mounting-directories">Mounting Directories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-macos-linux">Mounting in MacOS/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-windows">Mounting in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#out-of-memory-disk">Out of Memory/Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#running-on-habanero">Running on Habanero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#interactive-habanero-jobs">Interactive Habanero Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-hub-authentication-with-singularity">Docker Hub Authentication with Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#fixing-singularity-cache-on-habanero">Fixing Singularity Cache on Habanero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-singularity-module">Load Singularity Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#pull-llama-image">Pull LLAMA Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#local-installation">Local Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-conda">Installing Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#setting-up-a-production-server">Setting Up a Production Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker">Install Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker-compose">Install Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#log-in-to-docker-cloud">Log in to Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#get-docker-compose-yml">Get <cite>docker-compose.yml</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#starting-llama-production-app">Starting LLAMA Production App</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Operators' Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#how-data-is-organized">How Data is Organized</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#event-directories">Event Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#gcn-notice-archive">GCN Notice Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#log-files">Log Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-automatically">Running the Pipeline Automatically</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-manually">Running the Pipeline Manually</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#using-defaults-with-skymap-info">Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-o3b">Sensitivity and Background Studies (O3B)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-pre-o3b">Sensitivity and Background Studies (pre-O3B)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#editing-your-bashrc">Editing your .bashrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#using-the-digitalocean-api">Using the DigitalOcean API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#llama-scripts">LLAMA Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#adding-your-ssh-keys-to-the-droplets">Adding Your SSH Keys to the Droplets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#installing-requirements">Installing Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#digitalocean-administration-examples">DigitalOcean Administration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#preparing-a-server">Preparing a Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#server-preparation-overview">Server Preparation Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#moving-data-into-place">Moving Data into Place</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#running-the-analysis-in-parallel">Running the Analysis in Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#starting-the-servers">Starting the Servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#running-the-analysis">Running the Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#collecting-results">Collecting Results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#obtaining-the-llama-source-code">Obtaining the LLAMA Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#using-the-docker-dev-image">Using the Docker Dev Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#list-bin-docker-commands">List <code class="docutils literal notranslate"><span class="pre">bin/docker</span></code> Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#getting-the-latest-development-image">Getting the Latest Development Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#starting-a-dev-container">Starting a Dev Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#sketch-of-a-bug-fix">Sketch of a Bug Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#destroying-your-dev-container">Destroying your Dev Container</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html#previous-llama-versions">Previous LLAMA Versions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html">Developer Installation (Pre-O3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-llama-dependencies">Installing LLAMA Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#obtaining-the-llama-software-pre-o3">Obtaining the LLAMA Software (pre-O3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-configuration-files">Setting up Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-git-hooks">Install git Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-llama-dependencies">Install LLAMA dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-ligo-software">Install LIGO Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software">Install IceCube Offline Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-icecube-dependencies">Installing IceCube Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#entering-icecube-credentials">Entering IceCube Credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-matlab">Install MATLAB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#configuration-and-authentication">Configuration and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#generate-ssh-keys">Generate SSH Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gmail-authentication">GMail Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ligo-authentication">LIGO Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-ssl-certificates">Setting Up SSL Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-passwords-for-run-summary-pages">Setting Up Passwords for Run Summary Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#external-authentication">External Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#bitbucket-authentication">Bitbucket Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#git-ligo-org-authentication">git.ligo.org Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#twilio-authentication">Twilio Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gw-astronomy-authentication">GW Astronomy Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gcn-authentication">GCN Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#turning-on-the-pipeline">Turning on the Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#subscribing-to-lvalert-nodes">Subscribing to LVAlert Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#starting-pipeline-daemons">Starting Pipeline Daemons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#testing-lvalert">Testing LVAlert</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#viewing-active-processes">Viewing Active Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#checking-pipeline-logs">Checking Pipeline Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#killing-pipeline-daemons">Killing Pipeline Daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#deprecated-matlab-logs">Deprecated: MATLAB Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#developing-for-llama">Developing for LLAMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction-to-development">Introduction to Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#structure-of-the-pipeline">Structure of the Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#adding-functionality">Adding Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#developer-conventions-and-best-practices">Developer Conventions and Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#data-format-conventions">Data Format Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#coding-best-practices">Coding Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#migrating-to-conda">Migrating to Conda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#ligo-wiki-documentation">LIGO Wiki Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-ligo-software-via-conda">Installing LIGO Software via Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#creating-a-new-user">Creating a new user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#out-of-memory">Out of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#matlab-installation-troubleshooting">MATLAB Installation Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software-with-root">Install IceCube Offline Software with Root</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#logging-in-to-a-remote-server-using-ssh">Logging in to a Remote Server Using SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#getting-llama-software-onto-a-remote-server">Getting LLAMA Software onto a Remote Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ssh-with-x11-forwarding">SSH with X11 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#using-llama">Using LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#documenting-llama">Documenting LLAMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-to-gwhen-com-website">Publishing to gwhen.com Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-readme-to-git-host">Publishing Readme to Git Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-pdfs">Publishing PDFs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-html-web-pages">Publishing HTML Web Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-llama">Troubleshooting LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-the-review-server">Setting Up the Review Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#provisioning-the-review-server">Provisioning the review server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#running-the-review">Running the Review</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ideas-for-the-future">Ideas for the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#cvmfs">CVMFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#advantages">Advantages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#disadvantages">Disadvantages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Bibliography</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Academic Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#low-latency-algorithm-for-multi-messenger-astrophysics-llama-with-gravitational-wave-and-high-energy-neutrino-candidates">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#bayesian-multi-messenger-search-method-for-common-sources-of-gravitational-waves-and-high-energy-neutrinos">Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.html">llama package</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="llama.batch.html">llama.batch package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.classes.html">llama.classes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.cli.html">llama.cli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.com.html">llama.com package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.dl.html">llama.com.dl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.do.html">llama.com.do package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.email.html">llama.com.email package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.gracedb.html">llama.com.gracedb package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.s3.html">llama.com.s3 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.slack.html">llama.com.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.utils.html">llama.com.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.detectors.html">llama.detectors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.detectors.html#available-detectors">Available Detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.dev.html">llama.dev package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.background.html">llama.dev.background package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.pvalue.html">llama.dev.background.pvalue package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table.html">llama.dev.background.table package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table_singles.html">llama.dev.background.table_singles package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.clean.html">llama.dev.clean package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.data.html">llama.dev.data package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.data.i3.html">llama.dev.data.i3 package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.docs.html">llama.dev.docs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.docs.cli.html">llama.dev.docs.cli package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.dv.html">llama.dev.dv package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.log.html">llama.dev.log package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.log.lvalert.html">llama.dev.log.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.upload.html">llama.dev.upload package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.event.html">llama.event package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.filehandler.html">llama.filehandler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.classes.html">llama.filehandler.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.mixins.html">llama.filehandler.mixins module</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="llama.files.html">llama.files package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_significance.html">llama.files.coinc_significance package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.opa.html">llama.files.coinc_significance.opa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.subthreshold.html">llama.files.coinc_significance.subthreshold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.utils.html">llama.files.coinc_significance.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.healpix.html">llama.files.healpix package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.plotters.html">llama.files.healpix.plotters module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.psf.html">llama.files.healpix.psf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.skymap.html">llama.files.healpix.skymap module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.utils.html">llama.files.healpix.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.i3.html">llama.files.i3 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.json.html">llama.files.i3.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.realtime_tools_stubs.html">llama.files.i3.realtime_tools_stubs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.tex.html">llama.files.i3.tex module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.txt.html">llama.files.i3.txt module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.utils.html">llama.files.i3.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap.html">llama.files.lvc_skymap package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.skymap_info.html">llama.files.skymap_info package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.cli.html">llama.files.skymap_info.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.utils.html">llama.files.skymap_info.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.slack.html">llama.files.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.advok.html">llama.files.advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_analyses.html">llama.files.coinc_analyses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_o2.html">llama.files.coinc_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_plots.html">llama.files.coinc_plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.fermi_grb.html">llama.files.fermi_grb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gcn_draft_o2.html">llama.files.gcn_draft_o2 module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">llama.files.gracedb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gwastro.html">llama.files.gwastro module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_advok.html">llama.files.lvalert_advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_json.html">llama.files.lvalert_json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_mat.html">llama.files.lvc_skymap_mat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_txt.html">llama.files.lvc_skymap_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.matlab.html">llama.files.matlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.sms_receipts.html">llama.files.sms_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.team_receipts.html">llama.files.team_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.timing_checks.html">llama.files.timing_checks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.uw_summary.html">llama.files.uw_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.ztf_trigger_list.html">llama.files.ztf_trigger_list module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.flags.html">llama.flags package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.flags.cli.html">llama.flags.cli module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.install.html">llama.install package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.install.manifest.html">llama.install.manifest module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.intent.html">llama.intent module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.io.html">llama.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.default.html">llama.io.default package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.io.default.generate.html">llama.io.default.generate module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.classes.html">llama.io.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.registry.html">llama.io.registry module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.listen.html">llama.listen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.gcn.html">llama.listen.gcn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.lvalert.html">llama.listen.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.lock.html">llama.lock module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.meta.html">llama.meta module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.pipeline.html">llama.pipeline module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.pipeline.html#pipelines">Pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.poll.html">llama.poll package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.poll.gracedb.html">llama.poll.gracedb package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.run.html">llama.run package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.serve.html">llama.serve package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.gui.html">llama.serve.gui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.wsgi.html">llama.serve.gui.wsgi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.domain.html">llama.serve.gui.domain module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.jupyter.html">llama.serve.jupyter package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.logs.html">llama.serve.jupyter.logs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.utils.html">llama.serve.jupyter.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.test.html">llama.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_files.html">llama.test.test_files package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_listeners.html">llama.test.test_listeners package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.test.test_listeners.test_gcn.html">llama.test.test_listeners.test_gcn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.classes.html">llama.test.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_bin.html">llama.test.test_bin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_filehandler.html">llama.test.test_filehandler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_pipeline.html">llama.test.test_pipeline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_utils.html">llama.test.test_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.utils.html">llama.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.version.html">llama.version module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.versioning.html">llama.versioning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.vetoes.html">llama.vetoes module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Reports</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/pytest/">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/coverage/">Code Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiling.html">Performance Profiling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-combined.html">Combined Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-combined.html#combined">combined</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-unit.html">Unit Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-default-pipeline-consistency">test_default_pipeline_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-filehandler-definition-consistency">test_filehandler_definition_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-make-grid">test_get_grid_make_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-north-pole">test_get_grid_north_pole</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-pipeline-parser">test_llama_pipeline_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-run-parser">test_llama_run_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize">test_memoize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-class">test_memoize_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-helper">test_memoize_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-mjd-interval">test_mjd_interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-rotate-angs2vec">test_rotate_angs2vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-write-gzip">test_write_gzip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.html">Doctests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.com.html">llama.com</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.com.gracedb.html">llama.com.gracedb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.com.gracedb.html#llama-com-gracedb-gracedb">llama.com.gracedb.GraceDb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.dev.html">llama.dev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.data.html">llama.dev.data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.data.i3.html">llama.dev.data.i3</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.upload.html">llama.dev.upload</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.upload.html#llama-dev-upload-upload-and-get-manifest">llama.dev.upload.upload_and_get_manifest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.filehandler.html">llama.filehandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html">llama.filehandler.JSONFile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html#llama-filehandler-jsonfile-checksum">llama.filehandler.JSONFile.checksum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.files.html">llama.files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html">llama.files.fermi_grb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html#llama-files-fermi-grb-get-grbs-from-csv">llama.files.fermi_grb.get_grbs_from_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.healpix.html">llama.files.healpix</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.HEALPixSkyMapFileHandler.html">llama.files.healpix.HEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.LvcHEALPixSkyMapFileHandler.html">llama.files.healpix.LvcHEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.psf.html">llama.files.healpix.psf</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.html">llama.files.healpix.skymap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.utils.html">llama.files.healpix.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.i3.html">llama.files.i3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.json.html">llama.files.i3.json</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.utils.html">llama.files.i3.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html#llama-files-lvc-gcn-xml-parse-ivorn">llama.files.lvc_gcn_xml.parse_ivorn</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.html">llama.files.lvc_skymap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.matlab.html">llama.files.matlab</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.matlab.html#llama-files-matlab-matlab-eval">llama.files.matlab.matlab_eval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.utils.html">llama.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-param">llama.utils.get_voevent_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-time">llama.utils.get_voevent_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-parameter-factory">llama.utils.parameter_factory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2angs">llama.utils.rotate_angs2angs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2vec">llama.utils.rotate_angs2vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-gzip">llama.utils.write_gzip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-to-zip">llama.utils.write_to_zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Source Code Plots</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command Line Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span></code> Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.batch.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">batch</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#logging settings">logging settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#simulation configuration">simulation configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.com.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.do.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.do.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">gracedb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.slack.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">slack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.dev.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.background.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.clean.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">clean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.data.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.docs.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span> <span class="pre">cli</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.dv.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.log.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.upload.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.event.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">event</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.files.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#output formats (specify at least 1)">output formats (specify at least 1)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.flags.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">flags</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.install.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">install</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.listen.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.poll.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span> <span class="pre">gracedb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.run.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.serve.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.gui.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">gui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">jupyter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="llama.files.html">llama.files package</a> &raquo;</li>
+        
+      <li>llama.files.gracedb module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/llama.files.gracedb.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-llama.files.gracedb">
+<span id="llama-files-gracedb-module"></span><h1>llama.files.gracedb module<a class="headerlink" href="#module-llama.files.gracedb" title="Permalink to this headline">¶</a></h1>
+<p>FileHandlers for uploading and downloading files from GraceDB plus utilities
+for interacting with GraceDB.</p>
+<dl class="class">
+<dt id="llama.files.gracedb.GraceDBPollingFileHandler">
+<em class="property">class </em><code class="sig-prename descclassname">llama.files.gracedb.</code><code class="sig-name descname">GraceDBPollingFileHandler</code><a class="headerlink" href="#llama.files.gracedb.GraceDBPollingFileHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="llama.filehandler.html#llama.filehandler.FileHandler" title="llama.filehandler.FileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.filehandler.FileHandler</span></code></a>, <a class="reference internal" href="llama.filehandler.mixins.html#llama.filehandler.mixins.OnlineVetoMixin" title="llama.filehandler.mixins.OnlineVetoMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.filehandler.mixins.OnlineVetoMixin</span></code></a></p>
+<p>A data file that can be downloaded from GraceDB as soon as it is ready.
+SkymapInfo is necessarily a dependency for all subclasses (since we need to
+extract the GraceID from it).  In most cases, this should be the only
+dependency.</p>
+<dl class="attribute">
+<dt id="llama.files.gracedb.GraceDBPollingFileHandler.DEPENDENCIES">
+<code class="sig-name descname">DEPENDENCIES</code><em class="property"> = (&lt;class 'llama.files.skymap_info.SkymapInfo'&gt;,)</em><a class="headerlink" href="#llama.files.gracedb.GraceDBPollingFileHandler.DEPENDENCIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.GraceDBPollingFileHandler.remote_filename">
+<em class="property">abstract property </em><code class="sig-name descname">remote_filename</code><a class="headerlink" href="#llama.files.gracedb.GraceDBPollingFileHandler.remote_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the required data in a format recognizable by the remote
+resource’s API. This is quite possibly dynamically generated, and so
+it must be considered separate from the file handler’s name for this
+file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.files.gracedb.GraceDBReceipt">
+<em class="property">class </em><code class="sig-prename descclassname">llama.files.gracedb.</code><code class="sig-name descname">GraceDBReceipt</code><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="llama.com.utils.html#llama.com.utils.UploadReceipt" title="llama.com.utils.UploadReceipt"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.com.utils.UploadReceipt</span></code></a></p>
+<p>A log file created when a file is uploaded to GraceDB.</p>
+<dl class="attribute">
+<dt id="llama.files.gracedb.GraceDBReceipt.CLASSNAME_FMT">
+<code class="sig-name descname">CLASSNAME_FMT</code><em class="property"> = 'RctGdb{}'</em><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt.CLASSNAME_FMT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.GraceDBReceipt.FILENAME_FMT">
+<code class="sig-name descname">FILENAME_FMT</code><em class="property"> = 'rct_gdb_{}.log'</em><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt.FILENAME_FMT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.GraceDBReceipt.decorator_dict">
+<em class="property">classmethod </em><code class="sig-name descname">decorator_dict</code><span class="sig-paren">(</span><em class="sig-param">upload</em>, <em class="sig-param">log_message='Upload from LLAMA pipeline.'</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt.decorator_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <code class="docutils literal notranslate"><span class="pre">UploadReceipt.upload_this</span></code> and
+<code class="docutils literal notranslate"><span class="pre">UploadReceipt.decorator_dict</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upload</strong> – The decorated <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> class that is being registered for
+upload.</p></li>
+<li><p><strong>log_message</strong> (<em>function</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Either a string whose <code class="docutils literal notranslate"><span class="pre">format</span></code> function will be called with the
+new <code class="docutils literal notranslate"><span class="pre">GraceDBReceipt</span></code> subclass as its <code class="docutils literal notranslate"><span class="pre">self</span></code> keyword argument or
+a function taking the new <code class="docutils literal notranslate"><span class="pre">GraceDBReceipt</span></code> as its only argument
+(will become the <code class="docutils literal notranslate"><span class="pre">log_message</span></code> property for the new
+<code class="docutils literal notranslate"><span class="pre">GraceDBReceipt</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>newclassdict</strong> – A dictionary that can be passed to <code class="docutils literal notranslate"><span class="pre">type</span></code> to specify the
+attributes of a new class.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">log_message</span></code> is not a formattable string or callable object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.GraceDBReceipt.gracedb_tags">
+<em class="property">property </em><code class="sig-name descname">gracedb_tags</code><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt.gracedb_tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify tags (which affect display and access permissions) for
+the uploaded GraceDB file. Can be overridden for files that don’t
+fit the default topics:</p>
+<p>[u’lvem’, u’em_follow’, u’sky_loc’]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.GraceDBReceipt.log_message">
+<em class="property">abstract property </em><code class="sig-name descname">log_message</code><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt.log_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>A message to accompany this file on the GraceDB log entry for this
+event. The last line of this log file is a JSON object describing the
+result of the upload operation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.GraceDBReceipt.set_class_attributes">
+<em class="property">classmethod </em><code class="sig-name descname">set_class_attributes</code><span class="sig-paren">(</span><em class="sig-param">subclass</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt.set_class_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <code class="docutils literal notranslate"><span class="pre">UploadReceipt.set_class_attributes</span></code>; this method additionally
+adds <code class="docutils literal notranslate"><span class="pre">SkymapInfo</span></code> to the <code class="docutils literal notranslate"><span class="pre">DEPENDENCIES</span></code> list for <code class="docutils literal notranslate"><span class="pre">subclass</span></code> (if
+it is not implicitly there by virtue of being the uploaded file).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.GraceDBReceipt.upload_dict">
+<em class="property">property </em><code class="sig-name descname">upload_dict</code><a class="headerlink" href="#llama.files.gracedb.GraceDBReceipt.upload_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>When uploading to GraceDB via the REST API, the GraceDB client
+produces a dict with useful information about the uploaded file. This
+method returns that dict. An example instance of this dict:</p>
+<blockquote>
+<div><dl>
+<dt>{u’N’: 46,</dt><dd><p>u’comment’: u’Testing json upload ONE MORE TIME!’,
+u’created’: u’2017-03-19T04:49:43.515566+00:00’,
+u’file’: (u’<a class="reference external" href="https://gracedb.ligo.org/api/events/M278200/">https://gracedb.ligo.org/api/events/M278200/</a>’</p>
+<blockquote>
+<div><p>u’files/icecube_neutrino_list.json,4’),</p>
+</div></blockquote>
+<p>u’file_version’: 4,
+u’filename’: u’icecube_neutrino_list.json’,
+u’issuer’: {u’display_name’: u’Stefan Countryman’,</p>
+<blockquote>
+<div><p>u’username’: <a class="reference external" href="mailto:u'stefan&#46;countryman&#37;&#52;&#48;LIGO&#46;ORG">u’stefan<span>&#46;</span>countryman<span>&#64;</span>LIGO<span>&#46;</span>ORG</a>’},</p>
+</div></blockquote>
+<p>u’self’: u’<a class="reference external" href="https://gracedb.ligo.org/api/events/M278200/log/46">https://gracedb.ligo.org/api/events/M278200/log/46</a>’,
+u’tag_names’: [u’em_follow’],
+u’tags’: u’<a class="reference external" href="https://gracedb.ligo.org/api/events/M278200/log/46/tag/">https://gracedb.ligo.org/api/events/M278200/log/46/tag/</a>’}</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>If the log file doesn’t exist or the upload dict cannot be read, this
+function returns None.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.files.gracedb.LVCGraceDbEventData">
+<em class="property">class </em><code class="sig-prename descclassname">llama.files.gracedb.</code><code class="sig-name descname">LVCGraceDbEventData</code><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="llama.filehandler.html#llama.filehandler.JSONFile" title="llama.filehandler.JSONFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.filehandler.JSONFile</span></code></a>, <a class="reference internal" href="llama.filehandler.mixins.html#llama.filehandler.mixins.OnlineVetoMixin" title="llama.filehandler.mixins.OnlineVetoMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.filehandler.mixins.OnlineVetoMixin</span></code></a></p>
+<div class="figure align-default" id="llama-files-gracedb-lvcgracedbeventdata">
+<div class="graphviz"><object data="_images/graphviz-46e05b03f759bfd2d5b73db51259839cdd1173fb.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph &quot;llama.files.gracedb.LVCGraceDbEventData&quot; {
+charset=&quot;utf-8&quot;
+splines=ortho
+bgcolor=none
+margin=0
+rankdir=LR
+&quot;llama.files.gracedb.LVCGraceDbEventData&quot; [label=&lt;{{&lt;B&gt;LVCGraceDbEventData&lt;/B&gt;|&lt;I&gt;lvc_gracedb_event_data.json&lt;/I&gt;|JSONFile&lt;BR/&gt;OnlineVetoMixin}}&gt;, shape=&quot;record&quot;, style=filled, target=_top, URL=&quot;/llama.files.gracedb.html#llama.files.gracedb.LVCGraceDbEventData&quot;, fillcolor=&quot;#cccccc&quot;];
+&quot;llama.files.skymap_info.SkymapInfo&quot; [label=&lt;{{&lt;B&gt;SkymapInfo&lt;/B&gt;|&lt;I&gt;skymap_info.json&lt;/I&gt;|EventTriggeredFileHandler&lt;BR/&gt;JSONFile}}&gt;, shape=&quot;record&quot;, style=filled, target=_top, URL=&quot;/llama.files.skymap_info.html#llama.files.skymap_info.SkymapInfo&quot;, fillcolor=&quot;#cccccc&quot;];
+&quot;llama.files.skymap_info.SkymapInfo&quot; -&gt; &quot;llama.files.gracedb.LVCGraceDbEventData&quot; [arrowtail=&quot;none&quot;, color=&quot;red&quot;, ];
+}</p></object></div>
+<p class="caption"><span class="caption-text">Required input files for <code class="docutils literal notranslate"><span class="pre">llama.files.gracedb.LVCGraceDbEventData</span></code> (located on the far right of the graph). For a typical trigger, the leftmost files will be generated as triggers become available. They will be used as input for files to their right, eventually allowing <code class="docutils literal notranslate"><span class="pre">llama.files.gracedb.LVCGraceDbEventData</span></code> to be generated.</span><a class="headerlink" href="#llama-files-gracedb-lvcgracedbeventdata" title="Permalink to this image">¶</a></p>
+</div>
+<p>The event dictionary as returned by the GraceDb API. Includes richer
+information on the single-detector and multi-detector inspiral parameters
+than is provided in LVAlerts or GCN Notices. Convenience methods are
+provided for certain commonly-used reconstructed parameters, but full data
+can always be accessed by running <code class="docutils literal notranslate"><span class="pre">read_json</span></code>.</p>
+<dl class="attribute">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.DEPENDENCIES">
+<code class="sig-name descname">DEPENDENCIES</code><em class="property"> = (&lt;class 'llama.files.skymap_info.SkymapInfo'&gt;,)</em><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.DEPENDENCIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.FILENAME">
+<code class="sig-name descname">FILENAME</code><em class="property"> = 'lvc_gracedb_event_data.json'</em><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.FILENAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.GW_DETECTORS">
+<code class="sig-name descname">GW_DETECTORS</code><em class="property"> = {'H1', 'L1', 'V1'}</em><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.GW_DETECTORS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.MANIFEST_TYPES">
+<code class="sig-name descname">MANIFEST_TYPES</code><em class="property"> = (&lt;class 'llama.files.gracedb.LVCGraceDbEventData'&gt;,)</em><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.MANIFEST_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.UR_DEPENDENCIES">
+<code class="sig-name descname">UR_DEPENDENCIES</code><em class="property"> = (&lt;class 'llama.files.skymap_info.SkymapInfo'&gt;,)</em><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.UR_DEPENDENCIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.UR_DEPENDENCY_TREE">
+<code class="sig-name descname">UR_DEPENDENCY_TREE</code><em class="property"> = frozenset({&lt;class 'llama.files.skymap_info.SkymapInfo'&gt;})</em><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.UR_DEPENDENCY_TREE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.chirp_mass">
+<em class="property">property </em><code class="sig-name descname">chirp_mass</code><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.chirp_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The chirp mass. Raises a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> if it is not
+defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.instruments">
+<em class="property">property </em><code class="sig-name descname">instruments</code><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.instruments" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sorted list of the interferometers that participated in creating
+this trigger, e.g. <code class="docutils literal notranslate"><span class="pre">['H1',</span> <span class="pre">'L1']</span></code>. Raises a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if
+unexpected instruments are found. Raises a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> if it is not
+defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.offline">
+<em class="property">property </em><code class="sig-name descname">offline</code><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.offline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether this trigger was generated offline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.snr">
+<em class="property">property </em><code class="sig-name descname">snr</code><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.snr" title="Permalink to this definition">¶</a></dt>
+<dd><p>The coincident signal-to-noise ratio (SNR). Raises a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> if
+it is not defined.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.LVCGraceDbEventData.total_mass">
+<em class="property">property </em><code class="sig-name descname">total_mass</code><a class="headerlink" href="#llama.files.gracedb.LVCGraceDbEventData.total_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total binary mass. Raises a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> if it is not
+defined.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.files.gracedb.PAstro">
+<em class="property">class </em><code class="sig-prename descclassname">llama.files.gracedb.</code><code class="sig-name descname">PAstro</code><a class="headerlink" href="#llama.files.gracedb.PAstro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#llama.files.gracedb.GraceDBPollingFileHandler" title="llama.files.gracedb.GraceDBPollingFileHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.files.gracedb.GraceDBPollingFileHandler</span></code></a>, <a class="reference internal" href="llama.filehandler.html#llama.filehandler.JSONFile" title="llama.filehandler.JSONFile"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.filehandler.JSONFile</span></code></a></p>
+<div class="figure align-default" id="llama-files-gracedb-pastro">
+<div class="graphviz"><object data="_images/graphviz-298a9571878dbab01ad281962f9937b55e482522.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph &quot;llama.files.gracedb.PAstro&quot; {
+charset=&quot;utf-8&quot;
+splines=ortho
+bgcolor=none
+margin=0
+rankdir=LR
+&quot;llama.files.gracedb.PAstro&quot; [label=&lt;{{&lt;B&gt;PAstro&lt;/B&gt;|&lt;I&gt;p_astro.json&lt;/I&gt;|GraceDBPollingFileHandler&lt;BR/&gt;JSONFile}}&gt;, shape=&quot;record&quot;, style=filled, target=_top, URL=&quot;/llama.files.gracedb.html#llama.files.gracedb.PAstro&quot;, fillcolor=&quot;#cccccc&quot;];
+&quot;llama.files.skymap_info.SkymapInfo&quot; [label=&lt;{{&lt;B&gt;SkymapInfo&lt;/B&gt;|&lt;I&gt;skymap_info.json&lt;/I&gt;|EventTriggeredFileHandler&lt;BR/&gt;JSONFile}}&gt;, shape=&quot;record&quot;, style=filled, target=_top, URL=&quot;/llama.files.skymap_info.html#llama.files.skymap_info.SkymapInfo&quot;, fillcolor=&quot;#cccccc&quot;];
+&quot;llama.files.skymap_info.SkymapInfo&quot; -&gt; &quot;llama.files.gracedb.PAstro&quot; [arrowtail=&quot;none&quot;, color=&quot;red&quot;, ];
+}</p></object></div>
+<p class="caption"><span class="caption-text">Required input files for <code class="docutils literal notranslate"><span class="pre">llama.files.gracedb.PAstro</span></code> (located on the far right of the graph). For a typical trigger, the leftmost files will be generated as triggers become available. They will be used as input for files to their right, eventually allowing <code class="docutils literal notranslate"><span class="pre">llama.files.gracedb.PAstro</span></code> to be generated.</span><a class="headerlink" href="#llama-files-gracedb-pastro" title="Permalink to this image">¶</a></p>
+</div>
+<p>A classification of an event’s possible sources by probability.</p>
+<dl class="attribute">
+<dt id="llama.files.gracedb.PAstro.FILENAME">
+<code class="sig-name descname">FILENAME</code><em class="property"> = 'p_astro.json'</em><a class="headerlink" href="#llama.files.gracedb.PAstro.FILENAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.PAstro.MANIFEST_TYPES">
+<code class="sig-name descname">MANIFEST_TYPES</code><em class="property"> = (&lt;class 'llama.files.gracedb.PAstro'&gt;,)</em><a class="headerlink" href="#llama.files.gracedb.PAstro.MANIFEST_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.PAstro.UR_DEPENDENCIES">
+<code class="sig-name descname">UR_DEPENDENCIES</code><em class="property"> = (&lt;class 'llama.files.skymap_info.SkymapInfo'&gt;,)</em><a class="headerlink" href="#llama.files.gracedb.PAstro.UR_DEPENDENCIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.PAstro.UR_DEPENDENCY_TREE">
+<code class="sig-name descname">UR_DEPENDENCY_TREE</code><em class="property"> = frozenset({&lt;class 'llama.files.skymap_info.SkymapInfo'&gt;})</em><a class="headerlink" href="#llama.files.gracedb.PAstro.UR_DEPENDENCY_TREE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.PAstro.most_likely_population">
+<em class="property">property </em><code class="sig-name descname">most_likely_population</code><a class="headerlink" href="#llama.files.gracedb.PAstro.most_likely_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the population that this event most likely belongs too by seeing
+whether it is more likely than not to contain NS matter. More
+precisely, compares <code class="docutils literal notranslate"><span class="pre">p_bbh</span></code> to <code class="docutils literal notranslate"><span class="pre">p_bns</span> <span class="pre">+</span> <span class="pre">p_nsbh</span> <span class="pre">+</span> <span class="pre">p_mass_gap</span></code>,
+returning <code class="docutils literal notranslate"><span class="pre">'bbh'</span></code> if the former is larger and <code class="docutils literal notranslate"><span class="pre">'bns'</span></code> if the latter
+is larger. <code class="docutils literal notranslate"><span class="pre">p_terr</span></code> is ignored in this calculation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.PAstro.p_bbh">
+<em class="property">property </em><code class="sig-name descname">p_bbh</code><a class="headerlink" href="#llama.files.gracedb.PAstro.p_bbh" title="Permalink to this definition">¶</a></dt>
+<dd><p>The probability that this was a BBH (binary black hole) merger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.PAstro.p_bns">
+<em class="property">property </em><code class="sig-name descname">p_bns</code><a class="headerlink" href="#llama.files.gracedb.PAstro.p_bns" title="Permalink to this definition">¶</a></dt>
+<dd><p>The probability that this was a BNS (binary neutron star) merger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.PAstro.p_mass_gap">
+<em class="property">property </em><code class="sig-name descname">p_mass_gap</code><a class="headerlink" href="#llama.files.gracedb.PAstro.p_mass_gap" title="Permalink to this definition">¶</a></dt>
+<dd><p>The probability that at least one of the compact objects in the
+merger was in the ambiguous mass gap between definite BH and definite
+NS.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.PAstro.p_nsbh">
+<em class="property">property </em><code class="sig-name descname">p_nsbh</code><a class="headerlink" href="#llama.files.gracedb.PAstro.p_nsbh" title="Permalink to this definition">¶</a></dt>
+<dd><p>The probability that this was a NSBH (neutron star/black hole)
+merger.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.PAstro.p_terr">
+<em class="property">property </em><code class="sig-name descname">p_terr</code><a class="headerlink" href="#llama.files.gracedb.PAstro.p_terr" title="Permalink to this definition">¶</a></dt>
+<dd><p>The probability that this event was terrestrial noise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.files.gracedb.PAstro.remote_filename">
+<em class="property">property </em><code class="sig-name descname">remote_filename</code><a class="headerlink" href="#llama.files.gracedb.PAstro.remote_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the required data in a format recognizable by the remote
+resource’s API. This is quite possibly dynamically generated, and so
+it must be considered separate from the file handler’s name for this
+file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData">
+<em class="property">class </em><code class="sig-prename descclassname">llama.files.gracedb.</code><code class="sig-name descname">RctSlkLmaLVCGraceDbEventData</code><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="llama.files.slack.html#llama.files.slack.SlackReceiptLlama" title="llama.files.slack.SlackReceiptLlama"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.files.slack.SlackReceiptLlama</span></code></a></p>
+<div class="figure align-default" id="llama-files-gracedb-rctslklmalvcgracedbeventdata">
+<div class="graphviz"><object data="_images/graphviz-1e42f46e33586497c3ab51c3227cd296c9052408.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph &quot;llama.files.gracedb.RctSlkLmaLVCGraceDbEventData&quot; {
+charset=&quot;utf-8&quot;
+splines=ortho
+bgcolor=none
+margin=0
+rankdir=LR
+&quot;llama.files.gracedb.LVCGraceDbEventData&quot; [label=&lt;{{&lt;B&gt;LVCGraceDbEventData&lt;/B&gt;|&lt;I&gt;lvc_gracedb_event_data.json&lt;/I&gt;|JSONFile&lt;BR/&gt;OnlineVetoMixin}}&gt;, shape=&quot;record&quot;, style=filled, target=_top, URL=&quot;/llama.files.gracedb.html#llama.files.gracedb.LVCGraceDbEventData&quot;, fillcolor=&quot;#cccccc&quot;];
+&quot;llama.files.gracedb.RctSlkLmaLVCGraceDbEventData&quot; [label=&lt;{{&lt;B&gt;RctSlkLmaLVCGraceDbEventData&lt;/B&gt;|&lt;I&gt;rct_slk_lma_lvc_gracedb_event_data.json.json&lt;/I&gt;|SlackReceiptLlama}}&gt;, shape=&quot;record&quot;, style=filled, target=_top, URL=&quot;/llama.files.gracedb.html#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData&quot;, fillcolor=&quot;#cccccc&quot;];
+&quot;llama.files.skymap_info.SkymapInfo&quot; [label=&lt;{{&lt;B&gt;SkymapInfo&lt;/B&gt;|&lt;I&gt;skymap_info.json&lt;/I&gt;|EventTriggeredFileHandler&lt;BR/&gt;JSONFile}}&gt;, shape=&quot;record&quot;, style=filled, target=_top, URL=&quot;/llama.files.skymap_info.html#llama.files.skymap_info.SkymapInfo&quot;, fillcolor=&quot;#cccccc&quot;];
+&quot;llama.files.gracedb.LVCGraceDbEventData&quot; -&gt; &quot;llama.files.gracedb.RctSlkLmaLVCGraceDbEventData&quot; [arrowtail=&quot;none&quot;, color=&quot;red&quot;, ];
+&quot;llama.files.skymap_info.SkymapInfo&quot; -&gt; &quot;llama.files.gracedb.LVCGraceDbEventData&quot; [arrowtail=&quot;none&quot;, color=&quot;red&quot;, ];
+&quot;llama.files.skymap_info.SkymapInfo&quot; -&gt; &quot;llama.files.gracedb.RctSlkLmaLVCGraceDbEventData&quot; [arrowtail=&quot;none&quot;, color=&quot;red&quot;, ];
+}</p></object></div>
+<p class="caption"><span class="caption-text">Required input files for <code class="docutils literal notranslate"><span class="pre">llama.files.gracedb.RctSlkLmaLVCGraceDbEventData</span></code> (located on the far right of the graph). For a typical trigger, the leftmost files will be generated as triggers become available. They will be used as input for files to their right, eventually allowing <code class="docutils literal notranslate"><span class="pre">llama.files.gracedb.RctSlkLmaLVCGraceDbEventData</span></code> to be generated.</span><a class="headerlink" href="#llama-files-gracedb-rctslklmalvcgracedbeventdata" title="Permalink to this image">¶</a></p>
+</div>
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.DEPENDENCIES">
+<code class="sig-name descname">DEPENDENCIES</code><em class="property"> = (&lt;class 'llama.files.gracedb.LVCGraceDbEventData'&gt;, &lt;class 'llama.files.skymap_info.SkymapInfo'&gt;)</em><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.DEPENDENCIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.FILENAME">
+<code class="sig-name descname">FILENAME</code><em class="property"> = 'rct_slk_lma_lvc_gracedb_event_data.json.json'</em><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.FILENAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.FILENAME_FMT">
+<code class="sig-name descname">FILENAME_FMT</code><em class="property"> = 'rct_slk_lma_{}.json'</em><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.FILENAME_FMT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.MANIFEST_TYPES">
+<code class="sig-name descname">MANIFEST_TYPES</code><em class="property"> = (&lt;class 'llama.files.gracedb.RctSlkLmaLVCGraceDbEventData'&gt;,)</em><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.MANIFEST_TYPES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.UPLOAD">
+<code class="sig-name descname">UPLOAD</code><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.UPLOAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#llama.files.gracedb.LVCGraceDbEventData" title="llama.files.gracedb.LVCGraceDbEventData"><code class="xref py py-class docutils literal notranslate"><span class="pre">LVCGraceDbEventData</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.UR_DEPENDENCIES">
+<code class="sig-name descname">UR_DEPENDENCIES</code><em class="property"> = (&lt;class 'llama.files.skymap_info.SkymapInfo'&gt;, &lt;class 'llama.files.gracedb.LVCGraceDbEventData'&gt;)</em><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.UR_DEPENDENCIES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.UR_DEPENDENCY_TREE">
+<code class="sig-name descname">UR_DEPENDENCY_TREE</code><em class="property"> = frozenset({&lt;class 'llama.files.gracedb.LVCGraceDbEventData'&gt;})</em><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.UR_DEPENDENCY_TREE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.class_vetoes">
+<code class="sig-name descname">class_vetoes</code><em class="property"> = ()</em><a class="headerlink" href="#llama.files.gracedb.RctSlkLmaLVCGraceDbEventData.class_vetoes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="llama.files.gwastro.html" class="btn btn-neutral float-right" title="llama.files.gwastro module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="llama.files.gcn_draft_o2.html" class="btn btn-neutral float-left" title="llama.files.gcn_draft_o2 module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2019, Stefan Trklja Countryman, Kenneth Rainer Corley, Doğa Veske
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+llama.files.skymap\_info package
+================================
+
+.. automodule:: llama.files.skymap_info
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.files.skymap_info.cli
+   llama.files.skymap_info.utils

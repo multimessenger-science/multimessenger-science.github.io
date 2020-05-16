@@ -1,0 +1,16 @@
+llama.flags package
+===================
+
+.. automodule:: llama.flags
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.flags.cli

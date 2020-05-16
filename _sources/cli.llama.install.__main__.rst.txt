@@ -1,0 +1,9 @@
+``llama install``
+=================
+
+.. argparse::
+   :module: llama.install.__main__
+   :func: get_parser
+   :prog: llama install
+
+

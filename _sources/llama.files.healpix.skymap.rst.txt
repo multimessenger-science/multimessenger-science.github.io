@@ -1,0 +1,7 @@
+llama.files.healpix.skymap module
+=================================
+
+.. automodule:: llama.files.healpix.skymap
+   :members:
+   :undoc-members:
+   :show-inheritance:

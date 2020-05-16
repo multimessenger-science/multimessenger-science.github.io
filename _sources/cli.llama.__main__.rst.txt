@@ -1,0 +1,19 @@
+``llama`` Command Line Interface
+================================
+
+*This section covers utilities available at the command line through the*
+``llama`` *command-line interface (CLI). All major commands are accessed
+recursively through* ``llama`` *and correspond to packages in the* ``llama``
+*library with the same names: for example,* ``llama run`` *is the command you
+would use to start up the main LLAMA analysis daemon, and it corresponds to the
+functionality defined in the* ``llama.run`` *module. Read through the
+subcommands (including* ``llama run`` *as well as others exposing different
+functionality) to learn how to use LLAMA to it's fullest from the command
+line.*
+
+.. argparse::
+   :module: llama.__main__
+   :func: get_parser
+   :prog: llama
+
+

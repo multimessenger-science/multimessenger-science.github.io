@@ -1,0 +1,7 @@
+llama.files.healpix.plotters module
+===================================
+
+.. automodule:: llama.files.healpix.plotters
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,15 @@
+``llama dev docs``
+==================
+
+.. argparse::
+   :module: llama.dev.docs.__main__
+   :func: get_parser
+   :prog: llama dev docs
+
+
+.. toctree::
+   :maxdepth: 6
+
+   cli.llama.dev.docs.cli.__main__
+
+

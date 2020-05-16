@@ -1,0 +1,40 @@
+.. code::
+
+   USAGE: bin/docker CMD IMAGE
+   
+   Shortcut for starting docker containers. Use this for
+   development or for running code from source. IMAGE is the name
+   of the credentials you want available on your docker image;
+   leave it blank to get no credentials, specify "play" to get
+   credentials for Slack, LVAlert, and IceCube neutrino data
+   (readonly), or specify "production" for full production
+   credentials (Warning: this will allow you to do things like
+   upload to GraceDB or IceCube Slack!). These credentialed images
+   require you to be logged in to Docker with "docker login".
+   
+   Valid CMD values and the shortcuts they correspond to:
+   
+   dev
+       eval "$DAEMON"
+       docker exec -it ${CONTAINER} bash -l
+   daemon
+       mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}"/llama
+       if docker run --rm 2>/dev/null \
+               --name ${CONTAINER} \
+               -v "`pwd -P`":/root/multimessenger-pipeline \
+               -v "${XDG_DATA_HOME:-$HOME/.local/share}"/llama:/root/.local/share/llama \
+               -p 8080:8080 \
+               -d ${IMAGE} bash -c "while true; do sleep 10; done" \
+               "$@"
+       then
+           echo "Created container ${CONTAINER}."
+           echo "Installing LLAMA in dev mode with pip install -e ."
+           docker exec ${CONTAINER} \
+               bash -l -c "cd multimessenger-pipeline && pip install -e ."
+       else
+           echo "Container ${CONTAINER} exists"
+       fi
+   pull
+       docker pull ${IMAGE}
+   murder
+       docker kill --signal=SIGKILL ${CONTAINER}

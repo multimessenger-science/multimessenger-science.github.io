@@ -1,0 +1,7 @@
+llama.files.gwastro module
+==========================
+
+.. automodule:: llama.files.gwastro
+   :members:
+   :undoc-members:
+   :show-inheritance:

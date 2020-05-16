@@ -1,0 +1,9 @@
+``llama com do``
+================
+
+.. argparse::
+   :module: llama.com.do.__main__
+   :func: get_parser
+   :prog: llama com do
+
+

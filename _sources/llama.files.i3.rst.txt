@@ -1,0 +1,20 @@
+llama.files.i3 package
+======================
+
+.. automodule:: llama.files.i3
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.files.i3.json
+   llama.files.i3.realtime_tools_stubs
+   llama.files.i3.tex
+   llama.files.i3.txt
+   llama.files.i3.utils

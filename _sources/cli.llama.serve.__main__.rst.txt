@@ -1,0 +1,16 @@
+``llama serve``
+===============
+
+.. argparse::
+   :module: llama.serve.__main__
+   :func: get_parser
+   :prog: llama serve
+
+
+.. toctree::
+   :maxdepth: 6
+
+   cli.llama.serve.gui.__main__
+   cli.llama.serve.jupyter.__main__
+
+

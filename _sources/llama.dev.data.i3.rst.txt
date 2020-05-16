@@ -1,0 +1,7 @@
+llama.dev.data.i3 package
+=========================
+
+.. automodule:: llama.dev.data.i3
+   :members:
+   :undoc-members:
+   :show-inheritance:

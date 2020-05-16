@@ -1,0 +1,7 @@
+llama.lock module
+=================
+
+.. automodule:: llama.lock
+   :members:
+   :undoc-members:
+   :show-inheritance:

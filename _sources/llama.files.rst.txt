@@ -1,0 +1,48 @@
+llama.files package
+===================
+
+.. automodule:: llama.files
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Subpackages**
+
+
+.. toctree::
+
+   llama.files.coinc_significance
+   llama.files.healpix
+   llama.files.i3
+   llama.files.lvc_skymap
+   llama.files.skymap_info
+   llama.files.slack
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.files.advok
+   llama.files.coinc_analyses
+   llama.files.coinc_o2
+   llama.files.coinc_plots
+   llama.files.fermi_grb
+   llama.files.gcn_draft_o2
+   llama.files.gracedb
+   llama.files.gwastro
+   llama.files.lvalert_advok
+   llama.files.lvalert_json
+   llama.files.lvc_gcn_xml
+   llama.files.lvc_skymap_mat
+   llama.files.lvc_skymap_txt
+   llama.files.matlab
+   llama.files.sms_receipts
+   llama.files.team_receipts
+   llama.files.timing_checks
+   llama.files.uw_summary
+   llama.files.ztf_trigger_list

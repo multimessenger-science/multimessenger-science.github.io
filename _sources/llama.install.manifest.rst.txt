@@ -1,0 +1,7 @@
+llama.install.manifest module
+=============================
+
+.. automodule:: llama.install.manifest
+   :members:
+   :undoc-members:
+   :show-inheritance:

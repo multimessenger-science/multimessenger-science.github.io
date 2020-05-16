@@ -1,0 +1,25 @@
+llama.serve.gui package
+=======================
+
+.. automodule:: llama.serve.gui
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Subpackages**
+
+
+.. toctree::
+
+   llama.serve.gui.wsgi
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.serve.gui.domain

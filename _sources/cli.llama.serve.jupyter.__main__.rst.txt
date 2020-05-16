@@ -1,0 +1,9 @@
+``llama serve jupyter``
+=======================
+
+.. argparse::
+   :module: llama.serve.jupyter.__main__
+   :func: get_parser
+   :prog: llama serve jupyter
+
+

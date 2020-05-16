@@ -1,0 +1,17 @@
+``llama com``
+=============
+
+.. argparse::
+   :module: llama.com.__main__
+   :func: get_parser
+   :prog: llama com
+
+
+.. toctree::
+   :maxdepth: 6
+
+   cli.llama.com.do.__main__
+   cli.llama.com.gracedb.__main__
+   cli.llama.com.slack.__main__
+
+

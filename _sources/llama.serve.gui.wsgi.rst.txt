@@ -1,0 +1,7 @@
+llama.serve.gui.wsgi package
+============================
+
+.. automodule:: llama.serve.gui.wsgi
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+llama.dev.background.table\_singles package
+===========================================
+
+.. automodule:: llama.dev.background.table_singles
+   :members:
+   :undoc-members:
+   :show-inheritance:

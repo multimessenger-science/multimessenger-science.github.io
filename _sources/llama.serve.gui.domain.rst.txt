@@ -1,0 +1,7 @@
+llama.serve.gui.domain module
+=============================
+
+.. automodule:: llama.serve.gui.domain
+   :members:
+   :undoc-members:
+   :show-inheritance:

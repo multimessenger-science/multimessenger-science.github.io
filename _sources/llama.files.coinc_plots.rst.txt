@@ -1,0 +1,7 @@
+llama.files.coinc\_plots module
+===============================
+
+.. automodule:: llama.files.coinc_plots
+   :members:
+   :undoc-members:
+   :show-inheritance:

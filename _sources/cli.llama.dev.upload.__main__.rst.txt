@@ -1,0 +1,9 @@
+``llama dev upload``
+====================
+
+.. argparse::
+   :module: llama.dev.upload.__main__
+   :func: get_parser
+   :prog: llama dev upload
+
+

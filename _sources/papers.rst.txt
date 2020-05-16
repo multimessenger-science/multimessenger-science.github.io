@@ -1,0 +1,76 @@
+Academic Papers
+===============
+
+This page contains links to relevant academic papers describing LLAMA and other
+related efforts and science.
+
+.. _llama-o2-paper:
+
+Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates
+--------------------------------------------------------------------------------------------------------------------------
+
+.. only:: html
+
+   :download:`PDF download <../papers/1901.05486.pdf>`
+
+*Stefan Countryman, Azadeh Keivani, Imre Bartos, Zsuzsa Marka, Thomas
+Kintscher, Rainer Corley, Erik Blaufuss, Chad Finley, Szabolcs Marka*
+(`arXiv <https://arxiv.org/abs/1901.05486>`__,
+`NASA ADS <https://ui.adsabs.harvard.edu/#abs/arXiv:1901.05486>`__)
+
+We describe in detail the online data analysis pipeline that was used in the
+multi-messenger search for common sources of gravitational waves (GWs) and
+high-energy neutrinos (HENs) during the second observing period (O2) of
+Advanced LIGO and Advanced Virgo. Beyond providing added scientific insight
+into source events, low-latency coincident HENs can offer better localization
+than GWs alone, allowing for faster electromagnetic follow-up. Transitioning
+GW+HEN analyses to low-latency, automated pipelines is therefore
+mission-critical for future multi-messenger efforts. The O2 Low-Latency
+Algorithm for Multi-messenger Astrophysics (LLAMA) also served as a
+proof-of-concept for future online GW+HEN searches and led to a codebase that
+can handle other messengers as well. During O2, the pipeline was used to take
+LIGO/Virgo GW candidates as triggers and search in realtime for temporally
+coincident HEN candidates provided by the IceCube Collaboration that fell
+within the 90% credible region of the reconstructed GW skymaps. The algorithm
+used NASA's Gamma-ray Coordinates Network to report coincident alerts to
+LIGO/Virgo's electromagnetic follow-up partners.
+
+.. _llama-bayesian-paper:
+
+Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos
+----------------------------------------------------------------------------------------------------------
+
+.. only:: html
+
+   :download:`PDF download <../papers/1810.11467.pdf>`
+
+*Imre Bartos, Doga Veske, Azadeh Keivani, Zsuzsa Marka, Stefan Countryman, Erik
+Blaufuss, Chad Finley, Szabolcs Marka*
+(`arXiv <https://arxiv.org/abs/1810.11467>`__,
+`NASA ADS <https://ui.adsabs.harvard.edu/#abs/arXiv:1810.11467>`__)
+
+Multi-messenger astrophysics is undergoing a transition towards low-latency
+searches based on signals that could not individually be established as
+discoveries. The rapid identification of signals is important in order to
+initiate timely follow-up observations of transient emission that is only
+detectable for short time periods. Joint searches for gravitational waves and
+high-energy neutrinos represent a prime motivation for this strategy. Both
+gravitational waves and high-energy neutrinos are typically emitted over a
+short time frame of seconds to minutes during the formation or evolution of
+compact objects. In addition, detectors searching for both messengers observe
+the whole sky continuously, making observational information on potential
+transient sources rapidly available to guide follow-up electromagnetic surveys.
+The direction of high-energy neutrinos can be reconstructed to sub-degree
+precision, making a joint detection much better localized than a typical
+gravitational wave signal. Here we present a search strategy for joint
+gravitational wave and high-energy neutrino events that allows the
+incorporation of astrophysical priors and detector characteristics following a
+Bayesian approach. We aim to determine whether a multi-messenger correlated
+signal is a real event, a chance coincidence of two background events or the
+chance coincidence of an astrophysical signal and a background event. We use an
+astrophysical prior that is model agnostic and takes into account mostly
+geometric factors. Our detector characterization in the search is mainly
+empirical, enabling detailed realistic accounting for the sensitivity of the
+detector that can depend on the source properties. By this means, we will
+calculate the false alarm rate for each multi-messenger event which is required
+for initiating electromagnetic follow-up campaigns.

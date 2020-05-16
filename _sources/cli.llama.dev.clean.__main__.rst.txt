@@ -1,0 +1,9 @@
+``llama dev clean``
+===================
+
+.. argparse::
+   :module: llama.dev.clean.__main__
+   :func: get_parser
+   :prog: llama dev clean
+
+

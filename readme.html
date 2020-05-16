@@ -1,0 +1,1485 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using the Docker Images &mdash; Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) 3.5.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="http://gwhen.comreadme.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="operators.html" />
+    <link rel="prev" title="Introduction for Reviewers" href="reviewers.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Info for Reviewers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html">Introduction for Reviewers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#purpose">Purpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#software-documentation">Software Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#review-wikis">Review Wikis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#papers">Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#testing-on-review-server">Testing on Review Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#fake-cases">Fake cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#running-fake-cases">Running Fake Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#contents-of-the-output-folder">Contents of the Output Folder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#main-outputs">Main Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#auxilliary-outputs">Auxilliary Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#real-cases">Real cases</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Docker Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-cloud">Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-llama-images">Getting LLAMA Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#choosing-the-image">Choosing the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-updating-the-image">Getting/Updating the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removing-images">Removing Images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#running-a-llama-container">Running a LLAMA Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mounting-directories">Mounting Directories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mounting-in-macos-linux">Mounting in MacOS/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mounting-in-windows">Mounting in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#out-of-memory-disk">Out of Memory/Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#running-on-habanero">Running on Habanero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#interactive-habanero-jobs">Interactive Habanero Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-hub-authentication-with-singularity">Docker Hub Authentication with Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fixing-singularity-cache-on-habanero">Fixing Singularity Cache on Habanero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#load-singularity-module">Load Singularity Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pull-llama-image">Pull LLAMA Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#local-installation">Local Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-conda">Installing Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#setting-up-a-production-server">Setting Up a Production Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-docker">Install Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-docker-compose">Install Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#log-in-to-docker-cloud">Log in to Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-docker-compose-yml">Get <cite>docker-compose.yml</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-llama-production-app">Starting LLAMA Production App</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Operators' Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#how-data-is-organized">How Data is Organized</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#event-directories">Event Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#gcn-notice-archive">GCN Notice Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#log-files">Log Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-automatically">Running the Pipeline Automatically</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-manually">Running the Pipeline Manually</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#using-defaults-with-skymap-info">Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-o3b">Sensitivity and Background Studies (O3B)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-pre-o3b">Sensitivity and Background Studies (pre-O3B)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#editing-your-bashrc">Editing your .bashrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#using-the-digitalocean-api">Using the DigitalOcean API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#llama-scripts">LLAMA Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#adding-your-ssh-keys-to-the-droplets">Adding Your SSH Keys to the Droplets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#installing-requirements">Installing Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#digitalocean-administration-examples">DigitalOcean Administration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#preparing-a-server">Preparing a Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#server-preparation-overview">Server Preparation Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#moving-data-into-place">Moving Data into Place</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#running-the-analysis-in-parallel">Running the Analysis in Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#starting-the-servers">Starting the Servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#running-the-analysis">Running the Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#collecting-results">Collecting Results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#obtaining-the-llama-source-code">Obtaining the LLAMA Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#using-the-docker-dev-image">Using the Docker Dev Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#list-bin-docker-commands">List <code class="docutils literal notranslate"><span class="pre">bin/docker</span></code> Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#getting-the-latest-development-image">Getting the Latest Development Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#starting-a-dev-container">Starting a Dev Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#sketch-of-a-bug-fix">Sketch of a Bug Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#destroying-your-dev-container">Destroying your Dev Container</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html#previous-llama-versions">Previous LLAMA Versions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html">Developer Installation (Pre-O3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-llama-dependencies">Installing LLAMA Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#obtaining-the-llama-software-pre-o3">Obtaining the LLAMA Software (pre-O3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-configuration-files">Setting up Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-git-hooks">Install git Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-llama-dependencies">Install LLAMA dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-ligo-software">Install LIGO Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software">Install IceCube Offline Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-icecube-dependencies">Installing IceCube Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#entering-icecube-credentials">Entering IceCube Credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-matlab">Install MATLAB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#configuration-and-authentication">Configuration and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#generate-ssh-keys">Generate SSH Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gmail-authentication">GMail Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ligo-authentication">LIGO Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-ssl-certificates">Setting Up SSL Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-passwords-for-run-summary-pages">Setting Up Passwords for Run Summary Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#external-authentication">External Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#bitbucket-authentication">Bitbucket Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#git-ligo-org-authentication">git.ligo.org Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#twilio-authentication">Twilio Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gw-astronomy-authentication">GW Astronomy Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gcn-authentication">GCN Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#turning-on-the-pipeline">Turning on the Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#subscribing-to-lvalert-nodes">Subscribing to LVAlert Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#starting-pipeline-daemons">Starting Pipeline Daemons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#testing-lvalert">Testing LVAlert</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#viewing-active-processes">Viewing Active Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#checking-pipeline-logs">Checking Pipeline Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#killing-pipeline-daemons">Killing Pipeline Daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#deprecated-matlab-logs">Deprecated: MATLAB Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#developing-for-llama">Developing for LLAMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction-to-development">Introduction to Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#structure-of-the-pipeline">Structure of the Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#adding-functionality">Adding Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#developer-conventions-and-best-practices">Developer Conventions and Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#data-format-conventions">Data Format Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#coding-best-practices">Coding Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#migrating-to-conda">Migrating to Conda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#ligo-wiki-documentation">LIGO Wiki Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-ligo-software-via-conda">Installing LIGO Software via Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#creating-a-new-user">Creating a new user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#out-of-memory">Out of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#matlab-installation-troubleshooting">MATLAB Installation Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software-with-root">Install IceCube Offline Software with Root</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#logging-in-to-a-remote-server-using-ssh">Logging in to a Remote Server Using SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#getting-llama-software-onto-a-remote-server">Getting LLAMA Software onto a Remote Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ssh-with-x11-forwarding">SSH with X11 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#using-llama">Using LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#documenting-llama">Documenting LLAMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-to-gwhen-com-website">Publishing to gwhen.com Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-readme-to-git-host">Publishing Readme to Git Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-pdfs">Publishing PDFs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-html-web-pages">Publishing HTML Web Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-llama">Troubleshooting LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-the-review-server">Setting Up the Review Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#provisioning-the-review-server">Provisioning the review server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#running-the-review">Running the Review</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ideas-for-the-future">Ideas for the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#cvmfs">CVMFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#advantages">Advantages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#disadvantages">Disadvantages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Bibliography</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Academic Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#low-latency-algorithm-for-multi-messenger-astrophysics-llama-with-gravitational-wave-and-high-energy-neutrino-candidates">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#bayesian-multi-messenger-search-method-for-common-sources-of-gravitational-waves-and-high-energy-neutrinos">Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.html">llama package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.batch.html">llama.batch package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.classes.html">llama.classes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.cli.html">llama.cli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.com.html">llama.com package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.dl.html">llama.com.dl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.do.html">llama.com.do package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.email.html">llama.com.email package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.gracedb.html">llama.com.gracedb package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.s3.html">llama.com.s3 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.slack.html">llama.com.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.utils.html">llama.com.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.detectors.html">llama.detectors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.detectors.html#available-detectors">Available Detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.dev.html">llama.dev package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.background.html">llama.dev.background package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.pvalue.html">llama.dev.background.pvalue package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table.html">llama.dev.background.table package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table_singles.html">llama.dev.background.table_singles package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.clean.html">llama.dev.clean package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.data.html">llama.dev.data package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.data.i3.html">llama.dev.data.i3 package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.docs.html">llama.dev.docs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.docs.cli.html">llama.dev.docs.cli package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.dv.html">llama.dev.dv package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.log.html">llama.dev.log package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.log.lvalert.html">llama.dev.log.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.upload.html">llama.dev.upload package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.event.html">llama.event package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.filehandler.html">llama.filehandler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.classes.html">llama.filehandler.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.mixins.html">llama.filehandler.mixins module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.files.html">llama.files package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_significance.html">llama.files.coinc_significance package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.opa.html">llama.files.coinc_significance.opa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.subthreshold.html">llama.files.coinc_significance.subthreshold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.utils.html">llama.files.coinc_significance.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.healpix.html">llama.files.healpix package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.plotters.html">llama.files.healpix.plotters module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.psf.html">llama.files.healpix.psf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.skymap.html">llama.files.healpix.skymap module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.utils.html">llama.files.healpix.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.i3.html">llama.files.i3 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.json.html">llama.files.i3.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.realtime_tools_stubs.html">llama.files.i3.realtime_tools_stubs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.tex.html">llama.files.i3.tex module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.txt.html">llama.files.i3.txt module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.utils.html">llama.files.i3.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap.html">llama.files.lvc_skymap package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.skymap_info.html">llama.files.skymap_info package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.cli.html">llama.files.skymap_info.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.utils.html">llama.files.skymap_info.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.slack.html">llama.files.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.advok.html">llama.files.advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_analyses.html">llama.files.coinc_analyses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_o2.html">llama.files.coinc_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_plots.html">llama.files.coinc_plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.fermi_grb.html">llama.files.fermi_grb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gcn_draft_o2.html">llama.files.gcn_draft_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gracedb.html">llama.files.gracedb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gwastro.html">llama.files.gwastro module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_advok.html">llama.files.lvalert_advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_json.html">llama.files.lvalert_json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_mat.html">llama.files.lvc_skymap_mat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_txt.html">llama.files.lvc_skymap_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.matlab.html">llama.files.matlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.sms_receipts.html">llama.files.sms_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.team_receipts.html">llama.files.team_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.timing_checks.html">llama.files.timing_checks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.uw_summary.html">llama.files.uw_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.ztf_trigger_list.html">llama.files.ztf_trigger_list module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.flags.html">llama.flags package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.flags.cli.html">llama.flags.cli module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.install.html">llama.install package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.install.manifest.html">llama.install.manifest module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.intent.html">llama.intent module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.io.html">llama.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.default.html">llama.io.default package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.io.default.generate.html">llama.io.default.generate module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.classes.html">llama.io.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.registry.html">llama.io.registry module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.listen.html">llama.listen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.gcn.html">llama.listen.gcn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.lvalert.html">llama.listen.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.lock.html">llama.lock module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.meta.html">llama.meta module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.pipeline.html">llama.pipeline module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.pipeline.html#pipelines">Pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.poll.html">llama.poll package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.poll.gracedb.html">llama.poll.gracedb package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.run.html">llama.run package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.serve.html">llama.serve package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.gui.html">llama.serve.gui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.wsgi.html">llama.serve.gui.wsgi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.domain.html">llama.serve.gui.domain module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.jupyter.html">llama.serve.jupyter package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.logs.html">llama.serve.jupyter.logs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.utils.html">llama.serve.jupyter.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.test.html">llama.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_files.html">llama.test.test_files package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_listeners.html">llama.test.test_listeners package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.test.test_listeners.test_gcn.html">llama.test.test_listeners.test_gcn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.classes.html">llama.test.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_bin.html">llama.test.test_bin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_filehandler.html">llama.test.test_filehandler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_pipeline.html">llama.test.test_pipeline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_utils.html">llama.test.test_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.utils.html">llama.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.version.html">llama.version module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.versioning.html">llama.versioning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.vetoes.html">llama.vetoes module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Reports</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/pytest/">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/coverage/">Code Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiling.html">Performance Profiling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-combined.html">Combined Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-combined.html#combined">combined</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-unit.html">Unit Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-default-pipeline-consistency">test_default_pipeline_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-filehandler-definition-consistency">test_filehandler_definition_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-make-grid">test_get_grid_make_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-north-pole">test_get_grid_north_pole</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-pipeline-parser">test_llama_pipeline_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-run-parser">test_llama_run_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize">test_memoize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-class">test_memoize_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-helper">test_memoize_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-mjd-interval">test_mjd_interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-rotate-angs2vec">test_rotate_angs2vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-write-gzip">test_write_gzip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.html">Doctests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.com.html">llama.com</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.com.gracedb.html">llama.com.gracedb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.com.gracedb.html#llama-com-gracedb-gracedb">llama.com.gracedb.GraceDb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.dev.html">llama.dev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.data.html">llama.dev.data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.data.i3.html">llama.dev.data.i3</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.upload.html">llama.dev.upload</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.upload.html#llama-dev-upload-upload-and-get-manifest">llama.dev.upload.upload_and_get_manifest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.filehandler.html">llama.filehandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html">llama.filehandler.JSONFile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html#llama-filehandler-jsonfile-checksum">llama.filehandler.JSONFile.checksum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.files.html">llama.files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html">llama.files.fermi_grb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html#llama-files-fermi-grb-get-grbs-from-csv">llama.files.fermi_grb.get_grbs_from_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.healpix.html">llama.files.healpix</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.HEALPixSkyMapFileHandler.html">llama.files.healpix.HEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.LvcHEALPixSkyMapFileHandler.html">llama.files.healpix.LvcHEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.psf.html">llama.files.healpix.psf</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.html">llama.files.healpix.skymap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.utils.html">llama.files.healpix.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.i3.html">llama.files.i3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.json.html">llama.files.i3.json</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.utils.html">llama.files.i3.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html#llama-files-lvc-gcn-xml-parse-ivorn">llama.files.lvc_gcn_xml.parse_ivorn</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.html">llama.files.lvc_skymap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.matlab.html">llama.files.matlab</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.matlab.html#llama-files-matlab-matlab-eval">llama.files.matlab.matlab_eval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.utils.html">llama.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-param">llama.utils.get_voevent_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-time">llama.utils.get_voevent_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-parameter-factory">llama.utils.parameter_factory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2angs">llama.utils.rotate_angs2angs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2vec">llama.utils.rotate_angs2vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-gzip">llama.utils.write_gzip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-to-zip">llama.utils.write_to_zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Source Code Plots</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command Line Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span></code> Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.batch.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">batch</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#logging settings">logging settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#simulation configuration">simulation configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.com.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.do.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.do.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">gracedb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.slack.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">slack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.dev.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.background.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.clean.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">clean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.data.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.docs.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span> <span class="pre">cli</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.dv.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.log.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.upload.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.event.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">event</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.files.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#output formats (specify at least 1)">output formats (specify at least 1)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.flags.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">flags</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.install.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">install</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.listen.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.poll.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span> <span class="pre">gracedb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.run.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.serve.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.gui.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">gui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">jupyter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Using the Docker Images</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-the-docker-images">
+<span id="quick-start-install"></span><h1>Using the Docker Images<a class="headerlink" href="#using-the-docker-images" title="Permalink to this headline">¶</a></h1>
+<p>The easiest way to get a working copy of LLAMA on any platform is to use the
+prebuilt LLAMA Docker images. These builds are automatically created and tested
+from the latest source code and have no external dependencies other than
+Docker. Docker is kind of like a Linux virtual-machine; you run a Docker
+“container” on your computer as if it were a totally separate computer,
+allowing the container to run the same regardless of whether you’re using
+Windows, Linux, or MacOS.</p>
+<p>One difference of convention between VMs and Docker is that you’re usually
+expected to erase your Docker container as soon as you are done working with
+it, whereas a VM image might be persisted across multiple use sessions (you’re
+not forced to use Docker this way, but in general it’s probably useful to
+remember that Docker containers are supposed to be somewhat more ephemeral than
+your average VM). You can read plenty more online if you’re interested, but
+that’s all you need to know to get started.</p>
+<p><strong>NOTE that if you are trying to use the LLAMA images on Habanero, you will
+need to download and run them using Singularity (a container manager like
+Docker which supports Docker images).</strong> Check out the <a href="#id1"><span class="problematic" id="id2">:ref:`instructions for
+using Singularity with LLAMA images &lt;singularity-llama&gt;`_</span></a> as well as the
+Habanero <a class="reference external" href="https://confluence.columbia.edu/confluence/display/rcs/Habanero+-+Job+Examples#Habanero-JobExamples-Singularity">Singularity cluster job example documentation</a>.</p>
+<div class="section" id="installing-docker">
+<h2>Installing Docker<a class="headerlink" href="#installing-docker" title="Permalink to this headline">¶</a></h2>
+<p>First, you’ll need to install Docker for
+<a class="reference external" href="https://docs.docker.com/docker-for-mac/install/">MacOS</a>,
+<a class="reference external" href="https://docs.docker.com/docker-for-windows/install/">Windows</a>, or Linux.
+Follow the official Docker instructions. You might need to disable other VM
+solutions (like VMWare) for this to work. <em>On Windows, you might be asked
+whether you want to use Linux or Windows virtual machines; make sure to choose
+Linux.</em></p>
+<p>On Linux, Docker should run automatically in the background as a daemon
+process. On Windows or MacOS, you will need to manually start Docker the way
+you would any other application (though you can set it to start automatically
+at startup in both cases).</p>
+<p>You will interact with Docker through a command line client that communicates
+with the Docker daemon. What this means is that you will use a terminal to
+control Docker via textual commands. If you get error messages saying that the
+daemon isn’t running, you’ll need to manually start (or restart) the daemon as
+described above. Again, on MacOS and Windows, this would involve finding the
+program called <code class="docutils literal notranslate"><span class="pre">Docker</span></code> and launching it in the same way you would any other
+program. To access the command line interface, you can open:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Terminal.app</span></code>, <code class="docutils literal notranslate"><span class="pre">iTerm.app</span></code>, <code class="docutils literal notranslate"><span class="pre">alacritty.app</span></code>, etc on <strong>MacOS</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmd.exe</span></code> or <code class="docutils literal notranslate"><span class="pre">PowerShell</span></code> on <strong>Windows</strong> <em>(Note that on Windows you must</em>
+<strong>not</strong> <em>use Bash/Ubuntu/Windows Subsystem for Linux to issue Docker
+commands; use one of the native windows shells mentioned here)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xterm</span></code>, <code class="docutils literal notranslate"><span class="pre">alacritty</span></code>, etc. on <strong>Linux</strong></p></li>
+</ul>
+<p>After installing Docker, you can make sure the command line client is installed
+and the daemon running with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run hello-world
+</pre></div>
+</div>
+<p>which should spit out something like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Unable to find image &#39;hello-world:latest&#39; locally
+latest: Pulling from library/hello-world
+1b930d010525: Pull complete
+Digest: sha256:b8ba256769a0ac28dd126d584e0a2011cd2877f3f76e093a7ae560f2a5301c00
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+</pre></div>
+</div>
+</div>
+<div class="section" id="docker-cloud">
+<h2>Docker Cloud<a class="headerlink" href="#docker-cloud" title="Permalink to this headline">¶</a></h2>
+<p>LLAMA software is saved in a Docker image (basically a snapshot of a working
+Linux server with LLAMA installed) on <a class="reference external" href="https://cloud.docker.com/">Docker Cloud</a>. You’ll need to make an account on Docker Cloud
+and share your username with Stef, who will add you to the list of contributors
+to the LLAMA Docker image. This will allow you to “pull” (i.e. download) copies
+of this image to your computer.</p>
+<p>Once you’ve been added as a collaborator, you should be able to view the <a class="reference external" href="https://cloud.docker.com/repository/docker/stefco/llama/">LLAMA
+repository</a> on
+Docker Cloud.</p>
+<p>Once this is set up, you can log in from the Docker daemon using the command
+line interface by running <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">login</span></code> and providing your Docker Cloud
+username and password.</p>
+</div>
+<div class="section" id="getting-llama-images">
+<h2>Getting LLAMA Images<a class="headerlink" href="#getting-llama-images" title="Permalink to this headline">¶</a></h2>
+<p><strong>If you just want to run the pipeline, you can use the default image and skip
+ahead to the</strong> <a href="#id3"><span class="problematic" id="id4">:ref:`running a LLAMA container &lt;running-a-LLAMA-container&gt;`_</span></a>
+<strong>section; LLAMA will automatically be pulled if it has not been downloaded
+already.</strong></p>
+<p>You’ll need to pull LLAMA images from Docker Cloud in order to use them; this
+is basically like pulling down a hard drive image of a working LLAMA server
+(the “image”) which Docker can then run as if it were its own seperate server
+(a “container”, which is the running version of the “image”). You can use the
+same command to update to the latest LLAMA image.</p>
+<div class="section" id="choosing-the-image">
+<h3>Choosing the Image<a class="headerlink" href="#choosing-the-image" title="Permalink to this headline">¶</a></h3>
+<p><em>In most cases, you’ll want to use</em> <code class="docutils literal notranslate"><span class="pre">stefco/llama:py37-play</span></code> <em>as your LLAMA
+Docker image, though a few other options do exist. You can probably skip to the
+next section unless you want to use one of those other versions (in which case
+you can substitute that image name for</em> <code class="docutils literal notranslate"><span class="pre">stefco/llama:py37-play</span></code> <em>where it
+appears).</em></p>
+<p>The LLAMA images are named
+<code class="docutils literal notranslate"><span class="pre">stefco/llama:&lt;TAG&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;TAG&gt;</span></code> is one of 3 values (at time of writing)
+depending on the way the image is configured:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">py37</span></code> just contains the LLAMA software; it is not configured to
+communicate with any external services. You will rarely use this as it
+mainly serves as a base for the other two tags.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">py37-play</span></code> is configured to pull IceCube data and communicate with the
+LLAMA team Slack. It will not upload results to IceCube Slack or GraceDB
+unless you configure it to do so, making it relatively safe for
+experimentation. It does have LIGO authentication software installed, so you
+<em>can</em> access GraceDB from it by running <code class="docutils literal notranslate"><span class="pre">kinit</span> <span class="pre">albert.einstein&#64;LIGO.ORG</span></code>
+(with <code class="docutils literal notranslate"><span class="pre">albert.einstein</span></code> replaced by your LIGO username, of course)
+followed by <code class="docutils literal notranslate"><span class="pre">ligo-proxy-init</span> <span class="pre">-k</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">py37-prod</span></code> is fully configured for automated production use. There’s not
+really any reason to use this on your laptop unless you know what you’re
+doing.</p></li>
+</ol>
+<p>Additionally, you can access any successful tagged release of LLAMA by
+appending a dash followed by the version tag of the source code. For example,
+if you would like to explicitly use LLAMA version v2.28.8, you would append
+<code class="docutils literal notranslate"><span class="pre">-v2.28.8</span></code> to the end of the image name. The full image name for the
+<code class="docutils literal notranslate"><span class="pre">py37-play</span></code> tag (which, again, is most appropriate for personal use) would
+then be <code class="docutils literal notranslate"><span class="pre">stefco/llama:py37-play-v2.28.8</span></code>. If you omit the version, then the
+latest version will be chosen.</p>
+</div>
+<div class="section" id="getting-updating-the-image">
+<h3>Getting/Updating the Image<a class="headerlink" href="#getting-updating-the-image" title="Permalink to this headline">¶</a></h3>
+<p>You can pull (i.e. download) the latest version of the LLAMA image with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker pull stefco/llama:py37-play
+</pre></div>
+</div>
+<p><em>The image is fairly large (several GB), so this will take a while. Note that
+this will download the latest version of the image even if you have an older
+version installed, so you can use this command to update to the latest version.
+See the previous section for more details on choosing a LLAMA image version.</em></p>
+</div>
+<div class="section" id="removing-images">
+<h3>Removing Images<a class="headerlink" href="#removing-images" title="Permalink to this headline">¶</a></h3>
+<p>Images are just starting points for containers; you can redownload them
+whenever you have a fast internet connection, so feel free to delete them when
+you need to free up space.</p>
+<p>You can list installed images with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker image list
+</pre></div>
+</div>
+<p>Which will print something like the below, with each installed image listed on
+its own line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">REPOSITORY</span>    <span class="n">TAG</span>        <span class="n">IMAGE</span> <span class="n">ID</span>      <span class="n">CREATED</span>             <span class="n">SIZE</span>
+<span class="n">stefco</span><span class="o">/</span><span class="n">llama</span>  <span class="n">py37</span><span class="o">-</span><span class="n">play</span>  <span class="mi">5</span><span class="n">dd57ee20554</span>  <span class="n">About</span> <span class="n">an</span> <span class="n">hour</span> <span class="n">ago</span>   <span class="mf">4.59</span><span class="n">GB</span>
+</pre></div>
+</div>
+<p>You can delete this by either referencing the <code class="docutils literal notranslate"><span class="pre">TAG</span></code> or <code class="docutils literal notranslate"><span class="pre">IMAGE</span> <span class="pre">ID</span></code>. For
+instance, you could delete the above with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker image rm stefco/llama:py37-play
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker image rm 5dd57ee20554
+</pre></div>
+</div>
+<p>If you’re not running any Docker containers and don’t mind redownloading
+images, you can also delete <strong>all</strong> local Docker data with a single command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker system prune --all
+</pre></div>
+</div>
+<p>(This might take a little while.)</p>
+</div>
+</div>
+<div class="section" id="running-a-llama-container">
+<span id="id5"></span><h2>Running a LLAMA Container<a class="headerlink" href="#running-a-llama-container" title="Permalink to this headline">¶</a></h2>
+<p>You can run an interactive LLAMA session using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -it --rm stefco/llama:py37-play bash
+</pre></div>
+</div>
+<p><strong>Note that whatever work you do will not be transferred to your host computer
+unless you share directories between the host and container.</strong> <em>If you are
+creating analysis results that you want to copy to your local system, you can</em>
+<a href="#id6"><span class="problematic" id="id7">:ref:`mount Docker directories &lt;mount-Docker-directories&gt;`_</span></a> <em>from your host machine to your local machine
+as described in the next section.</em></p>
+<p>The previous command will download the LLAMA Docker image if it is not present
+locally and start it up. A quick breakdown of what each option is doing:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">run</span></code> tells Docker to create a new container from the specified image and
+run commands on it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-it</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">-i</span> <span class="pre">-t</span></code>; <code class="docutils literal notranslate"><span class="pre">-i</span></code> tells Docker to set up an
+interactive session and <code class="docutils literal notranslate"><span class="pre">-t</span></code> tells Docker to create a pseudo-TTY (i.e. a
+terminal) for interaction. In other words, start up a command line in the
+LLAMA container so that we can use it like a normal server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--rm</span></code> tells Docker to delete this container as soon as we exit from the
+interactive session, throwing out any changes we’ve made to the base image.
+You almost certainly will want to use <code class="docutils literal notranslate"><span class="pre">--rm</span></code> every time you <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stefco/llama:py37-play</span></code> is the name of the container we want to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bash</span></code> is the starting command; you can omit <code class="docutils literal notranslate"><span class="pre">bash</span></code>, in which case you’ll
+be thrown into the somewhat less feature-rich default <code class="docutils literal notranslate"><span class="pre">sh</span></code> shell.
+(Alternatively, you can specify another shell or command that should run
+instead of bash.)</p></li>
+</ul>
+<p>You’ll now have an interactive LLAMA prompt in front of you. You can use the
+<a href="#id8"><span class="problematic" id="id9">:ref:`LLAMA Command Line Interface &lt;LLAMA-Command-Line-Interface&gt;`_</span></a>, e.g. by running <code class="docutils literal notranslate"><span class="pre">llama</span></code> and reading the
+help documentation, or you can start up <code class="docutils literal notranslate"><span class="pre">ipython</span></code> and <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">llama</span></code> to
+start using the library directly in iPython.</p>
+</div>
+<div class="section" id="mounting-directories">
+<span id="mount-docker-directories"></span><h2>Mounting Directories<a class="headerlink" href="#mounting-directories" title="Permalink to this headline">¶</a></h2>
+<p>One of the nice things about Docker is that it lets you share and sync
+directories between host (your computer) and Docker container. This means you
+can do work in the container in a shared directory, and the output files will
+appear in the corresponding directory, and the output files will also appear in
+the corresponding shared folder in your host machine. Directories are only
+synced this way if you explicitly request it, so it’s easy to avoid
+unpredictably contaminating your host machine no matter how badly you screw up
+a container (within reason).</p>
+<p>Because paths are specified differently in Windows vs. UNIX-like operating
+systems, the instructions are slightly different based on the platform, though
+in both cases you add a <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">host_path:container_path</span></code> flag to a <code class="docutils literal notranslate"><span class="pre">docker</span>
+<span class="pre">run</span></code> command like the one given previously in <a href="#id10"><span class="problematic" id="id11">:ref:`running a LLAMA
+container &lt;running-a-LLAMA-container&gt;`_</span></a>.</p>
+<p><strong>Note that in both cases the directory on the host machine,</strong> <code class="docutils literal notranslate"><span class="pre">host_path</span></code>,
+<strong>must exist on the host machine and must be an absolute path,</strong> e.g.
+<code class="docutils literal notranslate"><span class="pre">/home/stef/dev</span></code> will work but a relative path like <code class="docutils literal notranslate"><span class="pre">dev</span></code> will not (at time
+of writing).  <code class="docutils literal notranslate"><span class="pre">container_path</span></code> should resolve to a a path in an existing
+directory; if <code class="docutils literal notranslate"><span class="pre">container_path</span></code> itself already exists, Docker will mount the
+host volume on top of it, effectively rendering the existing directory
+inaccessible (which might be desired behavior depending on your use case, but
+it’s something to be aware of).</p>
+<p><em>Note that, if you have a long-running container that you don’t want to
+stop (perhaps because you forgot to mount a volume when you created it), you
+can still mount a volume on it. It’s also possible to specify Docker volumes
+that persist between containers and are not directly accessible to the host
+machine; these have higher performance than the shared mounts discussed here
+and are good for persisting state/transferring data between containers in
+cases where convenient sharing with the host is not the top priority. Refer to
+the Docker API for information on how to do this.</em></p>
+<div class="section" id="mounting-in-macos-linux">
+<h3>Mounting in MacOS/Linux<a class="headerlink" href="#mounting-in-macos-linux" title="Permalink to this headline">¶</a></h3>
+<p>On MacOS or Linux, you simply specify the host directory to mount followed by a
+colon and the path on the container. For example, if you’re on MacOS and your
+username is <code class="docutils literal notranslate"><span class="pre">Stef</span></code>, you could mount your home directory to <code class="docutils literal notranslate"><span class="pre">/root/stef</span></code> in
+the container with <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">/Users/Stef/:/root/stef</span></code>. The example given in
+<a href="#id12"><span class="problematic" id="id13">:ref:`running a LLAMA container &lt;running-a-LLAMA-container&gt;`_</span></a> would look like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -it --rm -v /Users/Stef:/root/stef stefco/llama:py37-play bash
+</pre></div>
+</div>
+<p>This is the same as the previous example, except now you’ll be able to access
+and modify the contents of your home directory on your host computer from the
+container’s <code class="docutils literal notranslate"><span class="pre">/root/stef</span></code> directory. You can of course use this to save
+analysis results on your local computer, allowing you to persist your analysis
+results even after exiting your interactive Docker session (which, as described
+above, will delete the container automatically when used with the <code class="docutils literal notranslate"><span class="pre">--rm</span></code>
+flag).</p>
+</div>
+<div class="section" id="mounting-in-windows">
+<h3>Mounting in Windows<a class="headerlink" href="#mounting-in-windows" title="Permalink to this headline">¶</a></h3>
+<p>This is the same as in MacOS/Linux, but the path on the host must include the
+root volume name (e.g. <code class="docutils literal notranslate"><span class="pre">C:</span></code>). You can also use Windows-style back-slash
+directory separators for the host path, though the container path must still be
+in UNIX format (forward-slashes). Before you can mount a host directory,
+however, you’ll have to tell Windows to allow the directory to be mounted. This
+can be done from the Docker daemon graphical control panel in the system tray:</p>
+<div class="figure align-center" id="id22" style="width: 80%">
+<img alt="_images/docker-windows-1.png" src="_images/docker-windows-1.png" />
+<p class="caption"><span class="caption-text">The Docker daemon settings can be accessed from the system tray on Windows;
+click on the tray icon and select “settings” from the pop-up menu.</span><a class="headerlink" href="#id22" title="Permalink to this image">¶</a></p>
+</div>
+<p>You can then select the drives you wish to make available to Docker containers
+from your host machine. If you have a single Windows hard drive where you’re
+storing your analysis results, you will most likely want to choose <code class="docutils literal notranslate"><span class="pre">C:</span></code>.</p>
+<div class="figure align-center" id="id23" style="width: 80%">
+<img alt="_images/docker-windows-2.png" src="_images/docker-windows-2.png" />
+<p class="caption"><span class="caption-text">Select the volumes you’d like to make available for sharing and hit
+<code class="docutils literal notranslate"><span class="pre">Apply</span></code> when done.</span><a class="headerlink" href="#id23" title="Permalink to this image">¶</a></p>
+</div>
+<p>Now, assuming your windows username is <code class="docutils literal notranslate"><span class="pre">Stef</span></code> and you want to mount your home
+directory to <code class="docutils literal notranslate"><span class="pre">/root/stef</span></code> on the Docker container, you would add the volume
+mount in the same way as was done in the MacOS/Linux example, though again
+you’ll use Windows-style path syntax (again, remember to use absolute paths
+rather than relative paths):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -it --rm -v C:/Users/Stef:/root/stef stefco/llama:py37-play bash
+</pre></div>
+</div>
+<p>Or, using Windows path style for the host path,</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run -it --rm -v C:<span class="se">\U</span>sers<span class="se">\S</span>tef:/root/stef stefco/llama:py37-play bash
+</pre></div>
+</div>
+<p>Note that for Windows hosts the first colon is used to represent the local
+volume, and so the second colon is the one that separates the host path from
+the container mount path.</p>
+</div>
+</div>
+<div class="section" id="out-of-memory-disk">
+<h2>Out of Memory/Disk<a class="headerlink" href="#out-of-memory-disk" title="Permalink to this headline">¶</a></h2>
+<p>If you are getting a <code class="docutils literal notranslate"><span class="pre">MemoryError</span></code> when you run memory-intensive parts of the
+analysis, you can either add more memory through your Docker settings or add
+<a href="#id14"><span class="problematic" id="id15">:ref:`swap space &lt;swap-space&gt;`_</span></a> to your container; this can be done with the linked
+instructions within an interactive container session.</p>
+<p>You can also increase the amount of disk space available to Docker from the
+Docker daemon control panel, though you are unlikely to need much space if you
+are doing one-off activities like processing public events from an observing
+run.</p>
+</div>
+</div>
+<div class="section" id="running-on-habanero">
+<span id="singularity-llama"></span><h1>Running on Habanero<a class="headerlink" href="#running-on-habanero" title="Permalink to this headline">¶</a></h1>
+<p>If you’re trying to run on the Habanero cluster, first read the <a class="reference internal" href="#choosing-the-image">Choosing the
+Image</a> section to learn how to pick the correct LLAMA image for your job.</p>
+<div class="section" id="interactive-habanero-jobs">
+<h2>Interactive Habanero Jobs<a class="headerlink" href="#interactive-habanero-jobs" title="Permalink to this headline">¶</a></h2>
+<p>Log in to Habanero using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh uni@habanero.rcs.columbia.edu
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">uni</span></code> is your Columbia UNI (i.e. username). You’ll be asked for your
+Columbia password. If you can’t log in this way, ask Zsuzsa whether you have
+access to Habanero.</p>
+<p>When you first log in to Habanero, you will be using a log in node; you are
+running on a shared server that puts severe limits on how much computing power
+you can use. You are supposed to use this node only for submitting batch jobs
+or, if you want to do interactive work (which we will below), for starting an
+interactive session on a high-powered node.</p>
+<p>You can start an interactive session with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>srun --pty -t <span class="m">0</span>-01:00 -A geco /bin/bash
+</pre></div>
+</div>
+<p>This will take a few seconds to start up. Once it does, you’ll be running on an
+interactive node with much more available computing power. It’s a good idea to
+do this pretty much any time you want to do anything on Habanero. Of course,
+the above command is hard to memorize, so you’ll probably want to add the
+following to your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">alias</span> <span class="nv">interactive</span><span class="o">=</span><span class="s1">&#39;srun --pty -t 0-01:00 -A geco /bin/bash&#39;</span>
+</pre></div>
+</div>
+<p>Refresh your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> with <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/.bashrc</span></code>. Now, you can start an
+interactive session simply by running <code class="docutils literal notranslate"><span class="pre">interactive</span></code>, and it will execute the
+same command we ran above.</p>
+<p>Once you are finished with your interactive session, you can stop it by running
+<code class="docutils literal notranslate"><span class="pre">exit</span></code>, and you will be returned to the login node. <strong>BEWARE that Habanero
+likes to boot users out of interactive sessions after a few hours, and that
+there is no way to log out of an interactive session without killing it.</strong>
+Habanero is designed as a batch-processing cluster; if you need a persistent
+server, spin one up using DigitalOcean or something like it.</p>
+</div>
+<div class="section" id="docker-hub-authentication-with-singularity">
+<h2>Docker Hub Authentication with Singularity<a class="headerlink" href="#docker-hub-authentication-with-singularity" title="Permalink to this headline">¶</a></h2>
+<p>You’ll probably want to use the private LLAMA Docker images, which have all of
+the LLAMA software installed and certain authentication credentials
+pre-configured. To do this, you will need access to the private <a class="reference external" href="https://hub.docker.com/repository/docker/stefco/llama">Docker Hub
+LLAMA repository</a>.
+(Note that if you can’t view the previous link, it probably means you need to
+create Docker Hub login credentials and then ask Stef to add you as a
+collaborator to that repository.)
+To provide Docker Hub login credentials to Singularity, you’ll need to set the
+<code class="docutils literal notranslate"><span class="pre">SINGULARITY_DOCKER_USERNAME</span></code> and <code class="docutils literal notranslate"><span class="pre">SINGULARITY_DOCKER_PASSWORD</span></code>
+environmental variables to your Docker Hub username and password, respectively.
+The easiest way to do this is to add the following two lines to your
+<code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># put this in ~/.bashrc</span>
+<span class="nb">export</span> <span class="nv">SINGULARITY_DOCKER_USERNAME</span><span class="o">=</span><span class="s2">&quot;username&quot;</span>
+<span class="nb">export</span> <span class="nv">SINGULARITY_DOCKER_PASSWORD</span><span class="o">=</span><span class="s2">&quot;password&quot;</span>
+</pre></div>
+</div>
+<p>Where, of course, you replace <code class="docutils literal notranslate"><span class="pre">username</span></code> with your username and <code class="docutils literal notranslate"><span class="pre">password</span></code>
+with your password. Reload your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> to make these changes take effect
+with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> ~/.bashrc
+</pre></div>
+</div>
+</div>
+<div class="section" id="fixing-singularity-cache-on-habanero">
+<h2>Fixing Singularity Cache on Habanero<a class="headerlink" href="#fixing-singularity-cache-on-habanero" title="Permalink to this headline">¶</a></h2>
+<p>Unfortunately, Habanero only lets you keep a small amount of data in your home
+directory. This is a problem for Singularity, which keeps its downloaded data
+in <code class="docutils literal notranslate"><span class="pre">~/.singularity</span></code>; LLAMA’s huge docker images will rapidly use up your
+space quota, and your attempts to pull images will fail; this is true even if
+you try to save your downloaded images somewhere with space, since the files
+will first be downloaded to <code class="docutils literal notranslate"><span class="pre">~/.singularity</span></code> anyway.</p>
+<p>The solution to this problem is to make your own directory in our much larger
+group data volume, <code class="docutils literal notranslate"><span class="pre">/rigel/geco/users</span></code>, and create a symbolic link pointing
+from the default <code class="docutils literal notranslate"><span class="pre">~/.singularity</span></code> path to one stored in your directory on the
+group volume. First, make your directory in the group volume (if you haven’t
+already). Run the following, <strong>replacing</strong> <code class="docutils literal notranslate"><span class="pre">uni</span></code> <strong>with your Columbia UNI:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir /rigel/geco/users/uni
+</pre></div>
+</div>
+<p>You’ll get an error if the directory exists or if you are not part of the GECo
+group on Habanero. If this second case is the issue, bug Zsuzsa to get you in
+the group.</p>
+<p>Now, you might already have a <code class="docutils literal notranslate"><span class="pre">~/.singularity</span></code> directory set up; if that’s
+the case, you can go ahead and remove it, since it generally only contains
+cached data.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rm -rf ~/.singularity
+</pre></div>
+</div>
+<p>Next, make a new Singularity directory in you <code class="docutils literal notranslate"><span class="pre">/rigel/geco</span></code> directory, again
+<strong>replacing ``uni`` in the below command with your Columbia UNI:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir /rigel/geco/users/uni/.singularity
+</pre></div>
+</div>
+<p>Finally, you can create a symbolic link telling the operating system to use
+this new directory whenever it wants to use <code class="docutils literal notranslate"><span class="pre">~/.singularity</span></code> (again,
+<strong>replace</strong> <code class="docutils literal notranslate"><span class="pre">uni</span></code> <strong>with your Columbia UNI):</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ln -s /rigel/geco/users/uni/.singularity ~/.singularity
+</pre></div>
+</div>
+</div>
+<div class="section" id="load-singularity-module">
+<h2>Load Singularity Module<a class="headerlink" href="#load-singularity-module" title="Permalink to this headline">¶</a></h2>
+<p>You’ll need to load the Singularity module before you’ll have access to the
+command line interface. Module loading is Habanero’s way of letting you choose
+which programs are available; a lot of stuff that’s installed is only available
+for use by calling <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">&lt;modulename&gt;</span></code>. Let’s load the Singularity
+module:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module load singularity
+</pre></div>
+</div>
+</div>
+<div class="section" id="pull-llama-image">
+<h2>Pull LLAMA Image<a class="headerlink" href="#pull-llama-image" title="Permalink to this headline">¶</a></h2>
+<p>Now, we’re finally ready to get our LLAMA image. Again, if you need help
+choosing an image, refer to the <a class="reference internal" href="#choosing-the-image">Choosing the Image</a> section. Let’s say you
+want to use the latest version of the play image (used for processing data
+without pushing it to IceCube or other collaborators), called
+<code class="docutils literal notranslate"><span class="pre">stefco/llama:py37-play</span></code>. First, navigate to your personal directory in
+<code class="docutils literal notranslate"><span class="pre">/rigel/geco</span></code> (replace <code class="docutils literal notranslate"><span class="pre">uni</span></code> with your Columbia UNI):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /rigel/geco/users/uni
+</pre></div>
+</div>
+<p>You can now pull the image and save it in Singularity’s format as
+<code class="docutils literal notranslate"><span class="pre">llama-play.sif</span></code> using the following command (though be warned, <strong>it will
+take a VERY long time for Singularity to build the image after pulling it</strong>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>singularity pull llama-play.sif docker://stefco/llama:py37-play
+</pre></div>
+</div>
+<p>Again, this command will take a very long time; even after it has finished
+copying data from Docker Hub, it will spend a while combining the data into a
+single output image, <code class="docutils literal notranslate"><span class="pre">llama-play.sif</span></code>. Don’t worry if it seems like it’s
+frozen; as long as it hasn’t exited with an error, it’s probably running okay.</p>
+<p>Once this command finishes, run <code class="docutils literal notranslate"><span class="pre">ls</span></code>; you should see your new image, called
+<code class="docutils literal notranslate"><span class="pre">llama-play.sif</span></code>. You can run this image using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>singularity run llama-play.sif
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="local-installation">
+<h1>Local Installation<a class="headerlink" href="#local-installation" title="Permalink to this headline">¶</a></h1>
+<p>These installation instructions are for more advanced users who want to install
+LLAMA on their local machine without the use of Docker. See <a href="#id16"><span class="problematic" id="id17">:ref:`the developer
+instructions &lt;developer-instructions&gt;`_</span></a> for information on developer
+dependencies and tools as well as further background documentation.</p>
+<p><strong>This section is not guaranteed to be as up-to-date as the Docker instructions
+because it is subject to more frequent change.</strong> The official
+provisioning/installation procedure can always be recovered from the continuous
+integration procedures used to create the Docker images.</p>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Make sure you have at least 4GB of memory (physical or virtual;
+<a href="#id18"><span class="problematic" id="id19">:ref:`swap space &lt;swap-space&gt;`_</span></a> is fine) and 15GB of free space on your file
+system.</p>
+</div>
+<div class="section" id="installing-conda">
+<h2>Installing Conda<a class="headerlink" href="#installing-conda" title="Permalink to this headline">¶</a></h2>
+<p>LLAMA depends on LIGO tools that are only distributed via <code class="docutils literal notranslate"><span class="pre">conda</span></code>, so you’ll
+need to install an Anaconda python distribution to get up and running
+(<cite>developer notes on Conda &lt;migrating-to-conda&gt;</cite>):
+<em>Conda installs are done on a per-user basis, so you won’t need to use sudo for
+any of the below.</em> Start by installing the latest version of Conda:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -O https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+</pre></div>
+</div>
+<p>Log out and log back in again, then activate <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> and install LIGO
+tools:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate
+conda config --add channels conda-forge
+<span class="c1"># old method: use LIGO&#39;s environment</span>
+<span class="c1"># wget -q https://git.ligo.org/lscsoft/conda/raw/master/environment-py36.yml</span>
+<span class="c1"># conda env create -f environment-py36.yml</span>
+curl -O https://raw.githubusercontent.com/stefco/llama-env/master/llama-py36.yml
+conda env create -f llama-py36.yml
+</pre></div>
+</div>
+<p>Activate the LIGO virtualenv <strong>(NOTE: You will need to do this every time you
+want to use this python setup! Consider putting this command in your</strong>
+<code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> <strong>file.)</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate llama-py36
+</pre></div>
+</div>
+<p>Clone the LLAMA repository into <code class="docutils literal notranslate"><span class="pre">~/dev/multimessenger-pipeline</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir -p ~/dev
+<span class="nb">cd</span> ~/dev
+git clone git@bitbucket.org:stefancountryman/multimessenger-pipeline.git
+<span class="nb">cd</span> multimessenger-pipeline
+</pre></div>
+</div>
+<p>Fetch all data files (make sure you have <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code> installed)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git lfs fetch
+git lfs checkout
+</pre></div>
+</div>
+<p>Install dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -O https://raw.githubusercontent.com/stefco/llama-env/master/requirements.txt
+pip install -r requirements.txt
+</pre></div>
+</div>
+<p>Install the pipeline in developer mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup.py develop
+</pre></div>
+</div>
+<p>Confirm installation succeeded by seeing if you can print the help command from
+the command-line interface (CLI):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama --help
+</pre></div>
+</div>
+<p>Optionally, run LLAMA’s test suite to make sure things are working okay (though
+note that many tests will fail if you haven’t <a href="#id20"><span class="problematic" id="id21">:ref:`entered your authentication
+credentials for external services &lt;config-and-auth&gt;`_</span></a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make <span class="nb">test</span>
+</pre></div>
+</div>
+<p>That’s it! All important llama tools can be accessed at the command line
+as subcommands of the <code class="docutils literal notranslate"><span class="pre">llama</span></code> command; run <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">--help</span></code> to see what’s
+available. The <code class="docutils literal notranslate"><span class="pre">llama</span></code> CLI follows the same structure as the <code class="docutils literal notranslate"><span class="pre">llama</span></code> python
+modules, which you can import into your python scripts.</p>
+</div>
+</div>
+<div class="section" id="setting-up-a-production-server">
+<h1>Setting Up a Production Server<a class="headerlink" href="#setting-up-a-production-server" title="Permalink to this headline">¶</a></h1>
+<p>You can set up a production server environment on a Debian server as follows.
+You can skip the installation steps for Docker and Docker Compose if you
+already have them installed.</p>
+<div class="section" id="install-docker">
+<h2>Install Docker<a class="headerlink" href="#install-docker" title="Permalink to this headline">¶</a></h2>
+<p>The LLAMA production environment runs in a <a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/debian/">Docker</a>  container to massively
+simplify deployment and reproducibility. On Debian:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -fsSL https://download.docker.com/linux/debian/gpg <span class="p">|</span> apt-key add -
+apt-key fingerprint 0EBFCD88
+<span class="p">|</span>
+add-apt-repository <span class="se">\</span>
+    <span class="s2">&quot;deb [arch=amd64] https://download.docker.com/linux/debian \</span>
+<span class="s2">    </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> \</span>
+<span class="s2">    stable&quot;</span>
+apt-get update
+apt-get install -y docker-ce docker-ce-cli containerd.io
+docker run hello-world
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-docker-compose">
+<h2>Install Docker Compose<a class="headerlink" href="#install-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p>We use <a class="reference external" href="https://docs.docker.com/compose/install/">Docker Compose</a> to turn on
+all LLAMA components at once and to keep them running. Install Docker Compose
+with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -L <span class="se">\</span>
+    <span class="s2">&quot;https://github.com/docker/compose/releases/download/1.24.1/docker-compose-</span><span class="k">$(</span>uname -s<span class="k">)</span><span class="s2">-</span><span class="k">$(</span>uname -m<span class="k">)</span><span class="s2">&quot;</span> <span class="se">\</span>
+    -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+docker-compose --version
+</pre></div>
+</div>
+</div>
+<div class="section" id="log-in-to-docker-cloud">
+<h2>Log in to Docker Cloud<a class="headerlink" href="#log-in-to-docker-cloud" title="Permalink to this headline">¶</a></h2>
+<p>The LLAMA production docker images are in a private repository on <a class="reference external" href="https://cloud.docker.com">Docker Cloud</a>.
+You will need to be added to the <code class="docutils literal notranslate"><span class="pre">stefco/llama</span></code> Docker Cloud repository
+(contact Stefan Countryman for details) and log in on the production server
+using <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">login</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker login
+</pre></div>
+</div>
+<p>You’ll be promted for your Docker Cloud login credentials; enter them to log
+in.</p>
+</div>
+<div class="section" id="get-docker-compose-yml">
+<h2>Get <cite>docker-compose.yml</cite><a class="headerlink" href="#get-docker-compose-yml" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> is a file that describes how to combine Docker
+containers together; since LLAMA has a few moving parts that need to work
+together, it saves us the trouble of having to remember what steps are
+necessary to turn the pipeline on and keep it running. You can think of it as a
+shortcut for calling a ton of <code class="docutils literal notranslate"><span class="pre">docker</span></code> commands every time we want to start
+up our app.</p>
+<p>You can always pull the latest version of <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> from the
+<a class="reference external" href="https://bitbucket.org/stefancountryman/multimessenger-pipeline/src/master/">LLAMA repository</a>
+with this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">pushd</span> ~ <span class="o">&amp;&amp;</span> git archive <span class="se">\</span>
+        --remote<span class="o">=</span>git@bitbucket.org:stefancountryman/multimessenger-pipeline.git <span class="se">\</span>
+        HEAD docker-compose.yml <span class="se">\</span>
+    <span class="p">|</span> tar -x <span class="o">&amp;&amp;</span> <span class="nb">popd</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="starting-llama-production-app">
+<h2>Starting LLAMA Production App<a class="headerlink" href="#starting-llama-production-app" title="Permalink to this headline">¶</a></h2>
+<p>Fortunately, all the hard work is done for you in <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code>; you
+just need to start it with <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">up</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker-compose up
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="operators.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="reviewers.html" class="btn btn-neutral float-left" title="Introduction for Reviewers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2019, Stefan Trklja Countryman, Kenneth Rainer Corley, Doğa Veske
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

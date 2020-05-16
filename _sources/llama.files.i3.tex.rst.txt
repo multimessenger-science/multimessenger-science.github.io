@@ -1,0 +1,7 @@
+llama.files.i3.tex module
+=========================
+
+.. automodule:: llama.files.i3.tex
+   :members:
+   :undoc-members:
+   :show-inheritance:

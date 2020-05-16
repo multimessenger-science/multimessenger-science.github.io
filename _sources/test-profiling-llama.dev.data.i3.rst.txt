@@ -1,0 +1,66 @@
+llama.dev.data.i3
+~~~~~~~~~~~~~~~~~
+
+
+llama.dev.data.i3.available_versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. graphviz::
+   :name: llama.dev.data.i3.available_versions
+   :caption: Profiling result for llama.dev.data.i3.available_versions. Click on LLAMA functions in the above plot to go to documentation for that function.
+
+   digraph {
+   	graph [fontname=Arial, nodesep=0.125, ranksep=0.25];
+   	node [fontcolor=white, fontname=Arial, height=0, shape=box, style=filled, width=0];
+   	edge [fontname=Arial];
+   	12 [color="#fd0c00", fontcolor="#ffffff", fontsize="10.00", label="subprocess:1662:_communicate\n98.81%\n(0.02%)\n1×", tooltip="/opt/anaconda/lib/python3.7/subprocess.py"];
+   	12 -> 211 [arrowsize="0.99", color="#fd0d00", fontcolor="#fd0d00", fontsize="10.00", label="98.75%\n11×", labeldistance="3.95", penwidth="3.95"];
+   	21 [color="#0d0f74", fontcolor="#ffffff", fontsize="10.00", label="subprocess:681:__init__\n0.61%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/subprocess.py"];
+   	21 -> 39 [arrowsize="0.35", color="#0d0f74", fontcolor="#0d0f74", fontsize="10.00", label="0.60%\n1×", labeldistance="0.50", penwidth="0.50"];
+   	28 [color="#ff0200", fontcolor="#ffffff", fontsize="10.00", label="runner:227:from_call\n99.77%\n(0.00%)\n3×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py"];
+   	28 -> 311 [arrowsize="1.00", color="#ff0200", fontcolor="#ff0200", fontsize="10.00", label="99.76%\n3×", labeldistance="3.99", penwidth="3.99"];
+   	39 [color="#0d0f74", fontcolor="#ffffff", fontsize="10.00", label="subprocess:1412:_execute_child\n0.60%\n(0.01%)\n1×", tooltip="/opt/anaconda/lib/python3.7/subprocess.py"];
+   	64 [color="#fe0400", fontcolor="#ffffff", fontsize="10.00", label="doctest:1417:run\n99.59%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/doctest.py"];
+   	64 -> 71 [arrowsize="1.00", color="#fe0600", fontcolor="#fe0600", fontsize="10.00", label="99.45%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	71 [color="#fe0600", fontcolor="#ffffff", fontsize="10.00", label="doctest:1271:__run\n99.45%\n(0.01%)\n1×", tooltip="/opt/anaconda/lib/python3.7/doctest.py"];
+   	71 -> 72 [arrowsize="1.00", color="#fe0600", fontcolor="#fe0600", fontsize="10.00", label="99.43%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	72 [color="#fe0600", fontcolor="#ffffff", fontsize="10.00", label="~:0:<built-in method builtins.exec>\n99.43%\n(0.00%)\n1×", tooltip="~"];
+   	72 -> 232 [arrowsize="1.00", color="#fe0600", fontcolor="#fe0600", fontsize="10.00", label="99.43%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	83 [color="#ff0200", fontcolor="#ffffff", fontsize="10.00", label="runner:200:call_runtest_hook\n99.78%\n(0.00%)\n3×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py"];
+   	83 -> 28 [arrowsize="1.00", color="#ff0200", fontcolor="#ff0200", fontsize="10.00", label="99.77%\n3×", labeldistance="3.99", penwidth="3.99"];
+   	97 [color="#ff0100", fontcolor="#ffffff", fontsize="10.00", label="runner:86:runtestprotocol\n99.90%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py"];
+   	97 -> 309 [arrowsize="1.00", color="#ff0100", fontcolor="#ff0100", fontsize="10.00", label="99.90%\n3×", labeldistance="4.00", penwidth="4.00"];
+   	131 [color="#ff0100", fontcolor="#ffffff", fontsize="10.00", label="callers:157:_multicall\n99.93%\n(0.03%)\n14×", tooltip="/opt/anaconda/lib/python3.7/site-packages/pluggy/callers.py"];
+   	131 -> 275 [arrowsize="1.00", color="#fe0400", fontcolor="#fe0400", fontsize="10.00", label="99.60%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	138 [color="#fe0600", fontcolor="#ffffff", fontsize="10.00", label="__init__:34:available_versions\n99.43%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/site-packages/llama.dev.data.i3.__init__.py", target=_top, URL="https://multimessenger.science/llama.dev.data.i3.__init__.html"];
+   	138 -> 21 [arrowsize="0.35", color="#0d0f74", fontcolor="#0d0f74", fontsize="10.00", label="0.61%\n1×", labeldistance="0.50", penwidth="0.50"];
+   	138 -> 222 [arrowsize="0.99", color="#fd0c00", fontcolor="#fd0c00", fontsize="10.00", label="98.81%\n1×", labeldistance="3.95", penwidth="3.95"];
+   	188 [color="#ff0100", fontcolor="#ffffff", fontsize="10.00", label="manager:78:<lambda>\n99.93%\n(0.00%)\n14×", tooltip="/opt/anaconda/lib/python3.7/site-packages/pluggy/manager.py"];
+   	188 -> 131 [arrowsize="1.00", color="#ff0100", fontcolor="#ff0100", fontsize="10.00", label="99.93%\n11×", labeldistance="4.00", penwidth="4.00"];
+   	195 [color="#ff0100", fontcolor="#ffffff", fontsize="10.00", label="hooks:275:__call__\n99.95%\n(0.01%)\n14×", tooltip="/opt/anaconda/lib/python3.7/site-packages/pluggy/hooks.py"];
+   	195 -> 353 [arrowsize="1.00", color="#ff0100", fontcolor="#ff0100", fontsize="10.00", label="99.94%\n11×", labeldistance="4.00", penwidth="4.00"];
+   	201 [color="#fe0400", fontcolor="#ffffff", fontsize="10.00", label="doctest:1835:run\n99.60%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/doctest.py"];
+   	201 -> 64 [arrowsize="1.00", color="#fe0400", fontcolor="#fe0400", fontsize="10.00", label="99.59%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	211 [color="#fd0d00", fontcolor="#ffffff", fontsize="10.00", label="selectors:402:select\n98.75%\n(0.01%)\n11×", tooltip="/opt/anaconda/lib/python3.7/selectors.py"];
+   	211 -> 386 [arrowsize="0.99", color="#fd0d00", fontcolor="#fd0d00", fontsize="10.00", label="98.73%\n11×", labeldistance="3.95", penwidth="3.95"];
+   	222 [color="#fd0c00", fontcolor="#ffffff", fontsize="10.00", label="subprocess:920:communicate\n98.81%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/subprocess.py"];
+   	222 -> 12 [arrowsize="0.99", color="#fd0c00", fontcolor="#fd0c00", fontsize="10.00", label="98.81%\n1×", labeldistance="3.95", penwidth="3.95"];
+   	232 [color="#fe0600", fontcolor="#ffffff", fontsize="10.00", label="<doctest llama.dev.data.i3:1:<module>\n99.43%\n(0.00%)\n1×", tooltip="<doctest llama.dev.data.i3.available_versions[0]>", target=_top, URL="https://multimessenger.science/llama.dev.data.i3.html#llama.dev.data.i3.available_versions"];
+   	232 -> 138 [arrowsize="1.00", color="#fe0600", fontcolor="#fe0600", fontsize="10.00", label="99.43%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	241 [color="#fe0400", fontcolor="#ffffff", fontsize="10.00", label="doctest:228:runtest\n99.60%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/doctest.py"];
+   	241 -> 201 [arrowsize="1.00", color="#fe0400", fontcolor="#fe0400", fontsize="10.00", label="99.60%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	275 [color="#fe0400", fontcolor="#ffffff", fontsize="10.00", label="runner:122:pytest_runtest_call\n99.60%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py"];
+   	275 -> 241 [arrowsize="1.00", color="#fe0400", fontcolor="#fe0400", fontsize="10.00", label="99.60%\n1×", labeldistance="3.98", penwidth="3.98"];
+   	305 [color="#ff0000", fontcolor="#ffffff", fontsize="10.00", label="runner:79:pytest_runtest_protocol\n100.00%\n(0.00%)\n1×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py"];
+   	305 -> 97 [arrowsize="1.00", color="#ff0100", fontcolor="#ff0100", fontsize="10.00", label="99.90%\n1×", labeldistance="4.00", penwidth="4.00"];
+   	309 [color="#ff0100", fontcolor="#ffffff", fontsize="10.00", label="runner:181:call_and_report\n99.90%\n(0.00%)\n3×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py"];
+   	309 -> 83 [arrowsize="1.00", color="#ff0200", fontcolor="#ff0200", fontsize="10.00", label="99.78%\n3×", labeldistance="3.99", penwidth="3.99"];
+   	309 -> 195 [arrowsize="0.35", color="#0d0d73", fontcolor="#0d0d73", fontsize="10.00", label="0.11%\n6×", labeldistance="0.50", penwidth="0.50"];
+   	311 [color="#ff0200", fontcolor="#ffffff", fontsize="10.00", label="runner:207:<lambda>\n99.76%\n(0.00%)\n3×", tooltip="/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py"];
+   	311 -> 195 [arrowsize="1.00", color="#ff0200", fontcolor="#ff0200", fontsize="10.00", label="99.76%\n3×", labeldistance="3.99", penwidth="3.99"];
+   	353 [color="#ff0100", fontcolor="#ffffff", fontsize="10.00", label="manager:84:_hookexec\n99.94%\n(0.00%)\n14×", tooltip="/opt/anaconda/lib/python3.7/site-packages/pluggy/manager.py"];
+   	353 -> 188 [arrowsize="1.00", color="#ff0100", fontcolor="#ff0100", fontsize="10.00", label="99.93%\n11×", labeldistance="4.00", penwidth="4.00"];
+   	386 [color="#fd0d00", fontcolor="#ffffff", fontsize="10.00", label="~:0:<method 'poll' of 'select.poll' objects>\n98.73%\n(98.73%)\n11×", tooltip="~"];
+   }
+
+

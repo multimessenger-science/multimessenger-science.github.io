@@ -1,0 +1,7 @@
+llama.version module
+====================
+
+.. automodule:: llama.version
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,9 @@
+``llama dev docs cli``
+======================
+
+.. argparse::
+   :module: llama.dev.docs.cli.__main__
+   :func: get_parser
+   :prog: llama dev docs cli
+
+

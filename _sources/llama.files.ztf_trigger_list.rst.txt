@@ -1,0 +1,7 @@
+llama.files.ztf\_trigger\_list module
+=====================================
+
+.. automodule:: llama.files.ztf_trigger_list
+   :members:
+   :undoc-members:
+   :show-inheritance:

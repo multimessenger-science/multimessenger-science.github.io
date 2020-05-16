@@ -1,0 +1,1179 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>llama.files.healpix.skymap &mdash; Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) 3.5.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="http://gwhen.comtest-profiling-llama.files.healpix.skymap.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="llama.files.healpix.skymap.HEALPixSkyMap" href="test-profiling-llama.files.healpix.skymap.HEALPixSkyMap.html" />
+    <link rel="prev" title="llama.files.healpix.psf.Psf" href="test-profiling-llama.files.healpix.psf.Psf.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Info for Reviewers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html">Introduction for Reviewers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#purpose">Purpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#software-documentation">Software Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#review-wikis">Review Wikis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#papers">Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#testing-on-review-server">Testing on Review Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#fake-cases">Fake cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#running-fake-cases">Running Fake Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#contents-of-the-output-folder">Contents of the Output Folder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#main-outputs">Main Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#auxilliary-outputs">Auxilliary Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#real-cases">Real cases</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Using the Docker Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-cloud">Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#getting-llama-images">Getting LLAMA Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#choosing-the-image">Choosing the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#getting-updating-the-image">Getting/Updating the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#removing-images">Removing Images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#running-a-llama-container">Running a LLAMA Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#mounting-directories">Mounting Directories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-macos-linux">Mounting in MacOS/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-windows">Mounting in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#out-of-memory-disk">Out of Memory/Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#running-on-habanero">Running on Habanero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#interactive-habanero-jobs">Interactive Habanero Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-hub-authentication-with-singularity">Docker Hub Authentication with Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#fixing-singularity-cache-on-habanero">Fixing Singularity Cache on Habanero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-singularity-module">Load Singularity Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#pull-llama-image">Pull LLAMA Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#local-installation">Local Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-conda">Installing Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#setting-up-a-production-server">Setting Up a Production Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker">Install Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker-compose">Install Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#log-in-to-docker-cloud">Log in to Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#get-docker-compose-yml">Get <cite>docker-compose.yml</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#starting-llama-production-app">Starting LLAMA Production App</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Operators' Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#how-data-is-organized">How Data is Organized</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#event-directories">Event Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#gcn-notice-archive">GCN Notice Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#log-files">Log Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-automatically">Running the Pipeline Automatically</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-manually">Running the Pipeline Manually</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#using-defaults-with-skymap-info">Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-o3b">Sensitivity and Background Studies (O3B)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-pre-o3b">Sensitivity and Background Studies (pre-O3B)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#editing-your-bashrc">Editing your .bashrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#using-the-digitalocean-api">Using the DigitalOcean API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#llama-scripts">LLAMA Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#adding-your-ssh-keys-to-the-droplets">Adding Your SSH Keys to the Droplets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#installing-requirements">Installing Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#digitalocean-administration-examples">DigitalOcean Administration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#preparing-a-server">Preparing a Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#server-preparation-overview">Server Preparation Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#moving-data-into-place">Moving Data into Place</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#running-the-analysis-in-parallel">Running the Analysis in Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#starting-the-servers">Starting the Servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#running-the-analysis">Running the Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#collecting-results">Collecting Results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#obtaining-the-llama-source-code">Obtaining the LLAMA Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#using-the-docker-dev-image">Using the Docker Dev Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#list-bin-docker-commands">List <code class="docutils literal notranslate"><span class="pre">bin/docker</span></code> Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#getting-the-latest-development-image">Getting the Latest Development Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#starting-a-dev-container">Starting a Dev Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#sketch-of-a-bug-fix">Sketch of a Bug Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#destroying-your-dev-container">Destroying your Dev Container</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html#previous-llama-versions">Previous LLAMA Versions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html">Developer Installation (Pre-O3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-llama-dependencies">Installing LLAMA Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#obtaining-the-llama-software-pre-o3">Obtaining the LLAMA Software (pre-O3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-configuration-files">Setting up Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-git-hooks">Install git Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-llama-dependencies">Install LLAMA dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-ligo-software">Install LIGO Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software">Install IceCube Offline Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-icecube-dependencies">Installing IceCube Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#entering-icecube-credentials">Entering IceCube Credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-matlab">Install MATLAB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#configuration-and-authentication">Configuration and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#generate-ssh-keys">Generate SSH Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gmail-authentication">GMail Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ligo-authentication">LIGO Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-ssl-certificates">Setting Up SSL Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-passwords-for-run-summary-pages">Setting Up Passwords for Run Summary Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#external-authentication">External Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#bitbucket-authentication">Bitbucket Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#git-ligo-org-authentication">git.ligo.org Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#twilio-authentication">Twilio Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gw-astronomy-authentication">GW Astronomy Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gcn-authentication">GCN Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#turning-on-the-pipeline">Turning on the Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#subscribing-to-lvalert-nodes">Subscribing to LVAlert Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#starting-pipeline-daemons">Starting Pipeline Daemons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#testing-lvalert">Testing LVAlert</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#viewing-active-processes">Viewing Active Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#checking-pipeline-logs">Checking Pipeline Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#killing-pipeline-daemons">Killing Pipeline Daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#deprecated-matlab-logs">Deprecated: MATLAB Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#developing-for-llama">Developing for LLAMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction-to-development">Introduction to Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#structure-of-the-pipeline">Structure of the Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#adding-functionality">Adding Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#developer-conventions-and-best-practices">Developer Conventions and Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#data-format-conventions">Data Format Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#coding-best-practices">Coding Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#migrating-to-conda">Migrating to Conda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#ligo-wiki-documentation">LIGO Wiki Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-ligo-software-via-conda">Installing LIGO Software via Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#creating-a-new-user">Creating a new user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#out-of-memory">Out of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#matlab-installation-troubleshooting">MATLAB Installation Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software-with-root">Install IceCube Offline Software with Root</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#logging-in-to-a-remote-server-using-ssh">Logging in to a Remote Server Using SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#getting-llama-software-onto-a-remote-server">Getting LLAMA Software onto a Remote Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ssh-with-x11-forwarding">SSH with X11 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#using-llama">Using LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#documenting-llama">Documenting LLAMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-to-gwhen-com-website">Publishing to gwhen.com Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-readme-to-git-host">Publishing Readme to Git Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-pdfs">Publishing PDFs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-html-web-pages">Publishing HTML Web Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-llama">Troubleshooting LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-the-review-server">Setting Up the Review Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#provisioning-the-review-server">Provisioning the review server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#running-the-review">Running the Review</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ideas-for-the-future">Ideas for the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#cvmfs">CVMFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#advantages">Advantages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#disadvantages">Disadvantages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Bibliography</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Academic Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#low-latency-algorithm-for-multi-messenger-astrophysics-llama-with-gravitational-wave-and-high-energy-neutrino-candidates">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#bayesian-multi-messenger-search-method-for-common-sources-of-gravitational-waves-and-high-energy-neutrinos">Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.html">llama package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.batch.html">llama.batch package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.classes.html">llama.classes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.cli.html">llama.cli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.com.html">llama.com package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.dl.html">llama.com.dl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.do.html">llama.com.do package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.email.html">llama.com.email package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.gracedb.html">llama.com.gracedb package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.s3.html">llama.com.s3 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.slack.html">llama.com.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.utils.html">llama.com.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.detectors.html">llama.detectors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.detectors.html#available-detectors">Available Detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.dev.html">llama.dev package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.background.html">llama.dev.background package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.pvalue.html">llama.dev.background.pvalue package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table.html">llama.dev.background.table package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table_singles.html">llama.dev.background.table_singles package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.clean.html">llama.dev.clean package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.data.html">llama.dev.data package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.data.i3.html">llama.dev.data.i3 package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.docs.html">llama.dev.docs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.docs.cli.html">llama.dev.docs.cli package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.dv.html">llama.dev.dv package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.log.html">llama.dev.log package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.log.lvalert.html">llama.dev.log.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.upload.html">llama.dev.upload package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.event.html">llama.event package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.filehandler.html">llama.filehandler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.classes.html">llama.filehandler.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.mixins.html">llama.filehandler.mixins module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.files.html">llama.files package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_significance.html">llama.files.coinc_significance package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.opa.html">llama.files.coinc_significance.opa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.subthreshold.html">llama.files.coinc_significance.subthreshold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.utils.html">llama.files.coinc_significance.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.healpix.html">llama.files.healpix package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.plotters.html">llama.files.healpix.plotters module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.psf.html">llama.files.healpix.psf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.skymap.html">llama.files.healpix.skymap module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.utils.html">llama.files.healpix.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.i3.html">llama.files.i3 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.json.html">llama.files.i3.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.realtime_tools_stubs.html">llama.files.i3.realtime_tools_stubs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.tex.html">llama.files.i3.tex module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.txt.html">llama.files.i3.txt module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.utils.html">llama.files.i3.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap.html">llama.files.lvc_skymap package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.skymap_info.html">llama.files.skymap_info package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.cli.html">llama.files.skymap_info.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.utils.html">llama.files.skymap_info.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.slack.html">llama.files.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.advok.html">llama.files.advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_analyses.html">llama.files.coinc_analyses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_o2.html">llama.files.coinc_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_plots.html">llama.files.coinc_plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.fermi_grb.html">llama.files.fermi_grb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gcn_draft_o2.html">llama.files.gcn_draft_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gracedb.html">llama.files.gracedb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gwastro.html">llama.files.gwastro module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_advok.html">llama.files.lvalert_advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_json.html">llama.files.lvalert_json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_mat.html">llama.files.lvc_skymap_mat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_txt.html">llama.files.lvc_skymap_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.matlab.html">llama.files.matlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.sms_receipts.html">llama.files.sms_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.team_receipts.html">llama.files.team_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.timing_checks.html">llama.files.timing_checks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.uw_summary.html">llama.files.uw_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.ztf_trigger_list.html">llama.files.ztf_trigger_list module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.flags.html">llama.flags package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.flags.cli.html">llama.flags.cli module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.install.html">llama.install package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.install.manifest.html">llama.install.manifest module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.intent.html">llama.intent module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.io.html">llama.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.default.html">llama.io.default package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.io.default.generate.html">llama.io.default.generate module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.classes.html">llama.io.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.registry.html">llama.io.registry module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.listen.html">llama.listen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.gcn.html">llama.listen.gcn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.lvalert.html">llama.listen.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.lock.html">llama.lock module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.meta.html">llama.meta module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.pipeline.html">llama.pipeline module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.pipeline.html#pipelines">Pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.poll.html">llama.poll package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.poll.gracedb.html">llama.poll.gracedb package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.run.html">llama.run package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.serve.html">llama.serve package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.gui.html">llama.serve.gui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.wsgi.html">llama.serve.gui.wsgi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.domain.html">llama.serve.gui.domain module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.jupyter.html">llama.serve.jupyter package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.logs.html">llama.serve.jupyter.logs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.utils.html">llama.serve.jupyter.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.test.html">llama.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_files.html">llama.test.test_files package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_listeners.html">llama.test.test_listeners package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.test.test_listeners.test_gcn.html">llama.test.test_listeners.test_gcn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.classes.html">llama.test.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_bin.html">llama.test.test_bin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_filehandler.html">llama.test.test_filehandler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_pipeline.html">llama.test.test_pipeline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_utils.html">llama.test.test_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.utils.html">llama.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.version.html">llama.version module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.versioning.html">llama.versioning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.vetoes.html">llama.vetoes module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Reports</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/pytest/">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/coverage/">Code Coverage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="profiling.html">Performance Profiling</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-combined.html">Combined Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-combined.html#combined">combined</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-unit.html">Unit Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-default-pipeline-consistency">test_default_pipeline_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-filehandler-definition-consistency">test_filehandler_definition_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-make-grid">test_get_grid_make_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-north-pole">test_get_grid_north_pole</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-pipeline-parser">test_llama_pipeline_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-run-parser">test_llama_run_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize">test_memoize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-class">test_memoize_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-helper">test_memoize_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-mjd-interval">test_mjd_interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-rotate-angs2vec">test_rotate_angs2vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-write-gzip">test_write_gzip</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="test-profiling-llama.html">Doctests</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.com.html">llama.com</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.com.gracedb.html">llama.com.gracedb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.com.gracedb.html#llama-com-gracedb-gracedb">llama.com.gracedb.GraceDb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.dev.html">llama.dev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.data.html">llama.dev.data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.data.i3.html">llama.dev.data.i3</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.upload.html">llama.dev.upload</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.upload.html#llama-dev-upload-upload-and-get-manifest">llama.dev.upload.upload_and_get_manifest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.filehandler.html">llama.filehandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html">llama.filehandler.JSONFile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html#llama-filehandler-jsonfile-checksum">llama.filehandler.JSONFile.checksum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="test-profiling-llama.files.html">llama.files</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html">llama.files.fermi_grb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html#llama-files-fermi-grb-get-grbs-from-csv">llama.files.fermi_grb.get_grbs_from_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l4 current"><a class="reference internal" href="test-profiling-llama.files.healpix.html">llama.files.healpix</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.HEALPixSkyMapFileHandler.html">llama.files.healpix.HEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.LvcHEALPixSkyMapFileHandler.html">llama.files.healpix.LvcHEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.psf.html">llama.files.healpix.psf</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">llama.files.healpix.skymap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.utils.html">llama.files.healpix.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.i3.html">llama.files.i3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.json.html">llama.files.i3.json</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.utils.html">llama.files.i3.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html#llama-files-lvc-gcn-xml-parse-ivorn">llama.files.lvc_gcn_xml.parse_ivorn</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.html">llama.files.lvc_skymap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.matlab.html">llama.files.matlab</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.matlab.html#llama-files-matlab-matlab-eval">llama.files.matlab.matlab_eval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.utils.html">llama.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-param">llama.utils.get_voevent_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-time">llama.utils.get_voevent_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-parameter-factory">llama.utils.parameter_factory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2angs">llama.utils.rotate_angs2angs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2vec">llama.utils.rotate_angs2vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-gzip">llama.utils.write_gzip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-to-zip">llama.utils.write_to_zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Source Code Plots</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command Line Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span></code> Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.batch.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">batch</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#logging settings">logging settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#simulation configuration">simulation configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.com.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.do.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.do.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">gracedb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.slack.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">slack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.dev.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.background.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.clean.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">clean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.data.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.docs.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span> <span class="pre">cli</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.dv.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.log.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.upload.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.event.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">event</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.files.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#output formats (specify at least 1)">output formats (specify at least 1)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.flags.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">flags</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.install.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">install</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.listen.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.poll.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span> <span class="pre">gracedb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.run.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.serve.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.gui.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">gui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">jupyter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="profiling.html">Performance Profiling</a> &raquo;</li>
+        
+          <li><a href="test-profiling-llama.html">Doctests</a> &raquo;</li>
+        
+          <li><a href="test-profiling-llama.files.html">llama.files</a> &raquo;</li>
+        
+          <li><a href="test-profiling-llama.files.healpix.html">llama.files.healpix</a> &raquo;</li>
+        
+      <li>llama.files.healpix.skymap</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/test-profiling-llama.files.healpix.skymap.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="llama-files-healpix-skymap">
+<h1>llama.files.healpix.skymap<a class="headerlink" href="#llama-files-healpix-skymap" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.HEALPixSkyMap.html">llama.files.healpix.skymap.HEALPixSkyMap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.HEALPixSkyMap.html#llama-files-healpix-skymap-healpixskymap-read-from-hdf5-group">llama.files.healpix.skymap.HEALPixSkyMap._read_from_hdf5_group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.HEALPixSkyMap.html#llama-files-healpix-skymap-healpixskymap-dangle">llama.files.healpix.skymap.HEALPixSkyMap.dangle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.HEALPixSkyMap.html#llama-files-healpix-skymap-healpixskymap-nside2ang">llama.files.healpix.skymap.HEALPixSkyMap.nside2ang</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="llama-files-healpix-skymap-psf-gaussian">
+<h2>llama.files.healpix.skymap.psf_gaussian<a class="headerlink" href="#llama-files-healpix-skymap-psf-gaussian" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default" id="id1">
+<div class="graphviz"><object data="_images/graphviz-be16bfcc1b92bc1b4e716f0d21946c8a7d343f68.svg" type="image/svg+xml" class="graphviz">
+<p class="warning">digraph {
+     graph [fontname=Arial, nodesep=0.125, ranksep=0.25];
+     node [fontcolor=white, fontname=Arial, height=0, shape=box, style=filled, width=0];
+     edge [fontname=Arial];
+     2 [color=&quot;#0d367f&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:614:_runtest_for_main\n9.18%\n(1.25%)\n16×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     2 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.59%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     2 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.45%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     2 -&gt; 180 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.27%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     2 -&gt; 227 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1d78&quot;, fontcolor=&quot;#0d1d78&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.80%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     2 -&gt; 315 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.59%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     9 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;method 'read' of '_io.FileIO' objects&gt;\n1.69%\n(1.69%)\n6×&quot;, tooltip=&quot;~&quot;];
+     10 [color=&quot;#0d287b&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:583:snap\n6.25%\n(1.05%)\n6×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     10 -&gt; 9 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.69%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     10 -&gt; 11 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.96%\n12×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     10 -&gt; 12 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1575&quot;, fontcolor=&quot;#0d1575&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.93%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     10 -&gt; 57 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f74&quot;, fontcolor=&quot;#0d0f74&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.61%\n24×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     11 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;method 'seek' of '_io.FileIO' objects&gt;\n0.96%\n(0.96%)\n12×&quot;, tooltip=&quot;~&quot;];
+     12 [color=&quot;#0d1575&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;method 'truncate' of '_io.FileIO' objects&gt;\n1.93%\n(1.93%)\n6×&quot;, tooltip=&quot;~&quot;];
+     13 [color=&quot;#0d0f73&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method io.open&gt;\n0.59%\n(0.59%)\n2×&quot;, tooltip=&quot;~&quot;];
+     14 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;pdb:140:__init__\n1.79%\n(0.34%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/pdb.py&quot;];
+     14 -&gt; 13 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.59%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     14 -&gt; 38 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f74&quot;, fontcolor=&quot;#0d0f74&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.64%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     16 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:212:_acquireLock\n0.96%\n(0.61%)\n40×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     18 [color=&quot;#0d0f74&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:221:_releaseLock\n0.61%\n(0.42%)\n40×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     20 [color=&quot;#b6d406&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:227:from_call\n71.37%\n(0.37%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     20 -&gt; 265 [arrowsize=&quot;0.84&quot;, color=&quot;#b1d306&quot;, fontcolor=&quot;#b1d306&quot;, fontsize=&quot;10.00&quot;, label=&quot;70.81%\n3×&quot;, labeldistance=&quot;2.83&quot;, penwidth=&quot;2.83&quot;];
+     22 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;fixtures:1271:getfixtureinfo\n1.00%\n(0.22%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/fixtures.py&quot;];
+     26 [color=&quot;#0c9590&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method posix.stat&gt;\n25.89%\n(25.89%)\n159×&quot;, tooltip=&quot;~&quot;];
+     27 [color=&quot;#0b9d73&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;linecache:53:checkcache\n32.21%\n(5.34%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/linecache.py&quot;];
+     27 -&gt; 26 [arrowsize=&quot;0.51&quot;, color=&quot;#0c9590&quot;, fontcolor=&quot;#0c9590&quot;, fontsize=&quot;10.00&quot;, label=&quot;25.89%\n159×&quot;, labeldistance=&quot;1.04&quot;, penwidth=&quot;1.04&quot;];
+     27 -&gt; 95 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.98%\n261×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     28 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method posix.dup2&gt;\n0.81%\n(0.81%)\n12×&quot;, tooltip=&quot;~&quot;];
+     29 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:600:suspend\n0.86%\n(0.27%)\n6×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     29 -&gt; 28 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.39%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     30 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:605:resume\n0.91%\n(0.22%)\n6×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     30 -&gt; 28 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.42%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     32 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;os:682:__setitem__\n0.86%\n(0.34%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/os.py&quot;];
+     38 [color=&quot;#0d0f74&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;posixpath:232:expanduser\n0.64%\n(0.27%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/posixpath.py&quot;];
+     39 [color=&quot;#0d0f74&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;posixpath:338:normpath\n0.61%\n(0.44%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/posixpath.py&quot;];
+     41 [color=&quot;#0baa3f&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;doctest:1417:run\n41.73%\n(0.44%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/doctest.py&quot;];
+     41 -&gt; 48 [arrowsize=&quot;0.35&quot;, color=&quot;#0d2a7b&quot;, fontcolor=&quot;#0d2a7b&quot;, fontsize=&quot;10.00&quot;, label=&quot;6.54%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     41 -&gt; 201 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.84%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     41 -&gt; 202 [arrowsize=&quot;0.57&quot;, color=&quot;#0b9e71&quot;, fontcolor=&quot;#0b9e71&quot;, fontsize=&quot;10.00&quot;, label=&quot;32.65%\n1×&quot;, labeldistance=&quot;1.31&quot;, penwidth=&quot;1.31&quot;];
+     47 [color=&quot;#0d1675&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method builtins.compile&gt;\n2.11%\n(2.11%)\n2×&quot;, tooltip=&quot;~&quot;];
+     48 [color=&quot;#0d2a7b&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;doctest:1271:__run\n6.54%\n(0.73%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/doctest.py&quot;];
+     48 -&gt; 47 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1675&quot;, fontcolor=&quot;#0d1675&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.11%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     48 -&gt; 49 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1676&quot;, fontcolor=&quot;#0d1676&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.23%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     49 [color=&quot;#0d1676&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method builtins.exec&gt;\n2.23%\n(0.07%)\n2×&quot;, tooltip=&quot;~&quot;];
+     49 -&gt; 191 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1675&quot;, fontcolor=&quot;#0d1675&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.11%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     50 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method builtins.getattr&gt;\n0.78%\n(0.78%)\n98×&quot;, tooltip=&quot;~&quot;];
+     54 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:127:suspend_global_capture\n1.13%\n(0.07%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     54 -&gt; 244 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.00%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     57 [color=&quot;#0d0f74&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:442:__getattr__\n0.61%\n(0.47%)\n24×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     57 -&gt; 50 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.15%\n24×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     58 [color=&quot;#0d2b7b&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:626:snap\n6.78%\n(0.49%)\n6×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     58 -&gt; 10 [arrowsize=&quot;0.35&quot;, color=&quot;#0d287b&quot;, fontcolor=&quot;#0d287b&quot;, fontsize=&quot;10.00&quot;, label=&quot;6.25%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     59 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;skipping:120:pytest_runtest_makereport\n1.30%\n(0.37%)\n6×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/skipping.py&quot;];
+     59 -&gt; 248 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.91%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     60 [color=&quot;#c0d606&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:200:call_runtest_hook\n72.40%\n(0.42%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     60 -&gt; 20 [arrowsize=&quot;0.84&quot;, color=&quot;#b6d406&quot;, fontcolor=&quot;#b6d406&quot;, fontsize=&quot;10.00&quot;, label=&quot;71.37%\n3×&quot;, labeldistance=&quot;2.85&quot;, penwidth=&quot;2.85&quot;];
+     60 -&gt; 291 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.42%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     62 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;fixtures:513:_compute_fixture_value\n0.88%\n(0.20%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/fixtures.py&quot;];
+     65 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;contextlib:81:__init__\n1.69%\n(1.35%)\n27×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/contextlib.py&quot;];
+     65 -&gt; 50 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.34%\n27×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     68 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:498:resume_capturing\n1.10%\n(0.17%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     68 -&gt; 30 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.91%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     70 [color=&quot;#0d0f73&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;evaluate:73:_istrue\n0.59%\n(0.10%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/mark/evaluate.py&quot;];
+     70 -&gt; 249 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.47%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     71 [color=&quot;#0d1e78&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;terminal:408:pytest_runtest_logreport\n4.09%\n(0.44%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/terminal.py&quot;];
+     71 -&gt; 122 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.79%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     71 -&gt; 160 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.67%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     72 [color=&quot;#f44a02&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:86:runtestprotocol\n92.51%\n(0.22%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     72 -&gt; 263 [arrowsize=&quot;0.96&quot;, color=&quot;#f34e02&quot;, fontcolor=&quot;#f34e02&quot;, fontsize=&quot;10.00&quot;, label=&quot;92.14%\n3×&quot;, labeldistance=&quot;3.69&quot;, penwidth=&quot;3.69&quot;];
+     73 [color=&quot;#0d1b77&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:350:prepare\n3.31%\n(0.12%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     73 -&gt; 162 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1977&quot;, fontcolor=&quot;#0d1977&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.94%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     82 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;terminalwriter:245:write\n0.98%\n(0.05%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/py/_io/terminalwriter.py&quot;];
+     94 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;structures:356:__iter__\n1.22%\n(0.32%)\n12×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/mark/structures.py&quot;];
+     94 -&gt; 148 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.10%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     95 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method builtins.len&gt;\n1.05%\n(1.05%)\n276×&quot;, tooltip=&quot;~&quot;];
+     97 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:333:_teardown_towards\n0.69%\n(0.20%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     101 [color=&quot;#0c958f&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;built-in method builtins.next&gt;\n26.06%\n(1.84%)\n77×&quot;, tooltip=&quot;~&quot;];
+     101 -&gt; 2 [arrowsize=&quot;0.35&quot;, color=&quot;#0d367f&quot;, fontcolor=&quot;#0d367f&quot;, fontsize=&quot;10.00&quot;, label=&quot;9.18%\n16×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 180 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.69%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 214 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.10%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 215 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.13%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 216 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.05%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 217 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.47%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 218 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.03%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 219 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1e78&quot;, fontcolor=&quot;#0d1e78&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.94%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 226 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1676&quot;, fontcolor=&quot;#0d1676&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.20%\n16×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 236 [arrowsize=&quot;0.35&quot;, color=&quot;#0d4783&quot;, fontcolor=&quot;#0d4783&quot;, fontsize=&quot;10.00&quot;, label=&quot;12.39%\n16×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 238 [arrowsize=&quot;0.35&quot;, color=&quot;#0d3c80&quot;, fontcolor=&quot;#0d3c80&quot;, fontsize=&quot;10.00&quot;, label=&quot;10.24%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 241 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.71%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 242 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f74&quot;, fontcolor=&quot;#0d0f74&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.61%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 243 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.49%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     101 -&gt; 296 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.24%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 [color=&quot;#f44a02&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;callers:157:_multicall\n92.58%\n(4.68%)\n14×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/pluggy/callers.py&quot;];
+     103 -&gt; 71 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1e78&quot;, fontcolor=&quot;#0d1e78&quot;, fontsize=&quot;10.00&quot;, label=&quot;4.09%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 -&gt; 101 [arrowsize=&quot;0.35&quot;, color=&quot;#0d4582&quot;, fontcolor=&quot;#0d4582&quot;, fontsize=&quot;10.00&quot;, label=&quot;12.05%\n18×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 -&gt; 123 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.13%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 -&gt; 186 [arrowsize=&quot;0.41&quot;, color=&quot;#0c5f88&quot;, fontcolor=&quot;#0c5f88&quot;, fontsize=&quot;10.00&quot;, label=&quot;16.68%\n18×&quot;, labeldistance=&quot;0.67&quot;, penwidth=&quot;0.67&quot;];
+     103 -&gt; 196 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.13%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 -&gt; 230 [arrowsize=&quot;0.65&quot;, color=&quot;#0aac39&quot;, fontcolor=&quot;#0aac39&quot;, fontsize=&quot;10.00&quot;, label=&quot;42.79%\n1×&quot;, labeldistance=&quot;1.71&quot;, penwidth=&quot;1.71&quot;];
+     103 -&gt; 245 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.93%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 -&gt; 256 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1676&quot;, fontcolor=&quot;#0d1676&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.23%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 -&gt; 260 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1d78&quot;, fontcolor=&quot;#0d1d78&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.87%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     103 -&gt; 261 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.52%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     104 [color=&quot;#0d3b80&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;contextlib:107:__enter__\n9.99%\n(1.05%)\n27×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/contextlib.py&quot;];
+     104 -&gt; 101 [arrowsize=&quot;0.35&quot;, color=&quot;#0d387f&quot;, fontcolor=&quot;#0d387f&quot;, fontsize=&quot;10.00&quot;, label=&quot;9.48%\n11×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     105 [color=&quot;#0c5285&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;contextlib:116:__exit__\n14.45%\n(1.37%)\n27×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/contextlib.py&quot;];
+     105 -&gt; 101 [arrowsize=&quot;0.37&quot;, color=&quot;#0d4e84&quot;, fontcolor=&quot;#0d4e84&quot;, fontsize=&quot;10.00&quot;, label=&quot;13.57%\n11×&quot;, labeldistance=&quot;0.54&quot;, penwidth=&quot;0.54&quot;];
+     112 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;classic:235:wrapper_function\n1.74%\n(0.29%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/deprecated/classic.py&quot;];
+     120 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:150:_update_current_test_var\n1.74%\n(0.34%)\n4×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     120 -&gt; 32 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.86%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     122 [color=&quot;#0d1876&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;terminal:304:write_fspath_result\n2.69%\n(0.32%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/terminal.py&quot;];
+     122 -&gt; 82 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.98%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     122 -&gt; 130 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.18%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     123 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;terminal:398:pytest_runtest_logstart\n1.13%\n(0.12%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/terminal.py&quot;];
+     123 -&gt; 122 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.91%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     130 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;local:327:join\n1.18%\n(0.34%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/py/_path/local.py&quot;];
+     130 -&gt; 39 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f74&quot;, fontcolor=&quot;#0d0f74&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.61%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     146 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;main:437:gethookproxy\n1.15%\n(0.71%)\n9×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/main.py&quot;];
+     147 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;method 'update' of 'set' objects&gt;\n0.88%\n(0.27%)\n9×&quot;, tooltip=&quot;~&quot;];
+     147 -&gt; 94 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.78%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     148 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;structures:360:_seen\n1.10%\n(0.59%)\n12×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/mark/structures.py&quot;];
+     148 -&gt; 147 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.88%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     154 [color=&quot;#f54302&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;manager:78:&lt;lambda&gt;\n93.31%\n(0.76%)\n14×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/pluggy/manager.py&quot;];
+     154 -&gt; 103 [arrowsize=&quot;0.96&quot;, color=&quot;#f44a02&quot;, fontcolor=&quot;#f44a02&quot;, fontsize=&quot;10.00&quot;, label=&quot;92.58%\n11×&quot;, labeldistance=&quot;3.70&quot;, penwidth=&quot;3.70&quot;];
+     160 [color=&quot;#f82e01&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;hooks:275:__call__\n95.49%\n(1.71%)\n14×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/pluggy/hooks.py&quot;];
+     160 -&gt; 303 [arrowsize=&quot;0.97&quot;, color=&quot;#f54002&quot;, fontcolor=&quot;#f54002&quot;, fontsize=&quot;10.00&quot;, label=&quot;93.58%\n11×&quot;, labeldistance=&quot;3.74&quot;, penwidth=&quot;3.74&quot;];
+     162 [color=&quot;#0d1977&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;doctest:218:setup\n2.94%\n(0.17%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/doctest.py&quot;];
+     162 -&gt; 234 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.35%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     162 -&gt; 281 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.40%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     166 [color=&quot;#0baa3f&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;doctest:1835:run\n41.83%\n(0.05%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/doctest.py&quot;];
+     166 -&gt; 41 [arrowsize=&quot;0.65&quot;, color=&quot;#0baa3f&quot;, fontcolor=&quot;#0baa3f&quot;, fontsize=&quot;10.00&quot;, label=&quot;41.73%\n1×&quot;, labeldistance=&quot;1.67&quot;, penwidth=&quot;1.67&quot;];
+     171 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:783:_addHandlerRef\n0.88%\n(0.44%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     171 -&gt; 16 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.24%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     171 -&gt; 18 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.12%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     172 [color=&quot;#0d0f73&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:1526:addHandler\n0.56%\n(0.24%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     172 -&gt; 16 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.15%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     172 -&gt; 18 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.12%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     173 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;nodes:191:listchain\n0.86%\n(0.61%)\n12×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/nodes.py&quot;];
+     180 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:766:_removeHandlerRef\n0.96%\n(0.47%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     180 -&gt; 16 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.15%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     180 -&gt; 18 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.12%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     181 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:1537:removeHandler\n0.76%\n(0.29%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     181 -&gt; 16 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.24%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     181 -&gt; 18 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.12%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 [color=&quot;#0c6089&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;~:0:&lt;method 'send' of 'generator' objects&gt;\n16.85%\n(0.39%)\n22×&quot;, tooltip=&quot;~&quot;];
+     186 -&gt; 59 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.30%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 214 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.54%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 215 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.51%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 216 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.62%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 217 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f74&quot;, fontcolor=&quot;#0d0f74&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.64%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 218 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.49%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 219 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.79%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 241 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1c77&quot;, fontcolor=&quot;#0d1c77&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.55%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 242 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1a77&quot;, fontcolor=&quot;#0d1a77&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.06%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     186 -&gt; 243 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1876&quot;, fontcolor=&quot;#0d1876&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.65%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     190 [color=&quot;#0d2c7c&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:520:readouterr\n7.13%\n(0.24%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     190 -&gt; 58 [arrowsize=&quot;0.35&quot;, color=&quot;#0d2b7b&quot;, fontcolor=&quot;#0d2b7b&quot;, fontsize=&quot;10.00&quot;, label=&quot;6.78%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     191 [color=&quot;#0d1675&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;&lt;doctest llama.files.healpix.skymap:1:&lt;module&gt;\n2.11%\n(0.37%)\n1×&quot;, tooltip=&quot;&lt;doctest llama.files.healpix.skymap.psf_gaussian[1]&gt;&quot;, target=_top, URL=&quot;https://multimessenger.science/llama.files.healpix.skymap.html#llama.files.healpix.skymap.psf_gaussian&quot;];
+     191 -&gt; 112 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.74%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     196 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;plugin:63:pytest_runtest_setup\n1.13%\n(0.15%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/pytest_remotedata/plugin.py&quot;];
+     200 [color=&quot;#0aab3c&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;doctest:228:runtest\n42.25%\n(0.12%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/doctest.py&quot;];
+     200 -&gt; 166 [arrowsize=&quot;0.65&quot;, color=&quot;#0baa3f&quot;, fontcolor=&quot;#0baa3f&quot;, fontsize=&quot;10.00&quot;, label=&quot;41.83%\n1×&quot;, labeldistance=&quot;1.67&quot;, penwidth=&quot;1.67&quot;];
+     201 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;doctest:352:__init__\n1.84%\n(0.05%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/doctest.py&quot;];
+     201 -&gt; 14 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.79%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     202 [color=&quot;#0b9e71&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;pdb:193:reset\n32.65%\n(0.07%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/pdb.py&quot;];
+     202 -&gt; 270 [arrowsize=&quot;0.57&quot;, color=&quot;#0b9d72&quot;, fontcolor=&quot;#0b9d72&quot;, fontsize=&quot;10.00&quot;, label=&quot;32.43%\n1×&quot;, labeldistance=&quot;1.30&quot;, penwidth=&quot;1.30&quot;];
+     214 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:643:pytest_runtest_setup\n1.64%\n(0.05%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     214 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.98%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     214 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.51%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     215 [color=&quot;#0d1475&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:648:pytest_runtest_call\n1.64%\n(0.07%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     215 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.98%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     215 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.49%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     216 [color=&quot;#0d1876&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:653:pytest_runtest_teardown\n2.67%\n(0.12%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     216 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.88%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     216 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.57%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     217 [color=&quot;#0d1675&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:658:pytest_runtest_logstart\n2.11%\n(0.07%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     217 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.27%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     217 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f74&quot;, fontcolor=&quot;#0d0f74&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.61%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     217 -&gt; 315 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.15%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     218 [color=&quot;#0d1375&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:665:pytest_runtest_logfinish\n1.52%\n(0.07%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     218 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.91%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     218 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.44%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     219 [color=&quot;#0d267a&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:670:pytest_runtest_logreport\n5.73%\n(0.24%)\n6×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     219 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1b77&quot;, fontcolor=&quot;#0d1b77&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.43%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     219 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.69%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     219 -&gt; 315 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.37%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     220 [color=&quot;#0d1a77&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:802:__init__\n3.09%\n(0.56%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     220 -&gt; 171 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.88%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     220 -&gt; 222 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1375&quot;, fontcolor=&quot;#0d1375&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.40%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     221 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:242:_register_at_fork_reinit_lock\n0.93%\n(0.29%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     221 -&gt; 16 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.17%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     221 -&gt; 18 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.12%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     222 [color=&quot;#0d1375&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:831:createLock\n1.40%\n(0.32%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     222 -&gt; 221 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.93%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     224 [color=&quot;#0d1b77&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;__init__:991:__init__\n3.36%\n(0.27%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/logging/__init__.py&quot;];
+     224 -&gt; 220 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1a77&quot;, fontcolor=&quot;#0d1a77&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.09%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     226 [color=&quot;#0d1676&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:262:catching_logs\n2.20%\n(0.78%)\n16×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     226 -&gt; 172 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.56%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     226 -&gt; 181 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.76%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     227 [color=&quot;#0d1d78&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:293:__init__\n3.80%\n(0.44%)\n8×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     227 -&gt; 224 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1b77&quot;, fontcolor=&quot;#0d1b77&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.36%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     230 [color=&quot;#0aac39&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:122:pytest_runtest_call\n42.79%\n(0.10%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     230 -&gt; 120 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.44%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     230 -&gt; 200 [arrowsize=&quot;0.65&quot;, color=&quot;#0aab3c&quot;, fontcolor=&quot;#0aab3c&quot;, fontsize=&quot;10.00&quot;, label=&quot;42.25%\n1×&quot;, labeldistance=&quot;1.69&quot;, penwidth=&quot;1.69&quot;];
+     234 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;doctest:483:_setup_fixtures\n1.35%\n(0.10%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/doctest.py&quot;];
+     234 -&gt; 22 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.00%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     236 [color=&quot;#0d4783&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;logging:605:_runtest_for\n12.39%\n(0.54%)\n16×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/logging.py&quot;];
+     236 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d2c7c&quot;, fontcolor=&quot;#0d2c7c&quot;, fontsize=&quot;10.00&quot;, label=&quot;7.13%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     236 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1f78&quot;, fontcolor=&quot;#0d1f78&quot;, fontsize=&quot;10.00&quot;, label=&quot;4.21%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     236 -&gt; 315 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.51%\n8×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     237 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:121:resume_global_capture\n1.22%\n(0.12%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     237 -&gt; 68 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.10%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     238 [color=&quot;#0d3c80&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:181:item_capture\n10.24%\n(0.49%)\n6×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     238 -&gt; 54 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1174&quot;, fontcolor=&quot;#0d1174&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.13%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     238 -&gt; 237 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.22%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     238 -&gt; 239 [arrowsize=&quot;0.35&quot;, color=&quot;#0d2d7c&quot;, fontcolor=&quot;#0d2d7c&quot;, fontsize=&quot;10.00&quot;, label=&quot;7.23%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     239 [color=&quot;#0d2d7c&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:141:read_global_capture\n7.23%\n(0.10%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     239 -&gt; 190 [arrowsize=&quot;0.35&quot;, color=&quot;#0d2c7c&quot;, fontcolor=&quot;#0d2c7c&quot;, fontsize=&quot;10.00&quot;, label=&quot;7.13%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     241 [color=&quot;#0d1f78&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:218:pytest_runtest_setup\n4.26%\n(0.05%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     241 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f74&quot;, fontcolor=&quot;#0d0f74&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.61%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     241 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1c77&quot;, fontcolor=&quot;#0d1c77&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.50%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     242 [color=&quot;#0d1c77&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:223:pytest_runtest_call\n3.67%\n(0.07%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     242 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.51%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     242 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1977&quot;, fontcolor=&quot;#0d1977&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.01%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     243 [color=&quot;#0d1a77&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:228:pytest_runtest_teardown\n3.13%\n(0.02%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     243 -&gt; 104 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.42%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     243 -&gt; 105 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1876&quot;, fontcolor=&quot;#0d1876&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.62%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     244 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;capture:488:suspend_capturing\n1.00%\n(0.15%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/capture.py&quot;];
+     244 -&gt; 29 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.86%\n6×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     245 [color=&quot;#0d1174&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;skipping:68:pytest_runtest_setup\n0.93%\n(0.12%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/skipping.py&quot;];
+     245 -&gt; 250 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.39%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     245 -&gt; 296 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0d73&quot;, fontcolor=&quot;#0d0d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.12%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     248 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;evaluate:30:__bool__\n0.91%\n(0.10%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/mark/evaluate.py&quot;];
+     248 -&gt; 249 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.81%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     249 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;evaluate:39:_get_marks\n1.27%\n(0.39%)\n5×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/mark/evaluate.py&quot;];
+     249 -&gt; 296 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.76%\n5×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     250 [color=&quot;#0d0f74&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;evaluate:48:istrue\n0.61%\n(0.02%)\n2×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/mark/evaluate.py&quot;];
+     250 -&gt; 70 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.59%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     255 [color=&quot;#0d1675&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;reports:261:from_item_and_call\n2.13%\n(0.49%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/reports.py&quot;];
+     255 -&gt; 94 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.22%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     256 [color=&quot;#0d1676&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:249:pytest_runtest_makereport\n2.23%\n(0.10%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     256 -&gt; 255 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1675&quot;, fontcolor=&quot;#0d1675&quot;, fontsize=&quot;10.00&quot;, label=&quot;2.13%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     259 [color=&quot;#fe0400&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:79:pytest_runtest_protocol\n99.58%\n(0.27%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     259 -&gt; 72 [arrowsize=&quot;0.96&quot;, color=&quot;#f44a02&quot;, fontcolor=&quot;#f44a02&quot;, fontsize=&quot;10.00&quot;, label=&quot;92.51%\n1×&quot;, labeldistance=&quot;3.70&quot;, penwidth=&quot;3.70&quot;];
+     259 -&gt; 160 [arrowsize=&quot;0.35&quot;, color=&quot;#0d287b&quot;, fontcolor=&quot;#0d287b&quot;, fontsize=&quot;10.00&quot;, label=&quot;6.27%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     259 -&gt; 291 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0e73&quot;, fontcolor=&quot;#0d0e73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.29%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     260 [color=&quot;#0d1d78&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:117:pytest_runtest_setup\n3.87%\n(0.02%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     260 -&gt; 73 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1b77&quot;, fontcolor=&quot;#0d1b77&quot;, fontsize=&quot;10.00&quot;, label=&quot;3.31%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     260 -&gt; 120 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.54%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     261 [color=&quot;#0d1375&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:144:pytest_runtest_teardown\n1.52%\n(0.07%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     261 -&gt; 120 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.76%\n2×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     261 -&gt; 268 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.69%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     263 [color=&quot;#f34e02&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:181:call_and_report\n92.14%\n(0.56%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     263 -&gt; 60 [arrowsize=&quot;0.85&quot;, color=&quot;#c0d606&quot;, fontcolor=&quot;#c0d606&quot;, fontsize=&quot;10.00&quot;, label=&quot;72.40%\n3×&quot;, labeldistance=&quot;2.90&quot;, penwidth=&quot;2.90&quot;];
+     263 -&gt; 160 [arrowsize=&quot;0.43&quot;, color=&quot;#0c6b8b&quot;, fontcolor=&quot;#0c6b8b&quot;, fontsize=&quot;10.00&quot;, label=&quot;18.61%\n6×&quot;, labeldistance=&quot;0.74&quot;, penwidth=&quot;0.74&quot;];
+     263 -&gt; 291 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.54%\n3×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     265 [color=&quot;#b1d306&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:207:&lt;lambda&gt;\n70.81%\n(0.20%)\n3×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     265 -&gt; 160 [arrowsize=&quot;0.84&quot;, color=&quot;#afd306&quot;, fontcolor=&quot;#afd306&quot;, fontsize=&quot;10.00&quot;, label=&quot;70.61%\n3×&quot;, labeldistance=&quot;2.82&quot;, penwidth=&quot;2.82&quot;];
+     268 [color=&quot;#0d1074&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;runner:329:teardown_exact\n0.69%\n(0.05%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/runner.py&quot;];
+     268 -&gt; 97 [arrowsize=&quot;0.35&quot;, color=&quot;#0d0f73&quot;, fontcolor=&quot;#0d0f73&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.59%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     270 [color=&quot;#0b9d72&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;bdb:54:reset\n32.43%\n(0.17%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/bdb.py&quot;];
+     270 -&gt; 27 [arrowsize=&quot;0.57&quot;, color=&quot;#0b9d73&quot;, fontcolor=&quot;#0b9d73&quot;, fontsize=&quot;10.00&quot;, label=&quot;32.21%\n1×&quot;, labeldistance=&quot;1.29&quot;, penwidth=&quot;1.29&quot;];
+     279 [color=&quot;#0d1275&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;fixtures:484:_get_active_fixturedef\n1.37%\n(0.07%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/fixtures.py&quot;];
+     279 -&gt; 62 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.88%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     281 [color=&quot;#0d1375&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;fixtures:474:getfixturevalue\n1.40%\n(0.02%)\n1×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/fixtures.py&quot;];
+     281 -&gt; 279 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1275&quot;, fontcolor=&quot;#0d1275&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.37%\n1×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     291 [color=&quot;#0d1275&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;nodes:136:ihook\n1.37%\n(0.22%)\n9×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/nodes.py&quot;];
+     291 -&gt; 146 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.15%\n9×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     295 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;nodes:234:iter_markers_with_node\n1.20%\n(0.47%)\n10×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/nodes.py&quot;];
+     295 -&gt; 173 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1074&quot;, fontcolor=&quot;#0d1074&quot;, fontsize=&quot;10.00&quot;, label=&quot;0.73%\n10×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     296 [color=&quot;#0d1274&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;nodes:232:&lt;genexpr&gt;\n1.35%\n(0.15%)\n10×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/_pytest/nodes.py&quot;];
+     296 -&gt; 295 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1274&quot;, fontcolor=&quot;#0d1274&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.20%\n10×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+     303 [color=&quot;#f54002&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;manager:84:_hookexec\n93.58%\n(0.37%)\n14×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/site-packages/pluggy/manager.py&quot;];
+     303 -&gt; 154 [arrowsize=&quot;0.97&quot;, color=&quot;#f54302&quot;, fontcolor=&quot;#f54302&quot;, fontsize=&quot;10.00&quot;, label=&quot;93.31%\n11×&quot;, labeldistance=&quot;3.73&quot;, penwidth=&quot;3.73&quot;];
+     315 [color=&quot;#0d1676&quot;, fontcolor=&quot;#ffffff&quot;, fontsize=&quot;10.00&quot;, label=&quot;contextlib:237:helper\n2.25%\n(0.56%)\n27×&quot;, tooltip=&quot;/opt/anaconda/lib/python3.7/contextlib.py&quot;];
+     315 -&gt; 65 [arrowsize=&quot;0.35&quot;, color=&quot;#0d1475&quot;, fontcolor=&quot;#0d1475&quot;, fontsize=&quot;10.00&quot;, label=&quot;1.69%\n27×&quot;, labeldistance=&quot;0.50&quot;, penwidth=&quot;0.50&quot;];
+}</p></object></div>
+<p class="caption"><span class="caption-text">Profiling result for llama.files.healpix.skymap.psf_gaussian. Click on LLAMA functions in the above plot to go to documentation for that function. <a href="_images/graphviz-be16bfcc1b92bc1b4e716f0d21946c8a7d343f68.svg">View full size profile graph</a>.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="test-profiling-llama.files.healpix.skymap.HEALPixSkyMap.html" class="btn btn-neutral float-right" title="llama.files.healpix.skymap.HEALPixSkyMap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="test-profiling-llama.files.healpix.psf.Psf.html" class="btn btn-neutral float-left" title="llama.files.healpix.psf.Psf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2019, Stefan Trklja Countryman, Kenneth Rainer Corley, Doğa Veske
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

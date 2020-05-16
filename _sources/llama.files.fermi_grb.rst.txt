@@ -1,0 +1,7 @@
+llama.files.fermi\_grb module
+=============================
+
+.. automodule:: llama.files.fermi_grb
+   :members:
+   :undoc-members:
+   :show-inheritance:

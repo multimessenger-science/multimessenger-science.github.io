@@ -1,0 +1,1556 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) 3.5.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="http://gwhen.comoperators.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developer Installation" href="developers.html" />
+    <link rel="prev" title="Using the Docker Images" href="readme.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Info for Reviewers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html">Introduction for Reviewers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#purpose">Purpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#software-documentation">Software Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#review-wikis">Review Wikis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#papers">Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#testing-on-review-server">Testing on Review Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#fake-cases">Fake cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#running-fake-cases">Running Fake Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#contents-of-the-output-folder">Contents of the Output Folder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#main-outputs">Main Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#auxilliary-outputs">Auxilliary Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#real-cases">Real cases</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Using the Docker Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-cloud">Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#getting-llama-images">Getting LLAMA Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#choosing-the-image">Choosing the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#getting-updating-the-image">Getting/Updating the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#removing-images">Removing Images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#running-a-llama-container">Running a LLAMA Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#mounting-directories">Mounting Directories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-macos-linux">Mounting in MacOS/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-windows">Mounting in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#out-of-memory-disk">Out of Memory/Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#running-on-habanero">Running on Habanero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#interactive-habanero-jobs">Interactive Habanero Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-hub-authentication-with-singularity">Docker Hub Authentication with Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#fixing-singularity-cache-on-habanero">Fixing Singularity Cache on Habanero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-singularity-module">Load Singularity Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#pull-llama-image">Pull LLAMA Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#local-installation">Local Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-conda">Installing Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#setting-up-a-production-server">Setting Up a Production Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker">Install Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker-compose">Install Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#log-in-to-docker-cloud">Log in to Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#get-docker-compose-yml">Get <cite>docker-compose.yml</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#starting-llama-production-app">Starting LLAMA Production App</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Operators' Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#how-data-is-organized">How Data is Organized</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#event-directories">Event Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gcn-notice-archive">GCN Notice Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#log-files">Log Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#running-the-pipeline-automatically">Running the Pipeline Automatically</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#running-the-pipeline-manually">Running the Pipeline Manually</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-defaults-with-skymap-info">Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#sensitivity-and-background-studies-o3b">Sensitivity and Background Studies (O3B)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#sensitivity-and-background-studies-pre-o3b">Sensitivity and Background Studies (pre-O3B)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#editing-your-bashrc">Editing your .bashrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-digitalocean-api">Using the DigitalOcean API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#llama-scripts">LLAMA Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-your-ssh-keys-to-the-droplets">Adding Your SSH Keys to the Droplets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-requirements">Installing Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#digitalocean-administration-examples">DigitalOcean Administration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#preparing-a-server">Preparing a Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#server-preparation-overview">Server Preparation Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#moving-data-into-place">Moving Data into Place</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-analysis-in-parallel">Running the Analysis in Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-the-servers">Starting the Servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-analysis">Running the Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#collecting-results">Collecting Results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#obtaining-the-llama-source-code">Obtaining the LLAMA Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#using-the-docker-dev-image">Using the Docker Dev Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#list-bin-docker-commands">List <code class="docutils literal notranslate"><span class="pre">bin/docker</span></code> Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#getting-the-latest-development-image">Getting the Latest Development Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#starting-a-dev-container">Starting a Dev Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#sketch-of-a-bug-fix">Sketch of a Bug Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#destroying-your-dev-container">Destroying your Dev Container</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html#previous-llama-versions">Previous LLAMA Versions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html">Developer Installation (Pre-O3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-llama-dependencies">Installing LLAMA Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#obtaining-the-llama-software-pre-o3">Obtaining the LLAMA Software (pre-O3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-configuration-files">Setting up Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-git-hooks">Install git Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-llama-dependencies">Install LLAMA dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-ligo-software">Install LIGO Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software">Install IceCube Offline Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-icecube-dependencies">Installing IceCube Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#entering-icecube-credentials">Entering IceCube Credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-matlab">Install MATLAB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#configuration-and-authentication">Configuration and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#generate-ssh-keys">Generate SSH Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gmail-authentication">GMail Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ligo-authentication">LIGO Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-ssl-certificates">Setting Up SSL Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-passwords-for-run-summary-pages">Setting Up Passwords for Run Summary Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#external-authentication">External Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#bitbucket-authentication">Bitbucket Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#git-ligo-org-authentication">git.ligo.org Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#twilio-authentication">Twilio Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gw-astronomy-authentication">GW Astronomy Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gcn-authentication">GCN Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#turning-on-the-pipeline">Turning on the Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#subscribing-to-lvalert-nodes">Subscribing to LVAlert Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#starting-pipeline-daemons">Starting Pipeline Daemons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#testing-lvalert">Testing LVAlert</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#viewing-active-processes">Viewing Active Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#checking-pipeline-logs">Checking Pipeline Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#killing-pipeline-daemons">Killing Pipeline Daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#deprecated-matlab-logs">Deprecated: MATLAB Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#developing-for-llama">Developing for LLAMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction-to-development">Introduction to Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#structure-of-the-pipeline">Structure of the Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#adding-functionality">Adding Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#developer-conventions-and-best-practices">Developer Conventions and Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#data-format-conventions">Data Format Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#coding-best-practices">Coding Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#migrating-to-conda">Migrating to Conda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#ligo-wiki-documentation">LIGO Wiki Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-ligo-software-via-conda">Installing LIGO Software via Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#creating-a-new-user">Creating a new user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#out-of-memory">Out of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#matlab-installation-troubleshooting">MATLAB Installation Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software-with-root">Install IceCube Offline Software with Root</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#logging-in-to-a-remote-server-using-ssh">Logging in to a Remote Server Using SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#getting-llama-software-onto-a-remote-server">Getting LLAMA Software onto a Remote Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ssh-with-x11-forwarding">SSH with X11 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#using-llama">Using LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#documenting-llama">Documenting LLAMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-to-gwhen-com-website">Publishing to gwhen.com Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-readme-to-git-host">Publishing Readme to Git Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-pdfs">Publishing PDFs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-html-web-pages">Publishing HTML Web Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-llama">Troubleshooting LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-the-review-server">Setting Up the Review Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#provisioning-the-review-server">Provisioning the review server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#running-the-review">Running the Review</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ideas-for-the-future">Ideas for the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#cvmfs">CVMFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#advantages">Advantages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#disadvantages">Disadvantages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Bibliography</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Academic Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#low-latency-algorithm-for-multi-messenger-astrophysics-llama-with-gravitational-wave-and-high-energy-neutrino-candidates">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#bayesian-multi-messenger-search-method-for-common-sources-of-gravitational-waves-and-high-energy-neutrinos">Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.html">llama package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.batch.html">llama.batch package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.classes.html">llama.classes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.cli.html">llama.cli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.com.html">llama.com package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.dl.html">llama.com.dl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.do.html">llama.com.do package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.email.html">llama.com.email package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.gracedb.html">llama.com.gracedb package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.s3.html">llama.com.s3 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.slack.html">llama.com.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.utils.html">llama.com.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.detectors.html">llama.detectors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.detectors.html#available-detectors">Available Detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.dev.html">llama.dev package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.background.html">llama.dev.background package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.pvalue.html">llama.dev.background.pvalue package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table.html">llama.dev.background.table package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table_singles.html">llama.dev.background.table_singles package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.clean.html">llama.dev.clean package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.data.html">llama.dev.data package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.data.i3.html">llama.dev.data.i3 package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.docs.html">llama.dev.docs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.docs.cli.html">llama.dev.docs.cli package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.dv.html">llama.dev.dv package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.log.html">llama.dev.log package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.log.lvalert.html">llama.dev.log.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.upload.html">llama.dev.upload package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.event.html">llama.event package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.filehandler.html">llama.filehandler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.classes.html">llama.filehandler.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.mixins.html">llama.filehandler.mixins module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.files.html">llama.files package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_significance.html">llama.files.coinc_significance package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.opa.html">llama.files.coinc_significance.opa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.subthreshold.html">llama.files.coinc_significance.subthreshold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.utils.html">llama.files.coinc_significance.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.healpix.html">llama.files.healpix package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.plotters.html">llama.files.healpix.plotters module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.psf.html">llama.files.healpix.psf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.skymap.html">llama.files.healpix.skymap module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.utils.html">llama.files.healpix.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.i3.html">llama.files.i3 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.json.html">llama.files.i3.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.realtime_tools_stubs.html">llama.files.i3.realtime_tools_stubs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.tex.html">llama.files.i3.tex module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.txt.html">llama.files.i3.txt module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.utils.html">llama.files.i3.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap.html">llama.files.lvc_skymap package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.skymap_info.html">llama.files.skymap_info package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.cli.html">llama.files.skymap_info.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.utils.html">llama.files.skymap_info.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.slack.html">llama.files.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.advok.html">llama.files.advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_analyses.html">llama.files.coinc_analyses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_o2.html">llama.files.coinc_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_plots.html">llama.files.coinc_plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.fermi_grb.html">llama.files.fermi_grb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gcn_draft_o2.html">llama.files.gcn_draft_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gracedb.html">llama.files.gracedb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gwastro.html">llama.files.gwastro module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_advok.html">llama.files.lvalert_advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_json.html">llama.files.lvalert_json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_mat.html">llama.files.lvc_skymap_mat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_txt.html">llama.files.lvc_skymap_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.matlab.html">llama.files.matlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.sms_receipts.html">llama.files.sms_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.team_receipts.html">llama.files.team_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.timing_checks.html">llama.files.timing_checks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.uw_summary.html">llama.files.uw_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.ztf_trigger_list.html">llama.files.ztf_trigger_list module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.flags.html">llama.flags package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.flags.cli.html">llama.flags.cli module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.install.html">llama.install package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.install.manifest.html">llama.install.manifest module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.intent.html">llama.intent module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.io.html">llama.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.default.html">llama.io.default package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.io.default.generate.html">llama.io.default.generate module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.classes.html">llama.io.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.registry.html">llama.io.registry module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.listen.html">llama.listen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.gcn.html">llama.listen.gcn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.lvalert.html">llama.listen.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.lock.html">llama.lock module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.meta.html">llama.meta module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.pipeline.html">llama.pipeline module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.pipeline.html#pipelines">Pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.poll.html">llama.poll package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.poll.gracedb.html">llama.poll.gracedb package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.run.html">llama.run package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.serve.html">llama.serve package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.gui.html">llama.serve.gui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.wsgi.html">llama.serve.gui.wsgi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.domain.html">llama.serve.gui.domain module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.jupyter.html">llama.serve.jupyter package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.logs.html">llama.serve.jupyter.logs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.utils.html">llama.serve.jupyter.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.test.html">llama.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_files.html">llama.test.test_files package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_listeners.html">llama.test.test_listeners package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.test.test_listeners.test_gcn.html">llama.test.test_listeners.test_gcn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.classes.html">llama.test.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_bin.html">llama.test.test_bin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_filehandler.html">llama.test.test_filehandler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_pipeline.html">llama.test.test_pipeline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_utils.html">llama.test.test_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.utils.html">llama.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.version.html">llama.version module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.versioning.html">llama.versioning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.vetoes.html">llama.vetoes module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Reports</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/pytest/">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/coverage/">Code Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiling.html">Performance Profiling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-combined.html">Combined Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-combined.html#combined">combined</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-unit.html">Unit Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-default-pipeline-consistency">test_default_pipeline_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-filehandler-definition-consistency">test_filehandler_definition_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-make-grid">test_get_grid_make_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-north-pole">test_get_grid_north_pole</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-pipeline-parser">test_llama_pipeline_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-run-parser">test_llama_run_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize">test_memoize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-class">test_memoize_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-helper">test_memoize_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-mjd-interval">test_mjd_interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-rotate-angs2vec">test_rotate_angs2vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-write-gzip">test_write_gzip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.html">Doctests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.com.html">llama.com</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.com.gracedb.html">llama.com.gracedb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.com.gracedb.html#llama-com-gracedb-gracedb">llama.com.gracedb.GraceDb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.dev.html">llama.dev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.data.html">llama.dev.data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.data.i3.html">llama.dev.data.i3</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.upload.html">llama.dev.upload</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.upload.html#llama-dev-upload-upload-and-get-manifest">llama.dev.upload.upload_and_get_manifest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.filehandler.html">llama.filehandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html">llama.filehandler.JSONFile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html#llama-filehandler-jsonfile-checksum">llama.filehandler.JSONFile.checksum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.files.html">llama.files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html">llama.files.fermi_grb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html#llama-files-fermi-grb-get-grbs-from-csv">llama.files.fermi_grb.get_grbs_from_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.healpix.html">llama.files.healpix</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.HEALPixSkyMapFileHandler.html">llama.files.healpix.HEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.LvcHEALPixSkyMapFileHandler.html">llama.files.healpix.LvcHEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.psf.html">llama.files.healpix.psf</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.html">llama.files.healpix.skymap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.utils.html">llama.files.healpix.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.i3.html">llama.files.i3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.json.html">llama.files.i3.json</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.utils.html">llama.files.i3.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html#llama-files-lvc-gcn-xml-parse-ivorn">llama.files.lvc_gcn_xml.parse_ivorn</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.html">llama.files.lvc_skymap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.matlab.html">llama.files.matlab</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.matlab.html#llama-files-matlab-matlab-eval">llama.files.matlab.matlab_eval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.utils.html">llama.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-param">llama.utils.get_voevent_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-time">llama.utils.get_voevent_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-parameter-factory">llama.utils.parameter_factory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2angs">llama.utils.rotate_angs2angs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2vec">llama.utils.rotate_angs2vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-gzip">llama.utils.write_gzip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-to-zip">llama.utils.write_to_zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Source Code Plots</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command Line Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span></code> Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.batch.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">batch</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#logging settings">logging settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#simulation configuration">simulation configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.com.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.do.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.do.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">gracedb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.slack.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">slack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.dev.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.background.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.clean.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">clean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.data.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.docs.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span> <span class="pre">cli</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.dv.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.log.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.upload.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.event.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">event</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.files.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#output formats (specify at least 1)">output formats (specify at least 1)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.flags.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">flags</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.install.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">install</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.listen.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.poll.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span> <span class="pre">gracedb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.run.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.serve.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.gui.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">gui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">jupyter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/operators.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This guide covers the operation of the pipeline, both in production and for the
+purpose of running sensitivity studies (simulated background and signal events
+for various populations). It also describes troubleshooting scenarios
+and strategies.</p>
+</div>
+<div class="section" id="how-data-is-organized">
+<h1>How Data is Organized<a class="headerlink" href="#how-data-is-organized" title="Permalink to this headline">¶</a></h1>
+<p>Persistent data goes into <code class="docutils literal notranslate"><span class="pre">$XDG_DATA_HOME/llama</span></code> or, if <code class="docutils literal notranslate"><span class="pre">$XDG_DATA_HOME</span></code> is
+not defined, into <code class="docutils literal notranslate"><span class="pre">~/.local/share/llama</span></code>. This includes analysis outputs,
+archived alerts, and log files. This directory will be called the “output
+directory” or <code class="docutils literal notranslate"><span class="pre">$OUTPUT_DIR</span></code> in this section.</p>
+<div class="section" id="event-directories">
+<h2>Event Directories<a class="headerlink" href="#event-directories" title="Permalink to this headline">¶</a></h2>
+<p>Events each get their own directory whose names are their
+respective LIGO/Virgo GraceIDs (i.e. their unique event IDs on GraceDB). Event
+directories for the current LIGO/Virgo run are all held in
+<code class="docutils literal notranslate"><span class="pre">$OUTPUT_DIR/current_run</span></code>. Event directories for old events/manual runs, if
+they are saved, will be in different run directories, each of which should be
+located in <code class="docutils literal notranslate"><span class="pre">$OUTPUT_DIR/past_runs</span></code>, so that, for example, GW170817, the
+world’s first BNS merger detection, can be found on the current LLAMA analysis
+server in <code class="docutils literal notranslate"><span class="pre">~/.local/share/llama/past_runs/events-o2/G298048</span></code>.</p>
+</div>
+<div class="section" id="gcn-notice-archive">
+<h2>GCN Notice Archive<a class="headerlink" href="#gcn-notice-archive" title="Permalink to this headline">¶</a></h2>
+<p>All GCN notices heard by the server while <code class="docutils literal notranslate"><span class="pre">gcnd</span></code> is running will, by default,
+be archived to <code class="docutils literal notranslate"><span class="pre">$OUTPUT_DIR/gcn</span></code> (this includes non-LIGO/Virgo triggers). If
+you wish to view these alerts, you can look in this directory, which contains
+subdirectories <code class="docutils literal notranslate"><span class="pre">YEAR-MONTH/DAY</span></code> (to avoid having too many files in a single
+directory).</p>
+</div>
+<div class="section" id="log-files">
+<h2>Log Files<a class="headerlink" href="#log-files" title="Permalink to this headline">¶</a></h2>
+<p>Logs are stored in <code class="docutils literal notranslate"><span class="pre">$OUTPUT_DIR/logs</span></code>. While formats and contents for
+different log files differ based on which program created them, they are
+generally named after the script that created them. The LLAMA update daemon,
+<code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code>, writes to logfiles with <code class="docutils literal notranslate"><span class="pre">llamad</span></code> in their names; the GCN
+listener, <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code>, writes to <code class="docutils literal notranslate"><span class="pre">gcn.log</span></code>. It’s often useful to
+know which log file was written to most recently (e.g. to find out whether the
+script you ran is faithfully logging output as expected); you can do this with
+<code class="docutils literal notranslate"><span class="pre">ls</span> <span class="pre">-ltr</span></code>.</p>
+</div>
+</div>
+<div class="section" id="running-the-pipeline-automatically">
+<h1>Running the Pipeline Automatically<a class="headerlink" href="#running-the-pipeline-automatically" title="Permalink to this headline">¶</a></h1>
+<p><em>This section will be written later.</em></p>
+</div>
+<div class="section" id="running-the-pipeline-manually">
+<h1>Running the Pipeline Manually<a class="headerlink" href="#running-the-pipeline-manually" title="Permalink to this headline">¶</a></h1>
+<p>Several crucial files can be generated manually (that is to say, without
+relying on automated trigger acquisition and pipeline execution). This section
+describes common usage scenarios.</p>
+<p><code class="docutils literal notranslate"><span class="pre">skymap_info</span></code> is a command line script for creating new event directories
+along with a new <code class="docutils literal notranslate"><span class="pre">skymap_info.json</span></code> file describing the gravitational wave
+event and specifying the GW skymap that is to be used. Creating this file is
+the first step in any GW multimessenger analysis in LLAMA (see the
+documentation for <code class="docutils literal notranslate"><span class="pre">llama.files.skymap_info.SkymapInfo</span></code> for more
+information).</p>
+<p>Ordinarily this file is generated by one of the listener scripts (e.g. the ones
+listening for new LVAlerts from LIGO/Virgo’s GraceDB or the GCN Notice
+listener). The <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code> script can be used to generate this file
+manually, however, using either the event’s GraceID (it’s unique ID on GraceDB)
+or using a VOEvent XML file (as generated on GraceDB and distributed as a GCN
+Notice). There are many options associated with making a new
+<code class="docutils literal notranslate"><span class="pre">skymap_info.json</span></code> file (run <code class="docutils literal notranslate"><span class="pre">skymap_info</span> <span class="pre">-h</span></code> to see full documentation of
+the command line interface), but by default, all you need to specify is either
+the GraceID or a VOEvent file and everything else will be inferred.</p>
+<div class="section" id="using-defaults-with-skymap-info">
+<h2>Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code><a class="headerlink" href="#using-defaults-with-skymap-info" title="Permalink to this headline">¶</a></h2>
+<p>In the simplest case, you can create a new event and its corresponding
+<code class="docutils literal notranslate"><span class="pre">skymap_info.json</span></code> file using an existing VOEvent with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>skymap_info --voevent path/to/voevent.xml
+</pre></div>
+</div>
+<p>or using the event’s GraceID (and, implicitly, the most recently uploaded
+skymap) with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>skymap_info --graceid GRACEID
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">GRACEID</span></code> can be either a conventional GraceID (starting with “G” for
+real events, “M” for mock events) or a superevent GracceID (starting with “S”
+for real superevents, “MS” for mock superevents). In most cases, you will want
+to run with a superevent GraceID, since this is the official public data
+product released by LIGO/Virgo.</p>
+<p>Whether you use <code class="docutils literal notranslate"><span class="pre">--voevent</span></code> or <code class="docutils literal notranslate"><span class="pre">-graceid</span></code>, you will now be prompted to
+specify whether this event is a real event or a test event. <strong>Please answer
+this question carefully, as it determines whether results will be automatically
+published to collaborators.</strong> If it is a real event, data products will go out
+to collaborators (via Slack and possibly other methods) when you run <code class="docutils literal notranslate"><span class="pre">llama</span>
+<span class="pre">run</span></code> to update the rest of the contents of the directory. This is the same
+behavior you’d get from the pipeline when it’s automatically triggering off of
+real data. Of course, if you’re looking at a real event, this is a good thing,
+so don’t be shy about saying <code class="docutils literal notranslate"><span class="pre">YES</span></code>; just make sure you answer <em>correctly</em> so
+as not to bother or confuse people needlessly.</p>
+</div>
+</div>
+<div class="section" id="sensitivity-and-background-studies-o3b">
+<h1>Sensitivity and Background Studies (O3B)<a class="headerlink" href="#sensitivity-and-background-studies-o3b" title="Permalink to this headline">¶</a></h1>
+<p><em>These instructions apply starting in the second half of O3 (O3B). See the next
+section for pre-O3B instructions. You might still want to read those
+instructions for a more detailed overview of how tools work: this section is
+currently underdeveloped.</em></p>
+<p>Make sure that all data is available on DigitalOcean Spaces and is organized
+into directories by GraceID and background neutrino list names. For mid-O3
+subthreshold runs, this data is located in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Contents at run time:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                       <span class="n">DIR</span>   <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span><span class="n">bklist</span><span class="o">/</span>
+                       <span class="n">DIR</span>   <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span><span class="n">superevents</span><span class="o">/</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">04</span> <span class="mi">00</span><span class="p">:</span><span class="mi">45</span>   <span class="mi">1088890</span>   <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span><span class="n">bklist_names</span><span class="o">.</span><span class="n">txt</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">26</span> <span class="mi">20</span><span class="p">:</span><span class="mi">32</span>     <span class="mi">30656</span>   <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span><span class="n">missing_event_ids_cwb</span><span class="o">.</span><span class="n">npy</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">04</span> <span class="mi">00</span><span class="p">:</span><span class="mi">30</span>        <span class="mi">27</span>   <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span><span class="n">placeholder</span><span class="o">.</span><span class="n">json</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">03</span> <span class="mi">23</span><span class="p">:</span><span class="mi">58</span>       <span class="mi">244</span>   <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span><span class="n">skymap_info</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">template</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">04</span> <span class="mi">00</span><span class="p">:</span><span class="mi">44</span>     <span class="mi">67832</span>   <span class="n">s3</span><span class="p">:</span><span class="o">//</span><span class="n">llama</span><span class="o">/</span><span class="n">llama</span><span class="o">/</span><span class="n">artifacts</span><span class="o">/</span><span class="n">mid</span><span class="o">-</span><span class="n">o3</span><span class="o">-</span><span class="n">subthreshold</span><span class="o">-</span><span class="n">background</span><span class="o">/</span><span class="n">superevents</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>In principle, this can be run anywhere that has an internet connection,
+supports Docker (or has LLAMA dependencies and library installed), and can
+provide 8GB of memory for peak usage. These instructions assume you are using
+DigitalOcean droplets provisioned from a seed image using <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code>.</p>
+<p>Start by getting a running server with <code class="docutils literal notranslate"><span class="pre">llama</span></code> installed under
+<code class="docutils literal notranslate"><span class="pre">~/dev/multimessenger-pipeline</span></code>. Make sure it doesn’t need any extra
+<code class="docutils literal notranslate"><span class="pre">$PATH</span></code> configuration in order to work. Create a snapshot of this server.
+Let’s say it’s <code class="docutils literal notranslate"><span class="pre">mid-o3-subthreshold</span></code> for the sake of provisioning a bunch of
+servers for the parallel runs.</p>
+<p>Follow the instructions in the pre-O3B section below to set things up, then
+launch with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv batch
+</pre></div>
+</div>
+<p>This will run <code class="docutils literal notranslate"><span class="pre">bin/mid-o3-subthreshold-background-event-runner</span></code> on all
+servers whose names start with <code class="docutils literal notranslate"><span class="pre">llama-</span></code>. Make sure code is running on those
+servers with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv ls-procs
+</pre></div>
+</div>
+<p>Fetch results from S3 using <code class="docutils literal notranslate"><span class="pre">s3cmd</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>s3cmd get --recursive <span class="se">\</span>
+    s3://llama/llama/artifacts/mid-o3-subthreshold-background/mid-o3-subthreshold-background/ <span class="se">\</span>
+    .
+</pre></div>
+</div>
+<p>Finally, collate files into a results table as described below and put them
+into the background distribution file used for calculating p-values.</p>
+</div>
+<div class="section" id="sensitivity-and-background-studies-pre-o3b">
+<h1>Sensitivity and Background Studies (pre-O3B)<a class="headerlink" href="#sensitivity-and-background-studies-pre-o3b" title="Permalink to this headline">¶</a></h1>
+<p>At time of writing, LLAMA uses <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> hosting for sensitivity studies.
+There are a set of scripts used for setting up a large (~100) number of
+identical DigitalOcean “droplets” (virtual private server instances), getting
+analyses running on them, collating the outputs, and then spinning down those
+droplets.</p>
+<p>Before you can spin up any servers, you’ll need to have someone on the GECo
+<a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> account invite you to join the team. Visit the <a class="reference external" href="https://cloud.digitalocean.com/account/team">team management
+page</a> and invite the new user
+to the team. You will need to create a <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> account using the email
+provided (or log in if you already have one), at which point you will be
+able to switch users to the GECo team account by clicking the profile button in
+the top right corner of the <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> web interface.</p>
+<p>You’ll now need an API token in order to be able to access DigitalOcean using
+LLAMA’s utility scripts (i.e. without using the web interface). <strong>Your access
+token is basically like a password, and you should treat it with EXTREME
+care.</strong> If someone gets access to your token, they’ll be able to rack up
+charges on the team server (i.e. by mining crypto currency or something) and
+even delete our data. Ideally, once you create your token, you should only
+store it on the computer that will be using it, and you should make sure not to
+put copies anywhere where they can be abused, e.g. a git repository (a <strong>very</strong>
+common mistake!!). You should also delete old tokens as long as they are not
+being used any more or if you have the slightest suspicion that any have been
+compromised.</p>
+<p>Go to the <a class="reference external" href="https://cloud.digitalocean.com/account/api">API token page</a> and
+create a new token, making sure you check the box for <code class="docutils literal notranslate"><span class="pre">write</span></code> access. (You’ll
+only have one chance to copy this token down; if you accidentally navigate away
+from the page, you’ll just need to delete that token and generate a new one.)
+Now, you can add this token to your command line environment by sticking the
+following line somewhere in your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> (or <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> for MacOS):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DIGITALOCEAN</span><span class="o">=</span>&lt;YOUR-TOKEN-HERE&gt;
+</pre></div>
+</div>
+<p>Where, of course, <code class="docutils literal notranslate"><span class="pre">&lt;YOUR-TOKEN-HERE&gt;</span></code> is replaced with the API token you just
+generated. Close and reopen your shell window to make sure that this
+environmental variable is loaded. You can check that it’s loaded by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span> <span class="nv">$DIGITALOCEAN</span>
+</pre></div>
+</div>
+<p>which should print the API token you just created. If it didn’t, make sure you
+edited the correct file (again, MacOS uses <code class="docutils literal notranslate"><span class="pre">~/.bash_profile</span></code>, Linux uses
+<code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code>), that you wrote the <code class="docutils literal notranslate"><span class="pre">export</span></code> command above (with <em>no spaces
+around the</em> <code class="docutils literal notranslate"><span class="pre">=</span></code> <em>sign!</em>), and that you restarted your <code class="docutils literal notranslate"><span class="pre">bash</span></code> shell after
+saving so that the startup script loaded the new variable.</p>
+<div class="section" id="editing-your-bashrc">
+<h2>Editing your .bashrc<a class="headerlink" href="#editing-your-bashrc" title="Permalink to this headline">¶</a></h2>
+<p><em>Note: your</em> <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> <em>or</em> <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> <em>(on MacOS) files are scripts
+that run whenever</em> <code class="docutils literal notranslate"><span class="pre">bash</span></code> <em>starts up. They let you do things like set
+environmental variables (what we’re doing now) and other useful things to
+customize your shell and make it more useful. You can edit your</em> <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code>
+<em>or</em> <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> <em>with:</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># On Linux</span>
+nano ~/.bashrc
+
+<span class="c1"># On MacOS</span>
+nano ~/.bash_profile
+</pre></div>
+</div>
+<p><em>and then add the same</em> <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">DIGITALOCEAN=&lt;YOUR-TOKEN-HERE&gt;</span></code> <em>code
+mentioned above.</em></p>
+<div class="section" id="using-the-digitalocean-api">
+<h3>Using the DigitalOcean API<a class="headerlink" href="#using-the-digitalocean-api" title="Permalink to this headline">¶</a></h3>
+<p>You can use the command-line utility <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code> for interacting with the
+DigitalOcean API through the command line (our scripts for running sensitivity
+studies rely on this script). If you have the LLAMA pipeline installed, you can
+find this script in <code class="docutils literal notranslate"><span class="pre">&lt;REPODIR&gt;/bin</span></code> (where <code class="docutils literal notranslate"><span class="pre">&lt;REPODIR&gt;</span></code> is the location of
+the LLAMA software directory).</p>
+<p>Since the scripts we are using are mostly located in <code class="docutils literal notranslate"><span class="pre">&lt;REPODIR&gt;/bin</span></code>, it’s
+probably easiest to clone the full LLAMA repository (if you haven’t already).
+If you already have this code and have <code class="docutils literal notranslate"><span class="pre">&lt;REPODIR/bin&gt;</span></code> in your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
+(i.e.  you can use the commands it contains at the command line), you can skip
+the next subsection.</p>
+</div>
+</div>
+<div class="section" id="llama-scripts">
+<h2>LLAMA Scripts<a class="headerlink" href="#llama-scripts" title="Permalink to this headline">¶</a></h2>
+<p>All llama scripts used for background runs are part of the <code class="docutils literal notranslate"><span class="pre">llama</span></code>
+distribution’s command line tools. Use a Docker image or <a class="reference internal" href="readme.html#quick-start-install"><span class="std std-ref">install the
+pipeline locally</span></a> to get access to them. The two main
+tools you’ll be using are <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code> to start up DigitalOcean
+servers/interact with the infrastructure and <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">drop</span></code> to control the
+servers.</p>
+</div>
+<div class="section" id="adding-your-ssh-keys-to-the-droplets">
+<h2>Adding Your SSH Keys to the Droplets<a class="headerlink" href="#adding-your-ssh-keys-to-the-droplets" title="Permalink to this headline">¶</a></h2>
+<p>You will need to be able to SSH into the droplets where the analysis is being
+run in order to get the analyses started, check on their statuses, and fetch
+output data. In order to do this, you will need to give an SSH key (sort of
+like a password that is unique to your computer) to <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> under the
+GECo account. By default, <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code> will add all available GECo
+SSH keys to newly provisioned droplets (so that all team members can access
+analysis servers at will).</p>
+<p>For starters, you’ll have to <a class="reference internal" href="developers-pre-o3.html#generate-ssh-keys"><span class="std std-ref">make SSH keys</span></a> if you
+haven’t already. If you put your key in the default location, you can print it
+to the terminal with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat ~/.ssh/id_rsa.pub
+</pre></div>
+</div>
+<p>Next, make sure you’re logged in as GECo on <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a>, then copy the above
+key and navigate to the <a class="reference external" href="https://cloud.digitalocean.com/account/security">DigitalOcean security page</a> to add your SSH key.
+Create a new SSH key and name it something that makes it clear who you are and
+which device you are using (e.g. <code class="docutils literal notranslate"><span class="pre">Stef-Laptop</span></code>).</p>
+<p>Once you’ve saved your SSH key, you’ll have automatic access to all future
+droplets created through the <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code> interface.</p>
+</div>
+<div class="section" id="installing-requirements">
+<h2>Installing Requirements<a class="headerlink" href="#installing-requirements" title="Permalink to this headline">¶</a></h2>
+<p>The core CLI tools are part of the LLAMA distribution, though you will also
+need to have the developer packages installed (defined in
+<code class="docutils literal notranslate"><span class="pre">requirements-dev.txt</span></code> and as Conda packages in the Dockerfiles in
+<code class="docutils literal notranslate"><span class="pre">/docker/llama-dev/</span></code>). You can use the developer Docker images to satisfy the
+non-python dependencies or install them on your local system.</p>
+<p>The scripts and examples in this guide were written with <code class="docutils literal notranslate"><span class="pre">bash</span></code> 4 in mind. If
+you are on any recent Linux system, you will almost certainly be running
+<code class="docutils literal notranslate"><span class="pre">bash</span></code> 4 or later. MacOS systems, however, come with <code class="docutils literal notranslate"><span class="pre">bash</span></code> 3 installed by
+default (due to licensing issues, they cannot distribute newer versions). To
+install the latest version of <code class="docutils literal notranslate"><span class="pre">bash</span></code> on MacOS:</p>
+<ol class="arabic simple">
+<li><p>Install <a class="reference external" href="https://www.macports.org">MacPorts</a> using their instructions.</p></li>
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">bash</span></code> with <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">port</span> <span class="pre">install</span> <span class="pre">bash</span></code>.</p></li>
+<li><p>Make a copy of the old list of shells (used by the system to keep track of
+available shells) with <code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">/etc/shells</span> <span class="pre">~/etc-shells</span></code>.</p></li>
+<li><p>Edit the list of shell files with <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">nano</span> <span class="pre">/etc/shells</span></code> and add
+<code class="docutils literal notranslate"><span class="pre">/opt/local/bin/bash</span></code> on a new line. Feel free to use a different text
+editor than <code class="docutils literal notranslate"><span class="pre">nano</span></code>, e.g. the default graphical text editor with <code class="docutils literal notranslate"><span class="pre">sudo</span>
+<span class="pre">open</span> <span class="pre">/etc/shells</span></code>.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">chsh</span> <span class="pre">-s</span> <span class="pre">/opt/local/bin/bash</span></code> to tell your computer that the MacPorts
+version of <code class="docutils literal notranslate"><span class="pre">bash</span></code> is the one you would like to use by default. You will
+need to enter your password to do this.</p></li>
+<li><p>Without closing your current shell window, open a new window and run
+<code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">$BASH_VERSION</span></code>. You should see something starting with “4”.</p></li>
+</ol>
+<p>If things look weird, or if the terminal doesn’t start properly, go back to the
+old shell window you were using, restore the old version of the <code class="docutils literal notranslate"><span class="pre">/etc/shells</span></code>
+file (in case you broke it) by running <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">cp</span> <span class="pre">~/etc-shells</span> <span class="pre">/etc/shells</span></code>
+followed by <code class="docutils literal notranslate"><span class="pre">chsh</span> <span class="pre">-s</span> <span class="pre">/bin/bash</span></code> to go back to the default system <code class="docutils literal notranslate"><span class="pre">bash</span></code>.
+Open a new window to confirm that you’ve fixed the damage (everything should
+now be back to normal), then carefully retry the above steps.</p>
+</div>
+<div class="section" id="digitalocean-administration-examples">
+<h2>DigitalOcean Administration Examples<a class="headerlink" href="#digitalocean-administration-examples" title="Permalink to this headline">¶</a></h2>
+<p>Show full help documentation with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -h
+</pre></div>
+</div>
+<p>You can list the current running droplets using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -D
+</pre></div>
+</div>
+<p>If you only want to list droplets whose name start with “llama”, you can add a
+wildcard to the end of the command (as if you were adding a wildcard to match a
+bunch of files in a folder):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -D llama*
+</pre></div>
+</div>
+<p>You can also print just the IP addresses of these servers by telling
+<code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code> to print only those columns (you can choose any
+combination of columns besides this example; see the help documentation with
+the <code class="docutils literal notranslate"><span class="pre">-h</span></code> flag for a full list):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -D llama* -C ip
+</pre></div>
+</div>
+<p>You can get rid of the header row that labels the columns (useful if you are
+going to pipe those IP addresses to another script) by adding the <code class="docutils literal notranslate"><span class="pre">-n</span></code> (no
+headers) flag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -n -D llama* -C ip
+</pre></div>
+</div>
+<p>You can list the currently saved snapshots on your <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> account with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -S
+</pre></div>
+</div>
+<p id="provision-single-droplet">Create a single droplet called <code class="docutils literal notranslate"><span class="pre">llama-provision</span></code> from the snapshot
+called <code class="docutils literal notranslate"><span class="pre">llama-parallel-early-er14-o2-bg</span></code> with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -c llama-provision -i llama-parallel-early-er14-o2-bg
+</pre></div>
+</div>
+<p>You can create 98 servers numbered <code class="docutils literal notranslate"><span class="pre">llama-parallel-00</span></code> through
+<code class="docutils literal notranslate"><span class="pre">llama-parallel-97</span></code> (0 included) using the
+<code class="docutils literal notranslate"><span class="pre">llama-parallel-early-er14-o2-bg</span></code> snapshot with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> <span class="se">\</span>
+    -c llama-parallel-<span class="o">{</span><span class="m">00</span>..97<span class="o">}</span> <span class="se">\</span>
+    -i llama-parallel-early-er14-o2-bg
+</pre></div>
+</div>
+<p>You can delete all servers whose names start with “llama” with the <code class="docutils literal notranslate"><span class="pre">-d</span></code> flag;
+you’ll be asked for final confirmation before the deletion happens, so make
+sure to double check that the servers listed are the ones you want to actually
+delete (<strong>deleting droplets is NOT reversible!</strong>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -d llama*
+</pre></div>
+</div>
+<p><em>(be sure to type “y” in the prompt to confirm that you want to create the new
+droplets; note that it will take a while for them to start up. You can monitor
+their progress by running</em> <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span> <span class="pre">-D</span></code> <em>as mentioned above;
+droplets that will be listed as</em> <code class="docutils literal notranslate"><span class="pre">new</span></code> <em>while they are provisioning, and you
+will not be able to log into them or otherwise use them until they are finished
+starting up and are listed as</em> <code class="docutils literal notranslate"><span class="pre">active</span></code>.</p>
+<div class="section" id="preparing-a-server">
+<h3>Preparing a Server<a class="headerlink" href="#preparing-a-server" title="Permalink to this headline">¶</a></h3>
+<p>When you run this analysis in parallel, you’ll be doing it on a bunch of
+different virtual servers. In order to keep things as simple as possible, you
+want these servers to be identical in all respects (except, possibly, for input
+files, which will need to be different if you’re not doing some sort of Monte
+Carlo sampling like we do in the background studies). In particular, you’ll
+want to copying large files to and from the individual servers; a 7GB list of
+skymaps will eat up a whole day on a good connection if you need to copy it
+from Columbia’s network to 100 separate <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> servers.</p>
+</div>
+</div>
+<div class="section" id="server-preparation-overview">
+<h2>Server Preparation Overview<a class="headerlink" href="#server-preparation-overview" title="Permalink to this headline">¶</a></h2>
+<p>The solution (described in detail where necessary in the links below) is to:</p>
+<ol class="arabic simple">
+<li><p>Create a single droplet, most likely cloning it from the disk snapshot used
+for the most recent parallel run (see the <a class="reference internal" href="#provision-single-droplet"><span class="std std-ref">code example</span></a> above)</p></li>
+<li><p>Set everything up on it by moving data files into place and delete old
+output files; see the <a class="reference internal" href="#moving-data-into-place"><span class="std std-ref">section on moving files into place</span></a> below.  3. Shut it down at the command line with
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">shutdown</span> <span class="pre">now</span></code>.</p></li>
+</ol>
+<ol class="arabic simple" start="4">
+<li><p>Take a snapshot of the droplet by opening it on the <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> control
+panel, going to the snapshot page, entering a descriptive name (try to make
+it clear when this run happened and which set of skymaps it was run on), and
+clicking the make snapshot button. Making the snapshot will take ~1 hour, so
+go do something else while you wait.</p></li>
+</ol>
+<p>Once you’ve done these tasks, you can <a class="reference internal" href="#starting-the-servers"><span class="std std-ref">spin up servers</span></a>
+and <a class="reference internal" href="#running-the-analysis-in-parallel"><span class="std std-ref">get the analysis started</span></a>. Step 2 is
+the most complicated and most subject to change; the following section
+describes it in detail.</p>
+</div>
+<div class="section" id="moving-data-into-place">
+<span id="id1"></span><h2>Moving Data into Place<a class="headerlink" href="#moving-data-into-place" title="Permalink to this headline">¶</a></h2>
+<p><em>Note: this whole section will be run on some LIGO DataGrid server. You will
+need to SSH into it with</em> <code class="docutils literal notranslate"><span class="pre">gsissh</span></code>.</p>
+<p>At time of writing, simulated skymaps are located on
+<code class="docutils literal notranslate"><span class="pre">ldas-pcdev1.ligo-la.caltech.edu</span></code>. Enter your LIGO credentials with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>kinit albert.einstein@LIGO.ORG
+</pre></div>
+</div>
+<p>And enter your LIGO password (obviously replace “albert.einstein” with your
+LIGO username; you’ll need DataGrid credentials for this, so make sure to set
+those up if you haven’t already). Now create a grid proxy from the Kerberos
+credentials initialized above with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ligo-proxy-init -k
+</pre></div>
+</div>
+<p>Now, you can SSH into the LIGO DataGrid mentioned above:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>gsissh ldas-pcdev1.ligo-la.caltech.edu
+</pre></div>
+</div>
+<p>(Alternatively, if you are logging in with <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">albert.einstein&#64;ssh.ligo.org</span></code>,
+you would select <code class="docutils literal notranslate"><span class="pre">LLO</span></code> and then <code class="docutils literal notranslate"><span class="pre">pcdev1</span></code>.) Navigate to the directory
+where Rainer has been keeping skymaps:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /home/kenneth.corley/GWHEN_sample_skymaps
+$ ls
+BBH_design_sample_skymaps  BBH_O3_sample_skymaps      BNS_O3_sample_skymaps
+BBH_O2_sample_skymaps      BNS_design_sample_skymaps  README.txt
+</pre></div>
+</div>
+<p>You should see a list of directories whose names describe the type of skymaps
+contained. Skymaps should be in a directory called something like <code class="docutils literal notranslate"><span class="pre">allsky</span></code>
+within one of these directories. Sometimes the skymaps are split up between
+multiple runs. For example, to get the O3 sensitivity above-threshold BNS
+skymaps, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> BNS_O3_sample_skymaps/BNS_O3_1/allsky
+</pre></div>
+</div>
+<p>There should be very many (8978) <code class="docutils literal notranslate"><span class="pre">.fits</span></code> skymap files (along with other
+output files generated by the skymap simulations) in this directory. (We’ll
+only zip up <code class="docutils literal notranslate"><span class="pre">BNS_O3_1</span></code> since most of the skymaps are in this directory; we will
+ignore <code class="docutils literal notranslate"><span class="pre">BNS_O3_2</span></code> for now.) You will need to compress these skymaps into
+<code class="docutils literal notranslate"><span class="pre">.fits.gz</span></code> files (the format required by the LLAMA pipeline). You can’t write
+to Rainer’s directories, so you’ll need to make a directory in your own home
+directory to zip these files to (let’s call it <code class="docutils literal notranslate"><span class="pre">BNS_O3_sample_skymaps</span></code> for
+clarity). Run the following command from the <code class="docutils literal notranslate"><span class="pre">allsky</span></code> folder above:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/BNS_O3_sample_skymaps
+<span class="c1"># run this next line from within the directory containing the skymaps</span>
+<span class="c1"># you&#39;re zipping</span>
+find . -name <span class="s1">&#39;*.fits&#39;</span> <span class="p">|</span> <span class="k">while</span> <span class="nb">read</span> fitsfile<span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="s2">&quot;On </span><span class="si">${</span><span class="nv">fitsfile</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">;</span>
+    gzip <span class="se">\</span>
+        &lt;<span class="s2">&quot;</span><span class="si">${</span><span class="nv">fitsfile</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
+        &gt;~/BNS_O3_sample_skymaps/<span class="s2">&quot;</span><span class="k">$(</span>basename <span class="s2">&quot;</span><span class="si">${</span><span class="nv">fitsfile</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>.gz<span class="p">;</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+<p>(This will take a while to complete.) Once you’ve zipped these files, you can
+take that output directory and <em>zip it up again</em> into a compressed tarball
+(<code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> extension). This will put the whole directory into a single file,
+which makes it easier to move around (the final file will be ~10GB in size).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span>
+tar -czf BNS_O3_sample_skymaps.tar.gz BNS_O3_sample_skymaps
+</pre></div>
+</div>
+<p>You now have a tar archive of the skymaps you want to use! Congratulations.
+You’ll probably want to download this directly from the server you are
+provisioning (since the connection between DigitalOcean’s servers and LIGO’s
+data centers is probably faster than your home connection). Read on for
+instructions on where to move the files on the DigitalOcean server you are
+provisioning.</p>
+<p><em>This section should be run on the DigitalOcean droplet you are provisioning.</em></p>
+<p>SSH into the <a class="reference external" href="https://cloud.digitalocean.com/">DigitalOcean</a> server you’ve created for provisioning purposes. All
+files for background and sensitivity studies are located in
+<code class="docutils literal notranslate"><span class="pre">~/pre-er14-background</span></code> (for historical reasons). Navigate there and list the
+contents:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~/pre-er14-background
+$ ls
+bklist   neutrinos                 signal-events
+events   scratchevents             signal-neutrinos
+LOCKDIR  signal-doublet-events     skymap-lists
+logs     signal-doublet-neutrinos  skymaps
+</pre></div>
+</div>
+<p>These directories contain inputs and outputs for the background and sensitivity
+studies. We are particularly interested in:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">bklist</span></code>: Lists of neutrinos used for background calculations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">skymaps</span></code>: A directory containing subdirectories filled with skymaps (since
+you might want to lump together a few runs worth of simulated skymaps, each
+in a separate directory, into a single background run) used
+by both background and sensitivity runs. For example, you
+might put a directory called <code class="docutils literal notranslate"><span class="pre">allsky</span></code> filled with <code class="docutils literal notranslate"><span class="pre">.fits.gz</span></code> skymaps into
+<code class="docutils literal notranslate"><span class="pre">skymaps</span></code>, so that a typical input skymap called <code class="docutils literal notranslate"><span class="pre">0.fits.gz</span></code> would be
+located at <code class="docutils literal notranslate"><span class="pre">~/pre-er14-background/skymaps/allsky/0.fits.gz</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">skymap-lists</span></code>: Lists of filepaths to skymaps in <code class="docutils literal notranslate"><span class="pre">skymaps</span></code> that specify
+subsets of the full set of skymaps. These are used to distinguish between 2-
+and 3-detector cases; each list will have skymaps that correspond to a
+specific set of GW detectors that participated in the reconstruction of that
+skymap. When you <a class="reference internal" href="#starting-the-analysis"><span class="std std-ref">start the analysis</span></a>, you can
+specify one of these lists to only run on skymaps corresponding to that
+detector configuration. These skymap lists contain one full skymap path per
+line.</p>
+<p>You can make these skymap lists by downloading the <code class="docutils literal notranslate"><span class="pre">coincs.dat</span></code> file from
+Rainer’s directories on <code class="docutils literal notranslate"><span class="pre">ldas-pcdev1.ligo-la.caltech.edu</span></code>. The fastest way
+to get these and the skymaps is do download them from our DigitalOcean Spaces
+directories; simulated skymaps are located in subdirectories of
+<code class="docutils literal notranslate"><span class="pre">https://llama.nyc3.digitaloceanspaces.com/simulations/ligo-la/~kenneth.corley</span></code>
+with names like <code class="docutils literal notranslate"><span class="pre">BNS_O3_sample_skymaps.tar.gz</span></code> providing discriptive titles (you
+will also need the filename hash, so the easiest way to do this is to list
+files in that subdirectory through a command-line interface or the Spaces
+web-browser). Within the unzipped tarfile, you’ll be able to find the
+<code class="docutils literal notranslate"><span class="pre">coincs.dat</span></code> files in the specific simulation run you want to use; in the
+above example, that would be in the <code class="docutils literal notranslate"><span class="pre">BNS_O3_1</span></code> subdirectory. For reference,
+on the LLO LDG servers (<code class="docutils literal notranslate"><span class="pre">ldas-pcdev1.ligo-la.caltech.edu</span></code>), <code class="docutils literal notranslate"><span class="pre">coincs.dat</span></code>
+would be in the
+<code class="docutils literal notranslate"><span class="pre">/home/kenneth.corley/GWHEN_sample_skymaps/BNS_O3_sample_skymaps/BNS_O3_1</span></code>
+directory. Once you have coincs.dat, you can extract the skymap filename
+lists with something like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> dets in H1,L1 H1,L1,V1 H1,V1 L1,V1<span class="p">;</span> <span class="k">do</span> <span class="nv">START</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$dets</span><span class="s2">&quot;</span> python -c <span class="s1">&#39;import os; open(&quot;../skymap-lists/bns-o3/&quot;+os.environ[&quot;START&quot;].replace(&quot;,&quot;, &quot;&quot;)+&quot;.csv&quot;, &quot;w&quot;).write(&quot;\n&quot;.join(f&quot;/home/vagrant/pre-er14-background/skymaps/{l.split()[1]}.fits.gz&quot; for l in open(&quot;participating-detectors-bns-o3.txt&quot;).readlines() if l.split()[0] == os.environ[&quot;START&quot;])+&quot;\n&quot;)&#39;</span><span class="p">;</span> <span class="k">done</span>
+</pre></div>
+</div>
+<p>confirm that the <em>total</em> number of filenames matches the number of filenames
+split between the lists (though this list’s length should be one greater
+because it contains an initial header line):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wc -l ~/pre-er14-background//skymap-lists/bns-o3/*
+  <span class="m">2013</span> /home/vagrant/pre-er14-background//skymap-lists/bns-o3/H1L1.csv
+  <span class="m">5507</span> /home/vagrant/pre-er14-background//skymap-lists/bns-o3/H1L1V1.csv
+   <span class="m">703</span> /home/vagrant/pre-er14-background//skymap-lists/bns-o3/H1V1.csv
+   <span class="m">755</span> /home/vagrant/pre-er14-background//skymap-lists/bns-o3/L1V1.csv
+  <span class="m">8978</span> total
+wc -l ~/pre-er14-background/skymaps/coincs-bns-o3.dat
+<span class="m">8979</span> coincs-bns-o3.dat
+</pre></div>
+</div>
+<p>The file contents should look something like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ head ~/pre-er14-background/skymap-lists/bns-o3/H1L1V1.csv
+/home/vagrant/pre-er14-background/skymaps/bns-o3/1.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/2.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/3.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/4.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/5.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/6.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/8.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/16.fits.gz
+/home/vagrant/pre-er14-background/skymaps/bns-o3/17.fits.gz
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logs</span></code>: Contains logfiles for each run; background logfiles are just a
+timestamp (an integer) followed by <code class="docutils literal notranslate"><span class="pre">.log</span></code> (with the largest number
+representing the latest timestamp, and hence the most-recently started run).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">events</span></code>: Output run directory containing one directory for each simulated
+background trigger (i.e. a GW skymap with a list of neutrinos plus all
+outputs of the analysis).</p></li>
+</ul>
+<div class="section" id="running-the-analysis-in-parallel">
+<span id="id2"></span><h3>Running the Analysis in Parallel<a class="headerlink" href="#running-the-analysis-in-parallel" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="starting-the-servers">
+<span id="id3"></span><h2>Starting the Servers<a class="headerlink" href="#starting-the-servers" title="Permalink to this headline">¶</a></h2>
+<p>See how many servers you currently have running with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -D <span class="p">|</span> wc -l
+</pre></div>
+</div>
+<p>List all server names with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -D
+</pre></div>
+</div>
+<p>You should probably create a single server to begin. You can make sure that
+parallel operations work on this server before you save a DigitalOcean
+snapshot of it; create a single server using the command below and <a class="reference internal" href="#starting-the-analysis"><span class="std std-ref">start
+the analysis</span></a> for that single server to see if any bugs
+pop up. (If you haven’t run the analysis in parallel in a while, there might be
+bugs; if you’ve made major architectural changes since the last background run,
+there are almost certainly bugs.)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -c llama-parallel-bns-o3-00 -i llama-parallel-bns-o3
+</pre></div>
+</div>
+<p>Once you’ve debugged things on this server and gotten the analysis working, you
+can update the base image (<code class="docutils literal notranslate"><span class="pre">llama-parallel-bns-o3</span></code> in this example) through
+<a class="reference external" href="https://cloud.digitalocean.com">DigitalOcean’s web interface</a> from the
+working copy and spin up many more servers. Let’s say you’re limited to 100
+servers and are already using a few, so you want to spin up 94 more instances
+named <code class="docutils literal notranslate"><span class="pre">llama-parallel-bns-03-00</span></code> through <code class="docutils literal notranslate"><span class="pre">llama-parallel-bns-03-94</span></code>
+(assuming you’re keeping the image you created in the previous step, you only
+need to create the remaining 94 images):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama com <span class="k">do</span> -c llama-parallel-bns-o3-<span class="o">{</span><span class="m">01</span>..94<span class="o">}</span> -i llama-parallel-bns-o3
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code> (and any vestigial <code class="docutils literal notranslate"><span class="pre">pre-er-14-*</span></code> CLI utilities that have not
+yet been ported to <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code>) are automatically vectorized, so the
+following commands should apply equally-well regardless of
+whether you are running one server or 1,000. Outside of edge-case bugs, things
+should run smoothly with many servers running once you’ve fixed things in the
+single-server case.</p>
+</div>
+<div class="section" id="running-the-analysis">
+<span id="starting-the-analysis"></span><h2>Running the Analysis<a class="headerlink" href="#running-the-analysis" title="Permalink to this headline">¶</a></h2>
+<p>If everything has been set up properly, you can start a background run. First,
+add all of the existing DigitalOcean LLAMA droplets to your SSH known hosts
+list with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv init
+</pre></div>
+</div>
+<p>Confirm that no current LLAMA processes are running with (you should see a
+total of <code class="docutils literal notranslate"><span class="pre">0</span></code> running processes at the end of the command):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv ls-procs
+</pre></div>
+</div>
+<p>Launch background runs for H1L1 (Hanford and Livingston) combined detectors
+with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv launch <span class="nb">bg</span> <span class="se">\</span>
+    /home/vagrant/pre-er14-background//skymap-lists/bns-o3/H1L1.csv
+</pre></div>
+</div>
+<p>Check to make sure processes are running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv ls-procs
+</pre></div>
+</div>
+<p>See how many background run files are complete so far:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv <span class="k">done</span> <span class="nb">bg</span>
+</pre></div>
+</div>
+<p>Print the most-recent lines of the most-recent logs from each server to see if
+anything interesting (read: bad) is happening (can also be useful to start
+debugging efforts)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv tail
+</pre></div>
+</div>
+<p>You might need to execute arbitrary code on one or more remote machines. Let’s
+say you want to peak at the contents of the first background injection on
+<code class="docutils literal notranslate"><span class="pre">llama-bns-o3-00</span></code>. You can specify just that droplet and list the contents of
+a specific directory with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv -p llama-bns-o3-00 <span class="nb">eval</span> <span class="se">\</span>
+    <span class="s1">&#39;ls /home/vagrant/pre-er14-background/events/injection-0&#39;</span>
+</pre></div>
+</div>
+<p>You can, of course, use this same method to delete stuff on remote machines,
+move stuff, or what-have-you. You can use other <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code> CLI flags to
+control things with more granularity. When used with the <code class="docutils literal notranslate"><span class="pre">eval</span></code> subcommand,
+<code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code> is just a vectorized, multi-threaded (read: insanely fast)
+version of <code class="docutils literal notranslate"><span class="pre">ssh</span></code> that’s aware of your DigitalOcean naming semantics; use it
+to make short work of remote commands that could otherwise be run using <code class="docutils literal notranslate"><span class="pre">ssh</span>
+<span class="pre">foo&#64;your.server</span> <span class="pre">'some</span> <span class="pre">command'</span></code>.</p>
+<p>Now, assuming you’ve worked out any bugs and that things are flowing smoothly,
+sit back and wait until you’ve collected enough events for some level of
+statistical significance. Once you’ve amassed enough successful background
+runs, kill your LLAMA processes on all droplets with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv killall
+</pre></div>
+</div>
+<p>Confirm all processes are dead (after a few moments):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv ls-procs
+</pre></div>
+</div>
+</div>
+<div class="section" id="collecting-results">
+<h2>Collecting Results<a class="headerlink" href="#collecting-results" title="Permalink to this headline">¶</a></h2>
+<p>You should run until you have at least a few tens of thousands of events
+simulated. Check the progress of e.g. a background event simulation with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv <span class="k">done</span> <span class="nb">bg</span>
+</pre></div>
+</div>
+<p>Once you’ve simulated a sufficient number of events, you can pull the results
+down to your local computer. Anticipate around 1GB per 10,000 simulated events
+based on the pipeline architecture at time of writing.
+Pull results down and automatically organize them locally with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev dv pull
+</pre></div>
+</div>
+<p>Next, create text tables with collated results from your simulations, <strong>making
+sure to change the output filename to match the population you are working
+with</strong>, by running the following command in the directory in which you just ran
+<code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span> <span class="pre">pull</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama dev background table bns-o3-H1L1V1.txt
+</pre></div>
+</div>
+<p>You will now have a table called <code class="docutils literal notranslate"><span class="pre">bns-o3-H1L1V1.txt</span></code> (or something similar
+based on the population you simulated). Look at the first 10 lines of this
+file and make sure they are somewhat reasonable looking:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ head bns-o3-H1L1V1.txt
+EVENT-ODDS-RATIO  N  SOURCE-DIRECTORY                      SKYMAP-FILENAME
+<span class="o">=========================================================================================================================</span>
++2.2912652264e-36  <span class="m">9</span>  llama-bns-o3-65/events/injection-323  /home/vagrant/pre-er14-background/skymaps/bns-o3/8937.fits.gz
+ +2.673378655e-25  <span class="m">4</span>  llama-bns-o3-65/events/injection-111  /home/vagrant/pre-er14-background/skymaps/bns-o3/2304.fits.gz
+ +1.677508305e-15  <span class="m">8</span>  llama-bns-o3-65/events/injection-129  /home/vagrant/pre-er14-background/skymaps/bns-o3/4798.fits.gz
++9.3603728371e-09  <span class="m">7</span>  llama-bns-o3-65/events/injection-116  /home/vagrant/pre-er14-background/skymaps/bns-o3/3400.fits.gz
+ +9.233942133e-25  <span class="m">3</span>  llama-bns-o3-65/events/injection-324  /home/vagrant/pre-er14-background/skymaps/bns-o3/1865.fits.gz
+ +1.565115763e-09  <span class="m">9</span>  llama-bns-o3-65/events/injection-120   /home/vagrant/pre-er14-background/skymaps/bns-o3/699.fits.gz
++3.4337601072e-09  <span class="m">7</span>  llama-bns-o3-65/events/injection-312  /home/vagrant/pre-er14-background/skymaps/bns-o3/8854.fits.gz
++9.4312345753e-09  <span class="m">4</span>  llama-bns-o3-65/events/injection-118  /home/vagrant/pre-er14-background/skymaps/bns-o3/7545.fits.gz
+</pre></div>
+</div>
+<p>It should look something like the above (the whitespace might be different;
+ignore that). Most critically, you should see some
+reasonable distribution of non-zero neutrino trigger list lengths (the <code class="docutils literal notranslate"><span class="pre">N</span></code>
+column) and different odds ratio values. The source directories and skymap
+filenames should also be different and reasonable looking.</p>
+<p>Assuming this looks good, you can use these tables to generate the
+<code class="docutils literal notranslate"><span class="pre">populations.hdf5</span></code> test-statistic file using <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code>.
+You can also zip up these simulation results and upload them to our
+DigitalOcean Spaces storage using <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="developers.html" class="btn btn-neutral float-right" title="Developer Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="readme.html" class="btn btn-neutral float-left" title="Using the Docker Images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2019, Stefan Trklja Countryman, Kenneth Rainer Corley, Doğa Veske
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

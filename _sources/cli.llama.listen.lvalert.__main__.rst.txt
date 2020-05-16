@@ -1,0 +1,9 @@
+``llama listen lvalert``
+========================
+
+.. argparse::
+   :module: llama.listen.lvalert.__main__
+   :func: get_parser
+   :prog: llama listen lvalert
+
+

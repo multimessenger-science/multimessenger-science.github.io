@@ -1,0 +1,27 @@
+.. toctree::
+
+   llama.batch.rst
+   llama.classes.rst
+   llama.cli.rst
+   llama.com.rst
+   llama.detectors.rst
+   llama.dev.rst
+   llama.event.rst
+   llama.filehandler.rst
+   llama.files.rst
+   llama.flags.rst
+   llama.install.rst
+   llama.intent.rst
+   llama.io.rst
+   llama.listen.rst
+   llama.lock.rst
+   llama.meta.rst
+   llama.pipeline.rst
+   llama.poll.rst
+   llama.run.rst
+   llama.serve.rst
+   llama.test.rst
+   llama.utils.rst
+   llama.version.rst
+   llama.versioning.rst
+   llama.vetoes.rst

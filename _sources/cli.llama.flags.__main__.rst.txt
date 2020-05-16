@@ -1,0 +1,9 @@
+``llama flags``
+===============
+
+.. argparse::
+   :module: llama.flags.__main__
+   :func: get_parser
+   :prog: llama flags
+
+

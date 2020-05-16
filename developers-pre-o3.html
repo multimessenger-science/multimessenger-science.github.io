@@ -1,0 +1,2402 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer Installation (Pre-O3) &mdash; Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) 3.5.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="http://gwhen.comdevelopers-pre-o3.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Academic Papers" href="papers.html" />
+    <link rel="prev" title="Developer Installation" href="developers.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Info for Reviewers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html">Introduction for Reviewers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#purpose">Purpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#software-documentation">Software Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#review-wikis">Review Wikis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#papers">Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#testing-on-review-server">Testing on Review Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#fake-cases">Fake cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#running-fake-cases">Running Fake Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#contents-of-the-output-folder">Contents of the Output Folder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#main-outputs">Main Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#auxilliary-outputs">Auxilliary Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#real-cases">Real cases</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Using the Docker Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-cloud">Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#getting-llama-images">Getting LLAMA Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#choosing-the-image">Choosing the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#getting-updating-the-image">Getting/Updating the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#removing-images">Removing Images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#running-a-llama-container">Running a LLAMA Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#mounting-directories">Mounting Directories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-macos-linux">Mounting in MacOS/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-windows">Mounting in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#out-of-memory-disk">Out of Memory/Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#running-on-habanero">Running on Habanero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#interactive-habanero-jobs">Interactive Habanero Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-hub-authentication-with-singularity">Docker Hub Authentication with Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#fixing-singularity-cache-on-habanero">Fixing Singularity Cache on Habanero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-singularity-module">Load Singularity Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#pull-llama-image">Pull LLAMA Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#local-installation">Local Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-conda">Installing Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#setting-up-a-production-server">Setting Up a Production Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker">Install Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker-compose">Install Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#log-in-to-docker-cloud">Log in to Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#get-docker-compose-yml">Get <cite>docker-compose.yml</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#starting-llama-production-app">Starting LLAMA Production App</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Operators' Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#how-data-is-organized">How Data is Organized</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#event-directories">Event Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#gcn-notice-archive">GCN Notice Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#log-files">Log Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-automatically">Running the Pipeline Automatically</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-manually">Running the Pipeline Manually</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#using-defaults-with-skymap-info">Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-o3b">Sensitivity and Background Studies (O3B)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-pre-o3b">Sensitivity and Background Studies (pre-O3B)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#editing-your-bashrc">Editing your .bashrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#using-the-digitalocean-api">Using the DigitalOcean API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#llama-scripts">LLAMA Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#adding-your-ssh-keys-to-the-droplets">Adding Your SSH Keys to the Droplets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#installing-requirements">Installing Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#digitalocean-administration-examples">DigitalOcean Administration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#preparing-a-server">Preparing a Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#server-preparation-overview">Server Preparation Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#moving-data-into-place">Moving Data into Place</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#running-the-analysis-in-parallel">Running the Analysis in Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#starting-the-servers">Starting the Servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#running-the-analysis">Running the Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#collecting-results">Collecting Results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer's Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#obtaining-the-llama-source-code">Obtaining the LLAMA Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#using-the-docker-dev-image">Using the Docker Dev Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#list-bin-docker-commands">List <code class="docutils literal notranslate"><span class="pre">bin/docker</span></code> Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#getting-the-latest-development-image">Getting the Latest Development Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#starting-a-dev-container">Starting a Dev Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#sketch-of-a-bug-fix">Sketch of a Bug Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#destroying-your-dev-container">Destroying your Dev Container</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="developers.html#previous-llama-versions">Previous LLAMA Versions</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Developer Installation (Pre-O3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-llama-dependencies">Installing LLAMA Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#obtaining-the-llama-software-pre-o3">Obtaining the LLAMA Software (pre-O3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-configuration-files">Setting up Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-git-hooks">Install git Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-llama-dependencies">Install LLAMA dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-ligo-software">Install LIGO Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-icecube-offline-software">Install IceCube Offline Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#installing-icecube-dependencies">Installing IceCube Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entering-icecube-credentials">Entering IceCube Credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#install-matlab">Install MATLAB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-and-authentication">Configuration and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#generate-ssh-keys">Generate SSH Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gmail-authentication">GMail Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ligo-authentication">LIGO Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-ssl-certificates">Setting Up SSL Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-passwords-for-run-summary-pages">Setting Up Passwords for Run Summary Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#external-authentication">External Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bitbucket-authentication">Bitbucket Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-ligo-org-authentication">git.ligo.org Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#twilio-authentication">Twilio Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gw-astronomy-authentication">GW Astronomy Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gcn-authentication">GCN Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#turning-on-the-pipeline">Turning on the Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subscribing-to-lvalert-nodes">Subscribing to LVAlert Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-pipeline-daemons">Starting Pipeline Daemons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#testing-lvalert">Testing LVAlert</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-active-processes">Viewing Active Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#checking-pipeline-logs">Checking Pipeline Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#killing-pipeline-daemons">Killing Pipeline Daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecated-matlab-logs">Deprecated: MATLAB Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#developing-for-llama">Developing for LLAMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction-to-development">Introduction to Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#structure-of-the-pipeline">Structure of the Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-functionality">Adding Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#developer-conventions-and-best-practices">Developer Conventions and Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-format-conventions">Data Format Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#coding-best-practices">Coding Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#migrating-to-conda">Migrating to Conda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ligo-wiki-documentation">LIGO Wiki Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installing-ligo-software-via-conda">Installing LIGO Software via Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-new-user">Creating a new user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#out-of-memory">Out of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#matlab-installation-troubleshooting">MATLAB Installation Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#install-icecube-offline-software-with-root">Install IceCube Offline Software with Root</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logging-in-to-a-remote-server-using-ssh">Logging in to a Remote Server Using SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-llama-software-onto-a-remote-server">Getting LLAMA Software onto a Remote Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ssh-with-x11-forwarding">SSH with X11 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-llama">Using LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#documenting-llama">Documenting LLAMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#publishing-to-gwhen-com-website">Publishing to gwhen.com Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#publishing-readme-to-git-host">Publishing Readme to Git Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#publishing-pdfs">Publishing PDFs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#publishing-html-web-pages">Publishing HTML Web Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting-llama">Troubleshooting LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-up-the-review-server">Setting Up the Review Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#provisioning-the-review-server">Provisioning the review server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-review">Running the Review</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ideas-for-the-future">Ideas for the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvmfs">CVMFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#advantages">Advantages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#disadvantages">Disadvantages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Bibliography</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Academic Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#low-latency-algorithm-for-multi-messenger-astrophysics-llama-with-gravitational-wave-and-high-energy-neutrino-candidates">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#bayesian-multi-messenger-search-method-for-common-sources-of-gravitational-waves-and-high-energy-neutrinos">Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.html">llama package</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.batch.html">llama.batch package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.classes.html">llama.classes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.cli.html">llama.cli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.com.html">llama.com package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.dl.html">llama.com.dl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.do.html">llama.com.do package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.email.html">llama.com.email package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.gracedb.html">llama.com.gracedb package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.s3.html">llama.com.s3 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.slack.html">llama.com.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.utils.html">llama.com.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.detectors.html">llama.detectors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.detectors.html#available-detectors">Available Detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.dev.html">llama.dev package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.background.html">llama.dev.background package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.pvalue.html">llama.dev.background.pvalue package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table.html">llama.dev.background.table package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table_singles.html">llama.dev.background.table_singles package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.clean.html">llama.dev.clean package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.data.html">llama.dev.data package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.data.i3.html">llama.dev.data.i3 package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.docs.html">llama.dev.docs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.docs.cli.html">llama.dev.docs.cli package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.dv.html">llama.dev.dv package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.log.html">llama.dev.log package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.log.lvalert.html">llama.dev.log.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.upload.html">llama.dev.upload package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.event.html">llama.event package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.filehandler.html">llama.filehandler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.classes.html">llama.filehandler.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.mixins.html">llama.filehandler.mixins module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.files.html">llama.files package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_significance.html">llama.files.coinc_significance package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.opa.html">llama.files.coinc_significance.opa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.subthreshold.html">llama.files.coinc_significance.subthreshold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.utils.html">llama.files.coinc_significance.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.healpix.html">llama.files.healpix package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.plotters.html">llama.files.healpix.plotters module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.psf.html">llama.files.healpix.psf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.skymap.html">llama.files.healpix.skymap module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.utils.html">llama.files.healpix.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.i3.html">llama.files.i3 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.json.html">llama.files.i3.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.realtime_tools_stubs.html">llama.files.i3.realtime_tools_stubs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.tex.html">llama.files.i3.tex module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.txt.html">llama.files.i3.txt module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.utils.html">llama.files.i3.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap.html">llama.files.lvc_skymap package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.skymap_info.html">llama.files.skymap_info package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.cli.html">llama.files.skymap_info.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.utils.html">llama.files.skymap_info.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.slack.html">llama.files.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.advok.html">llama.files.advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_analyses.html">llama.files.coinc_analyses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_o2.html">llama.files.coinc_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_plots.html">llama.files.coinc_plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.fermi_grb.html">llama.files.fermi_grb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gcn_draft_o2.html">llama.files.gcn_draft_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gracedb.html">llama.files.gracedb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gwastro.html">llama.files.gwastro module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_advok.html">llama.files.lvalert_advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_json.html">llama.files.lvalert_json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_mat.html">llama.files.lvc_skymap_mat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_txt.html">llama.files.lvc_skymap_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.matlab.html">llama.files.matlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.sms_receipts.html">llama.files.sms_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.team_receipts.html">llama.files.team_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.timing_checks.html">llama.files.timing_checks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.uw_summary.html">llama.files.uw_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.ztf_trigger_list.html">llama.files.ztf_trigger_list module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.flags.html">llama.flags package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.flags.cli.html">llama.flags.cli module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.install.html">llama.install package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.install.manifest.html">llama.install.manifest module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.intent.html">llama.intent module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.io.html">llama.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.default.html">llama.io.default package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.io.default.generate.html">llama.io.default.generate module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.classes.html">llama.io.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.registry.html">llama.io.registry module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.listen.html">llama.listen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.gcn.html">llama.listen.gcn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.lvalert.html">llama.listen.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.lock.html">llama.lock module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.meta.html">llama.meta module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.pipeline.html">llama.pipeline module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.pipeline.html#pipelines">Pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.poll.html">llama.poll package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.poll.gracedb.html">llama.poll.gracedb package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.run.html">llama.run package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.serve.html">llama.serve package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.gui.html">llama.serve.gui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.wsgi.html">llama.serve.gui.wsgi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.domain.html">llama.serve.gui.domain module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.jupyter.html">llama.serve.jupyter package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.logs.html">llama.serve.jupyter.logs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.utils.html">llama.serve.jupyter.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.test.html">llama.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_files.html">llama.test.test_files package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_listeners.html">llama.test.test_listeners package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.test.test_listeners.test_gcn.html">llama.test.test_listeners.test_gcn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.classes.html">llama.test.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_bin.html">llama.test.test_bin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_filehandler.html">llama.test.test_filehandler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_pipeline.html">llama.test.test_pipeline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_utils.html">llama.test.test_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.utils.html">llama.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.version.html">llama.version module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.versioning.html">llama.versioning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.vetoes.html">llama.vetoes module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Reports</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/pytest/">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/coverage/">Code Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiling.html">Performance Profiling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-combined.html">Combined Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-combined.html#combined">combined</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-unit.html">Unit Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-default-pipeline-consistency">test_default_pipeline_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-filehandler-definition-consistency">test_filehandler_definition_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-make-grid">test_get_grid_make_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-north-pole">test_get_grid_north_pole</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-pipeline-parser">test_llama_pipeline_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-run-parser">test_llama_run_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize">test_memoize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-class">test_memoize_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-helper">test_memoize_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-mjd-interval">test_mjd_interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-rotate-angs2vec">test_rotate_angs2vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-write-gzip">test_write_gzip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.html">Doctests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.com.html">llama.com</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.com.gracedb.html">llama.com.gracedb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.com.gracedb.html#llama-com-gracedb-gracedb">llama.com.gracedb.GraceDb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.dev.html">llama.dev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.data.html">llama.dev.data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.data.i3.html">llama.dev.data.i3</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.upload.html">llama.dev.upload</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.upload.html#llama-dev-upload-upload-and-get-manifest">llama.dev.upload.upload_and_get_manifest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.filehandler.html">llama.filehandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html">llama.filehandler.JSONFile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html#llama-filehandler-jsonfile-checksum">llama.filehandler.JSONFile.checksum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.files.html">llama.files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html">llama.files.fermi_grb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html#llama-files-fermi-grb-get-grbs-from-csv">llama.files.fermi_grb.get_grbs_from_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.healpix.html">llama.files.healpix</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.HEALPixSkyMapFileHandler.html">llama.files.healpix.HEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.LvcHEALPixSkyMapFileHandler.html">llama.files.healpix.LvcHEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.psf.html">llama.files.healpix.psf</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.html">llama.files.healpix.skymap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.utils.html">llama.files.healpix.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.i3.html">llama.files.i3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.json.html">llama.files.i3.json</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.utils.html">llama.files.i3.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html#llama-files-lvc-gcn-xml-parse-ivorn">llama.files.lvc_gcn_xml.parse_ivorn</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.html">llama.files.lvc_skymap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.matlab.html">llama.files.matlab</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.matlab.html#llama-files-matlab-matlab-eval">llama.files.matlab.matlab_eval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.utils.html">llama.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-param">llama.utils.get_voevent_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-time">llama.utils.get_voevent_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-parameter-factory">llama.utils.parameter_factory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2angs">llama.utils.rotate_angs2angs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2vec">llama.utils.rotate_angs2vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-gzip">llama.utils.write_gzip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-to-zip">llama.utils.write_to_zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Source Code Plots</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command Line Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span></code> Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.batch.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">batch</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#logging settings">logging settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#simulation configuration">simulation configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.com.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.do.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.do.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">gracedb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.slack.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">slack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.dev.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.background.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.clean.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">clean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.data.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.docs.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span> <span class="pre">cli</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.dv.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.log.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.upload.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.event.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">event</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.files.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#output formats (specify at least 1)">output formats (specify at least 1)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.flags.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">flags</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.install.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">install</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.listen.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.poll.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span> <span class="pre">gracedb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.run.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.serve.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.gui.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">gui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">jupyter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="developers.html">Developer Installation</a> &raquo;</li>
+        
+      <li>Developer Installation (Pre-O3)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/developers-pre-o3.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-installation-pre-o3">
+<span id="developer-instructions-pre-o3"></span><h1>Developer Installation (Pre-O3)<a class="headerlink" href="#developer-installation-pre-o3" title="Permalink to this headline">¶</a></h1>
+<p><strong>NOTE:</strong> <em>Theses instructions are for older versions of the pipeline (pre-O3).
+They are kept in place in case you need to work with those versions, or in case
+you need a starting point for e.g. a full IceCube stack installation. If you
+are working with the latest versions of the code, please read previous sections
+of the developer guide.</em></p>
+<div class="section" id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Make sure you have at least 4GB of memory (physical or virtual;
+<a href="#id4"><span class="problematic" id="id5">`swap space`_</span></a> is fine) and 15GB of free space on your file
+system.</p>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>To get up and running, start up a <code class="docutils literal notranslate"><span class="pre">bash</span></code> session and run each of the
+commands below. You should log in as a user other than root (more precisely,
+you should log in as the user who will run the LLAMA software in production;
+on a new install, you might need to <a class="reference internal" href="#create-a-new-user">create a new user</a>).
+If you are installing LLAMA on a remote server (i.e.
+a computer besides the one that you are currently sitting in front of), you
+can read the <a class="reference internal" href="#ssh-with-x11-forwarding">SSH with X11 Forwarding</a> section for instructions on how to
+connect to a remote server via SSH.</p>
+<p><strong>The below instructions will only work on Debian 8 (Jessie).
+You can adapt them to other platforms if you know what you are doing,
+but Debian 8 is the only supported platform.
+It should be possible to finish installation by blindly running
+commands, but even so, make sure to copy and paste each line one-at-a-time
+to make sure they are entered properly. Don’t worry about the explanatory bits
+if you are not interested, but make sure to read parts that are in bold. You
+don’t have to click any of the hyperlinks in this guide; they are for reference
+purposes only.  If you encounter trouble, look in the</strong> <a class="reference internal" href="#appendix">Appendix</a>.</p>
+</div>
+<div class="section" id="installing-llama-dependencies">
+<h2>Installing LLAMA Dependencies<a class="headerlink" href="#installing-llama-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>There are a few dependencies you will need for LLAMA installation and
+development. Install these now:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get -y update
+sudo apt-get -y install python-sphinx rsync curl wget unzip git dtrx <span class="se">\</span>
+    msmtp-mta heirloom-mailx xpdf debconf-utils make <span class="se">\</span>
+    apache2 apache2-doc apache2-utils ncdu ack-grep silversearcher-ag <span class="se">\</span>
+    python3-six python3-pytest <span class="se">\</span>
+    python3-pytest-cov ipython3 pandoc libapache2-mod-python <span class="se">\</span>
+    latexmk python-profiler python-wxgtk3.0 python-setuptools runsnakerun <span class="se">\</span>
+    htop texlive-publishers
+</pre></div>
+</div>
+<p>You will also want to install <a class="reference external" href="https://git-lfs.github.com/">git-lfs</a>, an extension to <code class="docutils literal notranslate"><span class="pre">git</span></code> used for large
+file storage (<a class="reference external" href="https://github.com/git-lfs/git-lfs/wiki/Installation#debian">git-lfs install instructions taken from here</a>), which LLAMA
+uses to store large data files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -s <span class="se">\</span>
+    https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh <span class="se">\</span>
+    <span class="p">|</span> sudo bash
+sudo apt-get -y install git-lfs
+</pre></div>
+</div>
+<p>You must activate git-lfs on a per-user basis. <strong>Make sure to run the following
+command as the user who will run the LLAMA server:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+git lfs install
+</pre></div>
+</div>
+</div>
+<div class="section" id="obtaining-the-llama-software-pre-o3">
+<h2>Obtaining the LLAMA Software (pre-O3)<a class="headerlink" href="#obtaining-the-llama-software-pre-o3" title="Permalink to this headline">¶</a></h2>
+<p>LLAMA software is stored in a <a class="reference external" href="https://git-scm.com/">git</a> repository with <a class="reference external" href="https://git-lfs.github.com/">git-lfs</a> used for
+large data file storage. You can obtain the entire LLAMA software repository
+with a quick <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> followed by a somewhat slower fetching of the large
+data files. First, though, you will want to <a class="reference internal" href="#id1">Generate SSH Keys</a> so that you
+don’t need to enter your password over and over (SSH keys are actually required
+on <a class="reference external" href="https://git.ligo.org">git.ligo.org</a> and, at time of writing, on the <a class="reference external" href="https://bitbucket.org">Bitbucket</a> multimessenger
+pipeline repository). See the <a class="reference internal" href="#bitbucket-authentication">Bitbucket Authentication</a> and <a class="reference internal" href="#git-ligo-org-authentication">git.ligo.org
+Authentication</a> sections for instructions on adding your SSH keys to those
+sites.</p>
+<p>Once you’ve set up SSH keys, it’s time to actually clone the LLAMA
+repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+git clone git@bitbucket.org:stefancountryman/multimessenger-pipeline.git
+</pre></div>
+</div>
+<p>You might be prompted to confirm that you want to connec to Bitbucket; if you
+see something like the following, just type <code class="docutils literal notranslate"><span class="pre">yes</span></code> and hit enter:</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">The authenticity of host ‘bitbucket.org (18.205.93.0)’ can’t be established.</div>
+<div class="line">RSA key fingerprint is 97:8c:1b:f2:6f:14:6b:5c:3b:ec:aa:46:46:74:7c:40.</div>
+<div class="line">Are you sure you want to continue connecting (yes/no)?</div>
+</div>
+</div></blockquote>
+<p>You can (pretty much) confirm that the LLAMA software folder was created by
+running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> multimessenger-pipeline <span class="o">&amp;&amp;</span> git status<span class="p">;</span> <span class="nb">cd</span> ~
+</pre></div>
+</div>
+<p>If you see the following response:</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">On branch master</div>
+<div class="line">Your branch is up-to-date with ‘origin/master’.</div>
+<div class="line">nothing to commit, working directory clean</div>
+</div>
+</div></blockquote>
+<p>then you have (most likely) succeeded in obtaining the LLAMA codebase.</p>
+</div>
+<div class="section" id="setting-up-configuration-files">
+<span id="at-the-beginning-of-this-whole-procedure"></span><h2>Setting up Configuration Files<a class="headerlink" href="#setting-up-configuration-files" title="Permalink to this headline">¶</a></h2>
+<p>You must now move the default configuration files into place <em>(this affects
+things like</em> <a class="reference external" href="https://gw-astronomy.org">gw-astronomy.org</a> <em>access and email
+sending)</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ipython profile create
+ln -s <span class="se">\</span>
+    ~/multimessenger-pipeline/static/llama-ipython-startup.py <span class="se">\</span>
+    ~/.ipython/profile_default/startup/llama-ipython-startup.py
+ln -s multimessenger-pipeline/static/.gitattributes ~
+ln -s multimessenger-pipeline/static/.inputrc ~
+ln -s multimessenger-pipeline/static/.mailrc ~
+cp multimessenger-pipeline/static/.msmtprc ~
+cp multimessenger-pipeline/static/.netrc ~
+cp multimessenger-pipeline/static/.twilio-credentials ~
+ln -s multimessenger-pipeline/static/.vimrc ~
+mkdir -p ~/.ssh
+ln -s multimessenger-pipeline/static/.ssh/config ~/.ssh
+chmod <span class="m">0600</span> ~/.msmtprc
+touch ~/.bashrc
+<span class="o">[</span> -e ~/.bashrc.orig <span class="o">]</span> <span class="o">||</span> cp ~/.bashrc ~/.bashrc.orig
+cat <span class="se">\</span>
+    ~/.bashrc.orig <span class="se">\</span>
+    ~/multimessenger-pipeline/static/.bashrc-llama-addendum <span class="se">\</span>
+    &gt;~/.bashrc
+. ~/.bashrc
+</pre></div>
+</div>
+<p>You should see “LLAMA” appear in big letters accross your terminal. You should
+also now be able to access the main LLAMA executable, <code class="docutils literal notranslate"><span class="pre">llama</span></code>, which contains
+all user features as subcommands, as well as developer scripts, since they
+should all now be part of your shell’s <code class="docutils literal notranslate"><span class="pre">${PATH}</span></code> variable.</p>
+<p>Now, you will want to preseed your <a class="reference external" href="https://web.mit.edu/kerberos/">Kerberos</a> and <a class="reference external" href="https://research.cs.wisc.edu/htcondor/description.html">HTCondor</a> preferences to avoid
+being bugged later by <a class="reference external" href="https://wiki.debian.org/debconf">debconf</a> during your eventual Kerberos installation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo debconf-set-selections ~/multimessenger-pipeline/static/preseed.cfg
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-git-hooks">
+<h2>Install git Hooks<a class="headerlink" href="#install-git-hooks" title="Permalink to this headline">¶</a></h2>
+<p>You can have the server automatically regenerate documentation and home page
+when they are modified by installing the included git hooks. From the
+repository directory, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> h in git-hooks/*<span class="p">;</span> <span class="k">do</span> ln -fs ../../<span class="nv">$h</span> .git/hooks<span class="p">;</span> <span class="k">done</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-llama-dependencies">
+<h2>Install LLAMA dependencies<a class="headerlink" href="#install-llama-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>You can install (mostly non-LIGO) LLAMA dependencies from the
+<code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -O https://raw.githubusercontent.com/stefco/llama-env/master/requirements.txt
+pip install -r requirements.txt
+rm requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-ligo-software">
+<h2>Install LIGO Software<a class="headerlink" href="#install-ligo-software" title="Permalink to this headline">¶</a></h2>
+<p>LIGO supports Scientific Linux, Debian, and (on a best-effort basis) OS
+X. The below instructions are for Debian 8 (Jessie).</p>
+<p>First, we will need to install LIGO dependencies. The first step is
+adding LIGO’s package repositories to Debian’s list of sources so that
+Debian’s package manager knows where to find the LIGO software packages
+we are about to install. This simply requires copying the source list into
+Debian’s source list directory. <em>Further documentation available on LIGO’s</em>
+<a class="reference external" href="https://wiki.ligo.org/DASWG/SoftwareDownloads">Software Downloads
+page</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo cp ~/multimessenger-pipeline/static/lscsoft.list <span class="se">\</span>
+    /etc/apt/sources.list.d/lscsoft.list
+</pre></div>
+</div>
+<p>The following line should prevent the installation process from asking
+for user feedback. This is useful if you want to run installation in the
+background.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive
+</pre></div>
+</div>
+<p>You should always update your package manager’s list of repositories
+before trying to install something new:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get -y -qq update
+</pre></div>
+</div>
+<p>You will need to tell the package manager to trust LIGO software. <strong>You
+might still get warnings about untrusted software packages; this is
+fine.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get install -y -qq --force-yes lscsoft-archive-keyring
+</pre></div>
+</div>
+<p>Update again.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get -y -qq update
+</pre></div>
+</div>
+<p>Finally, install <code class="docutils literal notranslate"><span class="pre">lscsoft-all</span></code>, the comprehensive LIGO software
+package.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get install -y -qq --force-yes <span class="se">\</span>
+    -o Dpkg::Options::<span class="o">=</span><span class="s2">&quot;--force-confdef&quot;</span> <span class="se">\</span>
+    -o Dpkg::Options::<span class="o">=</span><span class="s2">&quot;--force-confold&quot;</span> <span class="se">\</span>
+    lscsoft-all lalinference
+</pre></div>
+</div>
+<p>Next, install ligo datagrid; <em>this usually fails the first time and works the
+second time for some reason. If it fails, the below command will keep retrying
+until it succeeds, which generally seems to work.</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">retval</span><span class="o">=</span><span class="m">1</span>
+<span class="k">until</span> <span class="o">[</span> <span class="nv">$retval</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="s1">&#39;ATTEMPTING TO INSTALL DATAGRID&#39;</span>
+    curl https://www.lsc-group.phys.uwm.edu/lscdatagrid/doc/ldg-client.sh <span class="se">\</span>
+        &gt;/tmp/ldg-client.sh <span class="se">\</span>
+        <span class="o">&amp;&amp;</span> sudo bash /tmp/ldg-client.sh
+    <span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+<p>Once the script is finished executing, you can confirm that installation
+was successful by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span> ligo-proxy-init &gt;/dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="o">{</span> <span class="nb">echo</span> <span class="s2">&quot;LIGO Data Grid Installation succeeded.&quot;</span><span class="p">;</span> <span class="o">}</span> <span class="se">\</span>
+    <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> <span class="s2">&quot;LIGO Data Grid Installation failed! Try again.&quot;</span><span class="p">;</span> <span class="o">}</span>
+</pre></div>
+</div>
+<p>to check for one of the installed executables. This command will tell
+you whether installation was successful (again, if installation failed,
+just try repeating the previous step).</p>
+<p>Finally, install miscellaneous <code class="docutils literal notranslate"><span class="pre">python</span></code> dependencies using <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
+<em>One of these dependencies,</em> <code class="docutils literal notranslate"><span class="pre">gwpy</span></code>, <em>is in active development and can
+be a bit finicky. The below instructions should “just work”, but if not,
+further documentation is available on</em> <a class="reference external" href="https://gwpy.github.io/docs/stable/install.html">GWPy’s install instructions
+page</a>.</p>
+<p>Tell Debian to use the default locale (otherwise errors come up in the
+<code class="docutils literal notranslate"><span class="pre">scipy</span></code> update):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>C
+</pre></div>
+</div>
+<p>Update the <code class="docutils literal notranslate"><span class="pre">python</span></code> package installer <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo pip install --upgrade pip
+</pre></div>
+</div>
+<p>Update <code class="docutils literal notranslate"><span class="pre">scipy</span></code> to a version recent enough for GWpy to work (the next
+line <em>might</em> take a while to finish and <em>might</em> produce a lot of ugly
+output depending on your precise version of Debian Jessie; don’t be alarmed
+if this is the case.):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo pip install <span class="s1">&#39;scipy&gt;=0.16&#39;</span>
+</pre></div>
+</div>
+<p>Install GWpy:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo pip install gwpy
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-icecube-offline-software">
+<h2>Install IceCube Offline Software<a class="headerlink" href="#install-icecube-offline-software" title="Permalink to this headline">¶</a></h2>
+<p>These packages are used for retrieving neutrino data from IceCube.</p>
+<div class="section" id="installing-icecube-dependencies">
+<h3>Installing IceCube Dependencies<a class="headerlink" href="#installing-icecube-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>First you’ll need to make sure you’re using a newer version of <code class="docutils literal notranslate"><span class="pre">cmake</span></code> than
+is available on Debian Jessie; do this by adding more recent backports to the
+<code class="docutils literal notranslate"><span class="pre">apt</span></code> sources list:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo cp ~/multimessenger-pipeline/static/backports.list <span class="se">\</span>
+    /etc/apt/sources.list.d/backports.list
+</pre></div>
+</div>
+<p>Now you can install the latest cmake version by forcing <code class="docutils literal notranslate"><span class="pre">apt-get</span></code> to use the
+<code class="docutils literal notranslate"><span class="pre">jessie-backports</span></code> repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get -t jessie-backports install cmake
+</pre></div>
+</div>
+<p>Now, install <a class="reference external" href="http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html">dependencies</a>
+for the IceCube offline software (with all of the recommended extras):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev <span class="se">\</span>
+    freeglut3-dev libxml2-dev subversion libboost-python-dev <span class="se">\</span>
+    libboost-system-dev libboost-signals-dev libboost-thread-dev <span class="se">\</span>
+    libboost-date-time-dev libboost-serialization-dev <span class="se">\</span>
+    libboost-filesystem-dev libboost-program-options-dev <span class="se">\</span>
+    libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev <span class="se">\</span>
+    libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid <span class="se">\</span>
+    libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx <span class="se">\</span>
+    libopenblas-dev libcfitsio3-dev libsprng2-dev libmysqlclient-dev <span class="se">\</span>
+    libsuitesparse-dev libcfitsio3-dev libmysqlclient-dev <span class="se">\</span>
+    libhdf5-serial-dev root-system
+</pre></div>
+</div>
+</div>
+<div class="section" id="entering-icecube-credentials">
+<span id="entered-your-icecube-credentials"></span><h3>Entering IceCube Credentials<a class="headerlink" href="#entering-icecube-credentials" title="Permalink to this headline">¶</a></h3>
+<p>Next, store your IceCube username and password in the <code class="docutils literal notranslate"><span class="pre">uname</span></code> and <code class="docutils literal notranslate"><span class="pre">pword</span></code>
+variables; we will use this to check out the IceCube repository. You should
+have received IceCube login credentials as part of the installation procedure.
+<strong>The next two lines of commands will read your IceCube username and password
+in and store them as variables. If you make a mistake entering your password,
+or if something goes wrong while installing IceCube software, you should run
+these lines again just to make sure that your credentials are being passed
+to SVN in the next step.</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">read</span> -p <span class="s1">&#39;Enter your IceCube username: &#39;</span> uname <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">read</span> -sp <span class="s1">&#39;Enter your IceCube password: &#39;</span> pword <span class="o">&amp;&amp;</span> <span class="nb">echo</span>
+</pre></div>
+</div>
+<p>Next, check out
+IceCube offline software. These instructions are adapted from the <a class="reference external" href="http://software.icecube.wisc.edu/documentation/info/quickstart.html">original
+IceCube offline software installation instructions</a>;
+you can find all <a class="reference external" href="https://code.icecube.wisc.edu/projects/icecube/browser/IceCube/meta-projects/offline-software/releases">offline software releases here</a>.
+A full overview of IceCube software is available <a class="reference external" href="http://software.icecube.wisc.edu/documentation/index.html">here</a>.
+Make sure to check out the latest version (if it is not the same as the one
+listed in the following code block).
+<em>The while loop is included to catch and handle segmentation faults during
+checkout; these are, unfortunately, a</em> <a class="reference external" href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736879">known
+bug</a> <em>in Debian
+Jesse’s SVN version.</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo mkdir -p /usr/local/icecube/offline
+<span class="nb">cd</span> /usr/local/icecube/offline
+<span class="nb">export</span> <span class="nv">IceCube_SVN</span><span class="o">=</span>http://code.icecube.wisc.edu/svn
+sudo svn --username <span class="s2">&quot;</span><span class="nv">$uname</span><span class="s2">&quot;</span> --password <span class="s2">&quot;</span><span class="nv">$pword</span><span class="s2">&quot;</span> co <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$IceCube_SVN</span><span class="s2">&quot;</span>/meta-projects/offline-software/releases/V18-06-00 src
+</pre></div>
+</div>
+<p>You should run the next code block to make sure that the SVN checkout
+succeeded in full.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">while</span> ! <span class="o">[</span> <span class="nv">$retval</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="s1">&#39;QUIT EARLY DUE TO SEGFAULT IN SVN, RESTARTING CHECKOUT&#39;</span>
+    sudo svn cleanup src
+    sudo svn update src
+    <span class="nv">retval</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+<p>Now it is time to build the IceTray software. <em>This next step is very slow; let
+this run for a couple of hours while you go do something else.  Fortunately,
+this step can be resumed at the</em> <code class="docutils literal notranslate"><span class="pre">make</span></code> <em>command in the event of failure.</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo mkdir -p /usr/local/icecube/offline/build
+<span class="nb">cd</span> /usr/local/icecube/offline/build
+sudo cmake -DSYSTEM_PACKAGES<span class="o">=</span>True ../src
+sudo make
+</pre></div>
+</div>
+<p><strong>If you get an error while running</strong> <code class="docutils literal notranslate"><span class="pre">cmake</span></code> <strong>or</strong> <code class="docutils literal notranslate"><span class="pre">make</span></code>, <strong>there was
+probably an error that prevented you from fetching the entire software
+repository from SVN. You should go back a few steps and start over from when
+you</strong> <a class="reference internal" href="#entered-your-icecube-credentials">entered your IceCube credentials</a> a few
+steps ago.  Finally, download some data used by IceCube test and example
+scripts.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo make rsync
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> modification you made
+<a class="reference internal" href="#at-the-beginning-of-this-whole-procedure">at the beginning of this whole procedure</a>
+has already put the necessary modifications to your environmental variables in
+place (e.g. your <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> variable has been updated to
+include the location of the new IceCube python libraries, so that you can
+import them next time you run python). You can therefore test whether the
+IceCube python software was installed successfully:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -c <span class="s1">&#39;from icecube import dataclasses; print(&quot;Success!&quot;)&#39;</span>
+</pre></div>
+</div>
+<p>You should see <code class="docutils literal notranslate"><span class="pre">Success!</span></code> printed on your console. If so,
+congratulations! You have successfully installed the IceCube offline software.
+Now, you will have to check out a set of neutrino querying python tools used
+by LLAMA. Change to the LLAMA software directory and check out the live
+software. Again, store your IceCube username and password in variables (you can
+skip this step if those variables are still initialized from before):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">read</span> -p <span class="s1">&#39;Enter your IceCube username: &#39;</span> uname <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">read</span> -sp <span class="s1">&#39;Enter your IceCube password: &#39;</span> pword <span class="o">&amp;&amp;</span> <span class="nb">echo</span>
+</pre></div>
+</div>
+<p>Now, check out the live querying software:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/multimessenger-pipeline/icecube
+<span class="nb">export</span> <span class="nv">IceCube_SVN</span><span class="o">=</span>http://code.icecube.wisc.edu/svn
+svn --username <span class="s2">&quot;</span><span class="nv">$uname</span><span class="s2">&quot;</span> --password <span class="s2">&quot;</span><span class="nv">$pword</span><span class="s2">&quot;</span> co <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$IceCube_SVN</span><span class="s2">&quot;</span>/projects/realtime_tools/releases/V19-02-00/python <span class="se">\</span>
+    realtime_tools
+svn --username <span class="s2">&quot;</span><span class="nv">$uname</span><span class="s2">&quot;</span> --password <span class="s2">&quot;</span><span class="nv">$pword</span><span class="s2">&quot;</span> co <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$IceCube_SVN</span><span class="s2">&quot;</span>/projects/realtime_gfu/releases/V19-02-00/python <span class="se">\</span>
+    realtime_gfu
+<span class="nb">pushd</span> realtime_gfu
+svn --username <span class="s2">&quot;</span><span class="nv">$uname</span><span class="s2">&quot;</span> --password <span class="s2">&quot;</span><span class="nv">$pword</span><span class="s2">&quot;</span> co <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$IceCube_SVN</span><span class="s2">&quot;</span>/projects/realtime_gfu/releases/V19-02-00/resources <span class="se">\</span>
+    resources
+<span class="nb">popd</span>
+<span class="c1"># this is a kludge to get the realtime_gfu resources in place</span>
+sudo cp -R <span class="se">\</span>
+    ~/multimessenger-pipeline/icecube/realtime_gfu <span class="se">\</span>
+    /usr/local/icecube/offline/build/
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="install-matlab">
+<h2>Install MATLAB<a class="headerlink" href="#install-matlab" title="Permalink to this headline">¶</a></h2>
+<p><strong>You will need to download the</strong> <a class="reference external" href="https://www.mathworks.com/downloads/web_downloads/download_release?release=R2016b">MATLAB
+Installer</a>
+<strong>as well as the</strong> <a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/33381-jsonlab--a-toolbox-to-encode-decode-json-files">JSONLab
+toolbox</a>.
+<strong>You must install the following three MATLAB Toolboxes at the same time
+that you install MATLAB, and you must make sure to also install MATLAB itself.
+Do so by selecting the following four items in the install dialog</strong> (note that
+the MATLAB version might change from 9.1, but it should be at the top of the
+list):</p>
+<ol class="arabic simple">
+<li><p><strong>MATLAB 9.1</strong></p></li>
+<li><p><strong>Image Processing Toolbox</strong></p></li>
+<li><p><strong>Mapping Toolbox</strong></p></li>
+<li><p><strong>Statistics and Machine Learning Toolbox</strong></p></li>
+</ol>
+<p><strong>Also make sure to check the box in the install dialogue asking if you would
+like to make symlinks to MATLAB.</strong> This is necessary in order for command line
+calls to <code class="docutils literal notranslate"><span class="pre">matlab</span></code> to work (which is necessary for our scripts to run in the
+current iteration of the pipeline). <strong>If you forget to do this,</strong> you can
+manually add the symlink in with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo ln -s /usr/local/MATLAB/<span class="se">\*</span>/bin/matlab /usr/local/bin/matlab
+</pre></div>
+</div>
+<p>You can confirm that the symlink was made by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span> matlab <span class="m">2</span>&gt;/dev/null <span class="m">1</span>&gt;<span class="p">&amp;</span><span class="m">2</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;success!&#39;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s1">&#39;symlink not found!&#39;</span>
+</pre></div>
+</div>
+<p><strong>You can install the JSONLab toolbox from within the MATLAB interface
+after it has been successfully installed. See the appendix for some</strong>
+<a class="reference internal" href="#matlab-installation-details">MATLAB installation details</a>.
+<strong>You will usually have to install JSONLab twice before it remains
+permanently installed. It is not clear why this is, but it works after
+the second installation. You can confirm that JSONLab is installed by
+opening a MATLAB session and seeing if</strong> <code class="docutils literal notranslate"><span class="pre">loadjson</span></code> <strong>is a valid command;
+if it is, then JSONLab has been successfully installed. You can also
+simply run this command to see if JSONLab installed successfully:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">matcmd</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">matcmd</span><span class="o">+=</span><span class="s2">&quot;if exist(&#39;loadjson&#39;)&quot;</span>
+<span class="nv">matcmd</span><span class="o">+=</span><span class="s2">&quot;    disp(&#39;JSONLab installed successfully.&#39;);&quot;</span>
+<span class="nv">matcmd</span><span class="o">+=</span><span class="s2">&quot;else&quot;</span>
+<span class="nv">matcmd</span><span class="o">+=</span><span class="s2">&quot;    disp(&#39;JSONLab failed to install.&#39;);&quot;</span>
+<span class="nv">matcmd</span><span class="o">+=</span><span class="s2">&quot;end;&quot;</span>
+<span class="nv">matcmd</span><span class="o">+=</span><span class="s2">&quot;exit&quot;</span>
+matlab -nodesktop -nosplash -noFigureWindows -r <span class="s2">&quot;</span><span class="si">${</span><span class="nv">matcmd</span><span class="si">}</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p><strong>If JSONLab failed to install, just open up MATLAB and reinstall it. This
+is sometimes necessary for some reason.</strong></p>
+<p>Now, install the <code class="docutils literal notranslate"><span class="pre">matlab</span></code> python module, which will allow python code to call
+MATLAB scripts via the <a class="reference external" href="http://www.mathworks.com/help/matlab/matlab_external/get-started-with-matlab-engine-for-python.html">MATLAB Engine API</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="k">$(</span>sudo find / -path <span class="s1">&#39;\*/extern/engines/python&#39;</span><span class="k">)</span>
+sudo python setup.py install
+</pre></div>
+</div>
+<p>Confirm that installation of the Python MATLAB Engine API succeeded:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -c <span class="s1">&#39;import matlab; print(&quot;success!&quot;)&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuration-and-authentication">
+<span id="config-and-auth"></span><h1>Configuration and Authentication<a class="headerlink" href="#configuration-and-authentication" title="Permalink to this headline">¶</a></h1>
+<p>These steps involve entering your credentials for the services used by
+LLAMA, as well as some basic configuration. These instructions assume
+that you have LIGO login credentials. <em>Some of the steps require you to
+contact one of our partners (e.g. GCN or gw-astronomy.org) to configure
+authentication. These appear after this section in the</em> <a class="reference internal" href="#external-authentication">external
+authentication</a> <em>section.</em></p>
+<div class="section" id="generate-ssh-keys">
+<span id="id1"></span><h2>Generate SSH Keys<a class="headerlink" href="#generate-ssh-keys" title="Permalink to this headline">¶</a></h2>
+<p>SSH keys are used to securely log in to other computers without a
+password. LLAMA uses them to upload data to
+<a class="reference external" href="https://gw-astronomy.org">gw-astronomy.org</a>. <em>A great and
+user-friendly guide to setting up SSH keys is available on</em> <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">Digital
+Ocean’s
+blog</a>.
+<em>These instructions are pulled from that article.</em></p>
+<p>First, check whether you have an SSH key already created. The following command
+will print “no SSH key found” if it doesn’t find an existing key:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span> -e ~/.ssh/id_rsa.pub <span class="o">]</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&quot;no SSH key found.&quot;</span>
+</pre></div>
+</div>
+<p>If you don’t already have an SSH key, create a new one by running the following
+command and hitting enter repeatedly until it finishes (<strong>WARNING: this will
+overwrite your existing SSH key if you do in fact have one already, possibly
+costing you access to servers you are currently able to SSH into.</strong>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh-keygen
+</pre></div>
+</div>
+<p>You should see some funny ASCII art print out once it’s finished. You can now
+print your SSH key with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat ~/.ssh/id_rsa.pub
+</pre></div>
+</div>
+<p><em>You will eventually have to make sure that the public key is on</em>
+<a class="reference external" href="https://gw-astronomy.org">gw-astronomy.org</a>’s <em>list of authorized
+keys; this step is discussed below in the</em> <a class="reference internal" href="#external-authentication">external
+authentication</a> <em>section.</em></p>
+</div>
+<div class="section" id="gmail-authentication">
+<h2>GMail Authentication<a class="headerlink" href="#gmail-authentication" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Create a device (or “app”, as Google calls it) password for
+<a class="reference external" href="mailto:gw&#46;hen&#46;analysis&#37;&#52;&#48;gmail&#46;com">gw<span>&#46;</span>hen<span>&#46;</span>analysis<span>&#64;</span>gmail<span>&#46;</span>com</a> (or your personal gmail, if you are just
+trying to run some tests). This password is different from your login
+password and is only to be used by a single device. You can generate
+a device password
+<a class="reference external" href="https://security.google.com/settings/security/apppasswords">here</a>.</p></li>
+<li><p>Use your favorite text editor to open <code class="docutils literal notranslate"><span class="pre">~/.msmtprc</span></code> and replace
+<code class="docutils literal notranslate"><span class="pre">&lt;WRITE-PASSWORD-HERE&gt;</span></code> with your newly-created device password.
+<em>If you are using a personal gmail account (rather than
+gw.hen.analysis&#64;gmail.com), you will want to find each occurence of</em>
+<code class="docutils literal notranslate"><span class="pre">gw.hen.analysis&#64;gmail.com</span></code> <em>in this file and replace it with your
+personal gmail address.</em></p></li>
+</ol>
+</div>
+<div class="section" id="ligo-authentication">
+<h2>LIGO Authentication<a class="headerlink" href="#ligo-authentication" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">ligo-proxy-init</span> <span class="pre">your.username</span></code> and enter your LIGO password.
+This will allow you to download GW event data from GraceDB. <em>You will
+need to do this every few days.</em></p></li>
+</ol>
+<p>LV_Alert Authentication</p>
+<ol class="arabic simple">
+<li><p>Make sure you have an LVAlert username and password set up. You can do this
+<a class="reference external" href="https://www.lsc-group.phys.uwm.edu/cgi-bin/jabber-acct.cgi">here</a>. You
+can learn more about LVAlert on the
+<a class="reference external" href="https://wiki.ligo.org/DASWG/LVAlertHowto">official documentation pages</a>
+and from the GraceDB
+<a class="reference external" href="https://gracedb.ligo.org/documentation/lvalert.html">LVAlert guide</a>.</p></li>
+<li><p>Use your favorite text editor to open <code class="docutils literal notranslate"><span class="pre">~/.netrc</span></code> and replace
+<code class="docutils literal notranslate"><span class="pre">&lt;WRITE-USERNAME-HERE&gt;</span></code> with the LVAlert username you created in step 1
+and <code class="docutils literal notranslate"><span class="pre">&lt;WRITE-PASSWORD-HERE&gt;</span></code> with the password for that LVAlert username.
+If you already have a password but forgot it, you can easily reset it at
+the link provided in step 1.</p></li>
+<li><p><em>(Optional)</em> You can make sure that your credentials work by running</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span> lvalert_admin --username albert.einstein --subscriptions
+
+where, of course, <span class="sb">``</span>albert.einstein<span class="sb">``</span> is replaced with the LVAlert username
+you made in step <span class="m">1</span>.
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-ssl-certificates">
+<h2>Setting Up SSL Certificates<a class="headerlink" href="#setting-up-ssl-certificates" title="Permalink to this headline">¶</a></h2>
+<p>In order to access the server using the HTTPS protocol (as is generally
+considered best practice, since this will traffic to/from the server when
+accessing it via browser), you’ll need to get an SSL certificate. The easiest
+way to do this is by using the <a class="reference external" href="https://certbot.eff.org/lets-encrypt/debianjessie-apache">EFF Certbot</a> (linked instructions for Debian
+Jessie, but just use the correct ones for whatever system is running the
+server) and using <a class="reference external" href="https://letsencrypt.org/getting-started/">Let’s Encrypt</a>.</p>
+<p>These instructions will let you install <code class="docutils literal notranslate"><span class="pre">certbot-auto</span></code> from EFF’s website.
+<code class="docutils literal notranslate"><span class="pre">certbot-auto</span></code> can automatically install certificates for an Apache server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo /usr/local/bin/certbot-auto --apache
+</pre></div>
+</div>
+<p>You can then automate renewal of the certificate (important because the certs
+expire after 90 days) by adding the following to your <code class="docutils literal notranslate"><span class="pre">systemd</span> <span class="pre">timer</span></code> or
+root <code class="docutils literal notranslate"><span class="pre">crontab</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/usr/local/bin/certbot-auto renew
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-passwords-for-run-summary-pages">
+<h2>Setting Up Passwords for Run Summary Pages<a class="headerlink" href="#setting-up-passwords-for-run-summary-pages" title="Permalink to this headline">¶</a></h2>
+<p>You can put the username and password for the current run in
+<code class="docutils literal notranslate"><span class="pre">~/.llama_run_credentials</span></code> in <code class="docutils literal notranslate"><span class="pre">.netrc</span></code> format. This will be used for the
+run summary pages when basic HTTP authentication is in use with the <code class="docutils literal notranslate"><span class="pre">flask</span></code>
+dev server.</p>
+</div>
+</div>
+<div class="section" id="external-authentication">
+<h1>External Authentication<a class="headerlink" href="#external-authentication" title="Permalink to this headline">¶</a></h1>
+<p>The services referenced in this section require credentials provided by LLAMA
+partners and commercial services. Authenticating with these
+services is not necessary for testing the majority of the
+LLAMA pipeline’s functionality, but it does require either
+expenditure of funding (for Twilio) or getting help from our
+busy partners
+(for gw-astronomy.org and GCN). These are live services that
+are used to disseminate results, and testing their
+functionality requires care and coordination. <strong>It is
+therefore highly recommended that this section be skipped
+by all users who are not actively deploying the LLAMA code into production.</strong></p>
+<div class="section" id="bitbucket-authentication">
+<span id="bitbucket-ssh-authentication"></span><h2>Bitbucket Authentication<a class="headerlink" href="#bitbucket-authentication" title="Permalink to this headline">¶</a></h2>
+<p>At time of writing, the main software repository is stored on <a class="reference external" href="https://bitbucket.org">Bitbucket</a>.</p>
+<p>The first step is to <a class="reference internal" href="#id1">Generate SSH Keys</a>; once you’ve done that, you can
+access your SSH key by logging in to your LLAMA server and printing out your
+<strong>public</strong> key:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat ~/.ssh/id_rsa.pub
+</pre></div>
+</div>
+<p>You can now copy this key straight from your terminal and add it to Bitbucket.
+First, navigate to <a class="reference external" href="https://bitbucket.org">Bitbucket</a>’s website, followed by your user settings page,
+and then click the <em>SSH keys</em> section under <em>Security</em>. At time of writing, you
+can also directly access these settings at the following URL, where
+<code class="docutils literal notranslate"><span class="pre">USERNAME</span></code> has been replaced with your bitbucket username:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">bitbucket</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">account</span><span class="o">/</span><span class="n">user</span><span class="o">/</span><span class="n">USERNAME</span><span class="o">/</span><span class="n">ssh</span><span class="o">-</span><span class="n">keys</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Once there, click <em>Add key</em> and type the name of your server under <em>Label</em> and
+paste the SSH key into the <em>Key</em> section. Hit <em>Add key</em> to finish the process.
+You should now be able to push and pull from your Bitbucket repositories at the
+command line on your server without needing to enter your username and
+password, and if you have permission to access the pipeline repository, you
+will now be able to clone it from its Bitbucket URL.</p>
+</div>
+<div class="section" id="git-ligo-org-authentication">
+<h2>git.ligo.org Authentication<a class="headerlink" href="#git-ligo-org-authentication" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to <a class="reference internal" href="#id1">Generate SSH Keys</a>; once you’ve done that, you can
+access your SSH key by logging in to your LLAMA server and printing out your
+<strong>public</strong> key:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat ~/.ssh/id_rsa.pub
+</pre></div>
+</div>
+<p>You can now copy this key straight from your terminal and add it to
+git.ligo.org.
+Visit your <a class="reference external" href="https://git.ligo.org/profile/keys">git.ligo.org SSH-key settings page</a>.
+Once there, type the name of your server under <em>Title</em> and
+paste the SSH key into the <em>Key</em> section. Hit <em>Add key</em> to finish the process.
+You should now be able to push and pull from your <a class="reference external" href="https://git.ligo.org">git.ligo.org</a> repositories at
+the command line on your server without needing to enter your username and
+password, and if you have permission to access the pipeline repository, you
+will now be able to clone it from its Bitbucket URL.</p>
+</div>
+<div class="section" id="twilio-authentication">
+<h2>Twilio Authentication<a class="headerlink" href="#twilio-authentication" title="Permalink to this headline">¶</a></h2>
+<p>We use <a class="reference external" href="https://www.twilio.com">Twilio’s</a> API to send SMS messages to LLAMA
+operators for human-in-the-loop parts of the pipeline. To authenticate with
+Twilio, you will need to provide your credentials as environmental variables.
+The <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file provided by default will try to run
+<code class="docutils literal notranslate"><span class="pre">~/.twilio-credentials</span></code>, so the easy way to do this is to put your credentials
+in that file. That file is pre-populated with the current LLAMA Twilio phone
+number, so you don’t have to provide that.</p>
+<ol class="arabic simple">
+<li><p>Go to <a class="reference external" href="https://www.twilio.com/console/sms/dashboard">Twilio’s dashboard</a>
+and click “Show API Credentials” in the top right corner of the screen. Take
+note of the <em>Account SID</em> and <em>Auth Token</em>.</p></li>
+<li><p>Open up <code class="docutils literal notranslate"><span class="pre">~/.twilio-credentials</span></code> with your prefered text editor</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;YOUR-SID-HERE&gt;</span></code> with the <em>Account SID</em> you just got from Twilio’s
+website. Replace <code class="docutils literal notranslate"><span class="pre">&lt;YOUR-TOKEN-HERE&gt;</span></code> with the <em>Auth Token</em> you just got
+and save the file.</p></li>
+<li><p>You will need to reload your credentials or your <code class="docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file for the
+changes to take effect. You can reload just the credentials by running:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> ~/.twilio-credentials
+</pre></div>
+</div>
+</div>
+<div class="section" id="gw-astronomy-authentication">
+<h2>GW Astronomy Authentication<a class="headerlink" href="#gw-astronomy-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Make sure that the <code class="docutils literal notranslate"><span class="pre">llama</span></code> user on the
+<a class="reference external" href="https://gw-astronomy.org">gw-astronomy.org</a> server has your
+public key saved to its <code class="docutils literal notranslate"><span class="pre">authorized_keys</span></code> file. If you have not set
+this up yet, you will need to email the webmaster at
+<a class="reference external" href="https://gw-astronomy.org">gw-astronomy.org</a> and send your public
+key, <code class="docutils literal notranslate"><span class="pre">~/.ssh/id_rsa.pub</span></code>, so that the webmaster can authorize you
+to log in to LLAMA’s <a class="reference external" href="https://gw-astronomy.org">gw-astronomy.org</a>
+account. This is necessary for uploading analysis results. <em>If you
+don’t know how to generate SSH keys, refer to the
+instructions showing how to</em> <a class="reference internal" href="#id1">Generate SSH Keys</a> <em>above.</em></p>
+</div>
+<div class="section" id="gcn-authentication">
+<h2>GCN Authentication<a class="headerlink" href="#gcn-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Make sure that you have an entry for this server in the
+<a class="reference external" href="http://gcn.gsfc.nasa.gov/">GCN</a> network’s <a class="reference external" href="http://gcn.gsfc.nasa.gov/sites2_cfg.html">Sites Configuration
+File</a>. This is necessary
+for receiving LVC events. In particular, you need to make sure there
+is a site entry containing your server’s IP address (which <strong>must</strong>
+be static) under the <code class="docutils literal notranslate"><span class="pre">DIST_ADDRESS</span></code> as well as a properly set
+<code class="docutils literal notranslate"><span class="pre">LVC_Enabled</span></code> field. You should also make sure you are set up to
+receive the proper alerts (including <code class="docutils literal notranslate"><span class="pre">LVC_INITIAL_POS_MAP</span></code> and
+<code class="docutils literal notranslate"><span class="pre">GWHEN_COINC</span></code> at the time of writing).</p>
+</div>
+</div>
+<div class="section" id="turning-on-the-pipeline">
+<h1>Turning on the Pipeline<a class="headerlink" href="#turning-on-the-pipeline" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subscribing-to-lvalert-nodes">
+<h2>Subscribing to LVAlert Nodes<a class="headerlink" href="#subscribing-to-lvalert-nodes" title="Permalink to this headline">¶</a></h2>
+<p>Make sure you have subscribed to all of the LVAlert nodes used by the pipeline
+by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lvalert_admin -i
+</pre></div>
+</div>
+<p>You should see all of the following (ordering does not matter):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Node: superevent <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>k7hjUhAX0qLiLjXL6bCnXDPT1JngsDwFmZvCdGqp<span class="o">]</span>
+Node: cbc_gstlal <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>DRPc5g1ivFNn504a5uQk2mzHVdarHWVzxD6S3u8Y<span class="o">]</span>
+Node: cbc_lowmass <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>DGYiTkwsl58w3fwsFX72g2pIqERg0jfEY7fW9Bop<span class="o">]</span>
+Node: stc-testnode <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>7lzckGSYHH28wswE4Rl8JnlpncKi9SsL8uOJZzZa<span class="o">]</span>
+Node: cbc_pycbc <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>CDQriRVw7IsYU6Uh2Y738oHlwPnXkJJvdD9PWeTQ<span class="o">]</span>
+Node: cbc_mbtaonline <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>cfiMONixdKRnl2DmSupPSD0BSArF3PasuoMAPcFU<span class="o">]</span>
+Node: burst_cwb <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>LpOfqpgwdnNNn5XnRW9jNPCn7UZuxmtYJW7jlS7Z<span class="o">]</span>
+Node: test_superevent <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>T8W2oLnNMC8TUnwaSdBErJEG0My8VGlJEcnGMWFv<span class="o">]</span>
+Node: cbc_spiir <span class="o">[</span> subscribed <span class="nv">subid</span><span class="o">=</span>0H4qi2Fh5Uo7OnLjPaT1aydQLKiNdj0gxzmv5TXB<span class="o">]</span>
+</pre></div>
+</div>
+<p>If any of the above nodes are missing, add them with
+<code class="docutils literal notranslate"><span class="pre">llama_lvalert_subscribe</span></code>, which just calls <code class="docutils literal notranslate"><span class="pre">lvalert_admin</span> <span class="pre">--subscribe</span>
+<span class="pre">--node</span> <span class="pre">...</span></code> on every node we want to listen to. It’s really just a shortcut
+for the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lvalert_admin --subscribe --node superevent
+lvalert_admin --subscribe --node cbc_gstlal
+lvalert_admin --subscribe --node cbc_pycbc
+lvalert_admin --subscribe --node cbc_mbtaonline
+lvalert_admin --subscribe --node cbc_spiir
+lvalert_admin --subscribe --node cbc_lowmass
+lvalert_admin --subscribe --node stc-testnode
+lvalert_admin --subscribe --node burst_cwb
+lvalert_admin --subscribe --node test_superevent
+</pre></div>
+</div>
+<p>(Note: you can also always print a full list of available LVAlert nodes by
+running <code class="docutils literal notranslate"><span class="pre">lvalert_admin</span> <span class="pre">-m</span></code>.)</p>
+</div>
+<div class="section" id="starting-pipeline-daemons">
+<h2>Starting Pipeline Daemons<a class="headerlink" href="#starting-pipeline-daemons" title="Permalink to this headline">¶</a></h2>
+<p>Once you’ve subscribed to all of the above LVAlert nodes, navigate to the
+repository directory and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama run
+llama listen lvalert
+llama listen gcn
+nohup serve_current_run <span class="m">1</span>&gt;/dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> &lt;/dev/null <span class="p">&amp;</span>
+</pre></div>
+</div>
+<p>These commands will start:</p>
+<ol class="arabic simple">
+<li><p>The LVAlert listener, which listens for new LVC events and
+uses them to create new event directories when skymaps become available;
+mark events as <code class="docutils literal notranslate"><span class="pre">EM_READY</span></code> when they have been vetted as ready for EM
+follow-up; and marks them as having a <a class="reference external" href="https://emfollow.docs.ligo.org/userguide/">superevent</a> associated with them,
+indicating that the results of a specific event can be distributed to the
+public under the name of that superevent.</p></li>
+<li><p>The GCN Notice listener, which listens for new LVC events both as
+confirmation that the event is public (and hence LLAMA can send out an
+alert) and as a fallback to the LVAlert listener (in case something
+non-standard happened in creating the superevent–as has happened in the
+past with unusual events–which was corrected when the public-facing GCN
+Notice was sent out).</p></li>
+<li><p>The LLAMA pipeline daemon (<code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code>), which checks the default event
+directory for <em>non-test</em> events (hence the filter for GraceIDs starting
+with “G”). When the GCN listener receives a new LVC VOEvent via a GCN Notice,
+the LLAMA pipeline daemon will detect the new VOEvent and start running the
+LLAMA joint analysis.</p></li>
+<li><p>The Current Run status page server (<code class="docutils literal notranslate"><span class="pre">serve_current_run</span></code>), which serves a
+summary webpage with the current status of the LLAMA server and the events
+processed as part of the current run over port 5000.
+Assuming that the server is associated with the domain name <code class="docutils literal notranslate"><span class="pre">gwhen.com</span></code>,
+one can view the current status of the server (including memory usage and
+whether daemon processes are running) by visiting
+<a class="reference external" href="http://gwhen.com:5000">gwhen.com:5000</a>.</p></li>
+</ol>
+<p>(The <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">/dev/null</span></code> part is necessary due to some strange behavior in
+MATLAB when running in the background using <code class="docutils literal notranslate"><span class="pre">nohup</span></code>.)</p>
+<div class="section" id="testing-lvalert">
+<h3>Testing LVAlert<a class="headerlink" href="#testing-lvalert" title="Permalink to this headline">¶</a></h3>
+<p>Note that you can run a quick test to see if you’re connected to LVAlert by
+starting up <code class="docutils literal notranslate"><span class="pre">lvalert_listen</span></code> (as described above) and submitting a test event
+in GraceDB’s LVAlert JSON format using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lvalert_send -v --node stc-testnode <span class="se">\</span>
+    --file ~/multimessenger-pipeline/static/mock_event.json
+</pre></div>
+</div>
+<p>You should see the contents of that mock event show up in the LVAlert handler’s
+logs, and if there was some intended side-effect of that LVAlert, you should
+also see some verbose logging and a new/modified event in the default event
+directory (<code class="docutils literal notranslate"><span class="pre">~/.local/share/llama/current_run/</span></code>). Note that, because
+the test event was sent on <code class="docutils literal notranslate"><span class="pre">stc-testnode</span></code>, the event will be flagged as a
+test event, and though the pipeline should run, no alerts will be sent to the
+public.</p>
+</div>
+</div>
+<div class="section" id="viewing-active-processes">
+<h2>Viewing Active Processes<a class="headerlink" href="#viewing-active-processes" title="Permalink to this headline">¶</a></h2>
+<p>You can see if these processes are running with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama run -R                    <span class="c1"># find ``llama run`` processes</span>
+llama listen lvalert -R         <span class="c1"># show lvalert listener processes (if any)</span>
+llama listen gcn -R             <span class="c1"># show GCN listener processes (if any)</span>
+ps -ax <span class="p">|</span> grep serve_current_run <span class="c1"># find serve_current_run process</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="checking-pipeline-logs">
+<h2>Checking Pipeline Logs<a class="headerlink" href="#checking-pipeline-logs" title="Permalink to this headline">¶</a></h2>
+<p>You can follow the log output in real time with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lvalertd -t
+tail -f logs/llamad.log
+tail -f logs/serve_current_run.log
+</pre></div>
+</div>
+<p>In general, all LLAMA pipeline output will be saved to the <code class="docutils literal notranslate"><span class="pre">logs/</span></code>
+directory. This is true regardless of where you place the repository
+directory.</p>
+</div>
+<div class="section" id="killing-pipeline-daemons">
+<h2>Killing Pipeline Daemons<a class="headerlink" href="#killing-pipeline-daemons" title="Permalink to this headline">¶</a></h2>
+<p>You can shut down the pipeline processes with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama run -k
+llama listen lvalert -k
+llama listen gcn -k
+ps -ax <span class="p">|</span> grep serve_current_run <span class="p">|</span> sed /grep/d <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span> <span class="p">|</span> xargs <span class="nb">kill</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deprecated-matlab-logs">
+<h2>Deprecated: MATLAB Logs<a class="headerlink" href="#deprecated-matlab-logs" title="Permalink to this headline">¶</a></h2>
+<p>When running the pipeline with MATLAB code, all MATLAB-specific logging should
+be viewable by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tail -f logs/llama.matlab.log   <span class="c1"># matlab process output goes here</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="developing-for-llama">
+<h1>Developing for LLAMA<a class="headerlink" href="#developing-for-llama" title="Permalink to this headline">¶</a></h1>
+<p>This section is intended for new LLAMA developers.</p>
+<div class="section" id="introduction-to-development">
+<h2>Introduction to Development<a class="headerlink" href="#introduction-to-development" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="structure-of-the-pipeline">
+<h3>Structure of the Pipeline<a class="headerlink" href="#structure-of-the-pipeline" title="Permalink to this headline">¶</a></h3>
+<p>The LLAMA pipeline is designed to be flexible, robust, reproducible, parallel,
+and east to develop. This is accomplished by treating data processing as a
+bunch of methods for processing input data and producing output data
+independently of other parts of the analysis. LLAMA defines a python class
+called a <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> that specifies at minimum the following information
+about a data file:</p>
+<ol class="arabic simple">
+<li><p>The filename</p></li>
+<li><p>The complete list of input files required to generate this file</p></li>
+<li><p>The code used to actually generate this file from its inputs</p></li>
+</ol>
+<p>Thus, each file is connected to the list of files necessary for its own
+generation, forming a file dependency graph (an instance of a Directed Acyclic
+Graph, or DAG, as used in other data analysis pipeline tools). When a file’s
+dependencies are available, it will be generated without affecting
+neighboring parts of the analysis, and each step of the pipeline is reproducible
+using the saved files (which are the only stateful part of the pipeline).</p>
+</div>
+<div class="section" id="adding-functionality">
+<h3>Adding Functionality<a class="headerlink" href="#adding-functionality" title="Permalink to this headline">¶</a></h3>
+<p>This approach makes it very easy to add new data processing capabilities to
+LLAMA. Just follow these steps:</p>
+<ol class="arabic simple">
+<li><p>Add a new python file in <code class="docutils literal notranslate"><span class="pre">/llama/files</span></code> that defines a subclass of
+<code class="docutils literal notranslate"><span class="pre">abstract.FileHandler</span></code> You will have to implement a few abstract methods
+and properties (see e.g.
+<code class="docutils literal notranslate"><span class="pre">llama/files/lvc_skymap_mat.py</span></code> for a simple
+example of a FileHandler implementation):</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">filename</span></code> property, which gives the name of the new output file</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> property, which returns a list of FileHandler classes
+for each input file required to generate this file (make sure to import
+those FileHandler classes!)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">_generate</span></code> method, which defines the steps needed to generate this
+file using input data. You can access things like the full path to a
+dependency file by instantiating a copy of its FileHandler and getting the
+<code class="docutils literal notranslate"><span class="pre">fullpath</span></code> property using e.g.
+<code class="docutils literal notranslate"><span class="pre">other_file_handler_class(self).fullpath</span></code>.</p></li>
+</ul>
+</li>
+<li><p>Make sure that your new FileHandler is included in the actual pipeline by
+importing the class in <code class="docutils literal notranslate"><span class="pre">/llama/files/__init__.py</span></code></p></li>
+<li><p>Test that the pipeline runs and produces desired output by running one of
+the developer tests, e.g. <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">testpipeline7</span></code> (or whatever test you feel
+like using in the makefile). Check that the output data is what you would
+expect for your new file by looking in the event directory for this test
+(<code class="docutils literal notranslate"><span class="pre">/testout/events/testpipeline7</span></code> in this example).</p></li>
+<li><p>If your new file looks good, run <code class="docutils literal notranslate"><span class="pre">nosetests</span></code> in the root repository
+directory to make sure that you didn’t somehow break anything.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">nosetests</span></code> pass, <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code> your code and push it to the remote
+repository.</p></li>
+<li><p>Last but not least, <strong>remember to restart the pipeline</strong> in order to see
+your updates actually applied; the pipeline does not refresh its code
+automatically (a good thing for developing). You can do so with the following
+commands:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>llama run -k  <span class="c1"># might need to run this twice</span>
+llama run
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="developer-conventions-and-best-practices">
+<h2>Developer Conventions and Best Practices<a class="headerlink" href="#developer-conventions-and-best-practices" title="Permalink to this headline">¶</a></h2>
+<p>Please follow the following standards with code written for the LLAMA pipeline:</p>
+<div class="section" id="data-format-conventions">
+<h3>Data Format Conventions<a class="headerlink" href="#data-format-conventions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>All event files must represent angles in <em>degrees</em>. This means that, when
+querying external APIs, you <em>must convert radians to degrees</em> before saving
+data in an event directory. (You should log any raw data you throw out so
+that we can check the correctness of the conversion; see point on logging
+below).</p></li>
+</ul>
+</div>
+<div class="section" id="coding-best-practices">
+<h3>Coding Best Practices<a class="headerlink" href="#coding-best-practices" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Don’t hard code filenames or other magic strings! If you need to get data from
+a file, make sure that that file has its own FileHandler defining how it can
+be <em>(reproducibly!)</em> generated, then import that FileHandler class,
+instantiate a copy by feeding the current FileHandler as an argument to
+the dependency FileHandler class, and get the data you want (like filename)
+from that instance.</p></li>
+<li><p>Log all actions. This can be done very easily by sticking to the FileHandler
+subclass idiom defined by LLAMA.</p></li>
+<li><p>Please verbosely log any incoming raw data before it is thrown out. This
+way we can go back and see if we accidentally deleted good pulled data.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Go into the root repository directory (i.e. the top level directory of the
+git repository, which is assumed to be <code class="docutils literal notranslate"><span class="pre">~/multimessenger-pipeline</span></code> at the
+time of writing of this documentation) and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make testgracedb
+</pre></div>
+</div>
+<p>to make sure that you are properly authenticated using your LIGO
+credentials. You should see the following output (or something like it)
+printed to console <strong>(note that the following is output; don’t type it
+into the console)</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">llama</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">testgracedb</span><span class="o">.</span><span class="n">py</span> <span class="o">|</span> <span class="n">tee</span> <span class="o">-</span><span class="n">a</span> <span class="n">logs</span><span class="o">/</span><span class="n">llama</span><span class="o">.</span><span class="n">testgracedb</span><span class="o">.</span><span class="n">log</span>
+<span class="n">running</span> <span class="n">testgracedb</span> <span class="n">at</span> <span class="mi">2016</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">13</span> <span class="mi">18</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mf">05.577660</span>
+<span class="n">Attempting</span> <span class="n">to</span> <span class="n">connect</span> <span class="n">to</span> <span class="n">GraceDB</span><span class="o">.</span>
+<span class="n">Attempting</span> <span class="n">to</span> <span class="n">download</span> <span class="n">the</span> <span class="n">boxin</span> <span class="n">day</span> <span class="n">even</span> <span class="n">event</span><span class="o">.</span><span class="n">log</span><span class="o">.</span>
+<span class="n">Received</span> <span class="n">successfully</span><span class="o">.</span> <span class="n">Logging</span> <span class="n">contents</span><span class="o">.</span>
+<span class="n">Pipeline</span><span class="p">:</span> <span class="n">gstlal</span>
+<span class="n">Search</span><span class="p">:</span> <span class="n">HighMass</span>
+<span class="n">MChirp</span><span class="p">:</span> <span class="mf">9.555</span>
+<span class="n">MTot</span><span class="p">:</span> <span class="mf">26.3501410484</span>
+<span class="n">End</span> <span class="n">Time</span><span class="p">:</span> <span class="mf">1135136350.647757924</span>
+<span class="n">SNR</span><span class="p">:</span> <span class="mf">11.710</span>
+<span class="n">IFOs</span><span class="p">:</span> <span class="n">H1</span><span class="p">,</span><span class="n">L1</span>
+<span class="n">FAR</span><span class="p">:</span> <span class="mf">3.333e-11</span>
+</pre></div>
+</div>
+<p>If your output does not match the above, then you most likely need to
+log in using your LIGO credentials (See <a class="reference internal" href="#ligo-authentication">LIGO Authentication</a>).</p>
+<p>Next, run the full collection of unit tests using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nosetests
+</pre></div>
+</div>
+<p>This will take a few minutes and will not produce much output while it is
+running. If all tests succeed, you will see the number of tests that were run
+and the status message <code class="docutils literal notranslate"><span class="pre">OK</span></code>. You will be alerted at the end if any of the tests
+fail or if the tests themselves cannot be completed due to errors. Be aware
+that, if any of the tests fails, the output files will remain in <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>
+taking up a fair amount of space. They are hard links by default, so this
+shouldn’t take up much extra space, but it is worth deleting directories of the
+form <code class="docutils literal notranslate"><span class="pre">/tmp/tmp*</span></code> after a failed run (after making sure you don’t have other
+data matching that file pattern, of course).</p>
+</div>
+</div>
+<div class="section" id="appendix">
+<h1>Appendix<a class="headerlink" href="#appendix" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="migrating-to-conda">
+<span id="id2"></span><h2>Migrating to Conda<a class="headerlink" href="#migrating-to-conda" title="Permalink to this headline">¶</a></h2>
+<p>Migrating to Conda should simplify some LIGO dependency issues. It might make it
+harder to use IceCube software (have not checked whether this supports Conda
+packaging yet), but this is not currently an issue since we have IceCube stub
+methods installed.</p>
+<p>Note that, at time of writing, LVAlert had not migrated to Conda, and so the
+old installation method is still required to be able to use LVAlert.</p>
+<div class="section" id="ligo-wiki-documentation">
+<h3>LIGO Wiki Documentation<a class="headerlink" href="#ligo-wiki-documentation" title="Permalink to this headline">¶</a></h3>
+<p>The latest documentation on installing from source should always be available
+from the <a class="reference external" href="https://docs.ligo.org/lscsoft/conda/">LSCSoft Conda</a> documentation page. The instructions below are pulled
+directly therefrom. We can also follow LSC’s guide for <a class="reference external" href="https://wiki.ligo.org/Computing/CondaPackaging">making a new Conda
+package</a> if we want to make the pipeline distributable by Conda in the future.</p>
+</div>
+<div class="section" id="installing-ligo-software-via-conda">
+<h3>Installing LIGO Software via Conda<a class="headerlink" href="#installing-ligo-software-via-conda" title="Permalink to this headline">¶</a></h3>
+<p><em>Conda installs are done on a per-user basis, so you won’t need to use sudo for
+any of the below.</em> Start by installing the latest version of Conda:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -O https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+</pre></div>
+</div>
+<p>You’ll now need to exit your SSH session and log in again for <code class="docutils literal notranslate"><span class="pre">conda</span></code> to show
+up as a command; run <code class="docutils literal notranslate"><span class="pre">exit</span></code> to exit and then SSH back into the server. Now,
+activate your Conda environment and add the <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> channel (used to
+distribute custom Conda packages):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate
+conda config --add channels conda-forge
+</pre></div>
+</div>
+<p>Next, install all available LIGO software:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget -q https://git.ligo.org/lscsoft/conda/raw/master/environment-py36.yml
+conda env create -f environment-py36.yml
+</pre></div>
+</div>
+<p>Finally, you can activate the LIGO python computing environment with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate ligo-py36
+</pre></div>
+</div>
+<p>You will probably want to put this in your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> if you plan on using it
+all the time.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting-installation">
+<h2>Troubleshooting Installation<a class="headerlink" href="#troubleshooting-installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Problem:</strong> <code class="docutils literal notranslate"><span class="pre">cmake</span></code> keeps failing while installing IceCube software.</p>
+<p><strong>Solution:</strong> You probably did not check out the entire IceCube repository when
+you ran <code class="docutils literal notranslate"><span class="pre">svn</span> <span class="pre">co</span></code>. You will need to remove the IceCube source and build
+directories by running <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rm</span> <span class="pre">-rf</span> <span class="pre">/usr/local/icecube/offline/*</span></code> and start
+over from when you <a class="reference internal" href="#entered-your-icecube-credentials">entered your IceCube credentials</a>.</p>
+<div class="section" id="creating-a-new-user">
+<span id="create-a-new-user"></span><h3>Creating a new user<a class="headerlink" href="#creating-a-new-user" title="Permalink to this headline">¶</a></h3>
+<p>You should preferably not run the pipeline as <code class="docutils literal notranslate"><span class="pre">root</span></code>. You can add a
+new user named, e.g., <code class="docutils literal notranslate"><span class="pre">vagrant</span></code> in Debian and Ubuntu with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>adduser vagrant
+</pre></div>
+</div>
+<p>You will then want to give this user <code class="docutils literal notranslate"><span class="pre">sudo</span></code> priviledges by adding
+them to the <code class="docutils literal notranslate"><span class="pre">sudoers</span></code> file (this will allow the user to do
+administrative tasks using the command <code class="docutils literal notranslate"><span class="pre">sudo</span></code>). You will want to
+run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>visudo
+</pre></div>
+</div>
+<p>which will open up the <code class="docutils literal notranslate"><span class="pre">sudoers</span></code> file for editing in the default
+text editor (for Debian, this is probably <a class="reference external" href="https://www.nano-editor.org/dist/v2.7/nano.html#Editor-Basics">nano</a>). You will need to
+add the following line anywhere in the file, then save and quit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">ALL</span><span class="o">=</span><span class="p">(</span><span class="n">ALL</span><span class="p">)</span> <span class="n">NOPASSWD</span><span class="p">:</span> <span class="n">ALL</span>
+</pre></div>
+</div>
+<p>(Of course, if your username is not <code class="docutils literal notranslate"><span class="pre">vagrant</span></code>, you should use a
+different name above.)</p>
+<p>You can test whether your update to <code class="docutils literal notranslate"><span class="pre">sudoers</span></code> succeeded by
+running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo <span class="nb">echo</span> <span class="s1">&#39;Success! You have sudo priviledges.&#39;</span>
+</pre></div>
+</div>
+<p>If this succeeds, it will print a success message.</p>
+</div>
+<div class="section" id="out-of-memory">
+<span id="swap-space"></span><h3>Out of Memory<a class="headerlink" href="#out-of-memory" title="Permalink to this headline">¶</a></h3>
+<p>Add swap space (virtual memory) using the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo fallocate -l 12G /swapfile
+sudo chmod <span class="m">0600</span> /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo swapon -s
+free -m
+sudo bash -c <span class="se">\</span>
+    <span class="s2">&quot;echo &#39;/swapfile    none    swap    sw    0    0&#39; &gt;&gt;/etc/fstab&quot;</span>
+cat /etc/fstab
+</pre></div>
+</div>
+</div>
+<div class="section" id="matlab-installation-troubleshooting">
+<span id="matlab-installation-details"></span><h3>MATLAB Installation Troubleshooting<a class="headerlink" href="#matlab-installation-troubleshooting" title="Permalink to this headline">¶</a></h3>
+<p>You will probably want to install MATLAB using the GUI. This is easy if
+you are already on a desktop environment.</p>
+<p><em>If you are configuring a remote server to run the LLAMA pipeline, you
+will need to make sure that you have X11 Forwarding enabled so that you
+can control the MATLAB installer GUI from your computer. See the
+appendix entry on</em> <a class="reference internal" href="#ssh-with-x11-forwarding">SSH with X11 Forwarding</a> <em>for information.</em></p>
+<p>Unzip the downloaded zip file with (note: the filename might change if you
+install a newer version of MATLAB.):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>unzip matlab_R2016b_ginxa64.zip -d ~/matlab
+</pre></div>
+</div>
+<p>and then run the <code class="docutils literal notranslate"><span class="pre">install</span></code> executable located in the unzipped
+directory, which will launch the MATLAB installer GUI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/matlab/install
+</pre></div>
+</div>
+<p>Make sure to select items 1-3 (listed in the <a class="reference internal" href="#install-matlab">install
+MATLAB</a> section) in the installer window in addition
+to MATLAB itself. You can do without all of the other toolboxes. Once
+you are done, run matlab with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>matlab
+</pre></div>
+</div>
+<p>which will bring up the MATLAB GUI. Download <code class="docutils literal notranslate"><span class="pre">jsonlab</span></code>, then change
+your MATLAB working directory to the folder containing <code class="docutils literal notranslate"><span class="pre">jsonlab</span></code> and
+double click on the <code class="docutils literal notranslate"><span class="pre">jsonlab</span></code> file, which should have a full name
+along the lines of <code class="docutils literal notranslate"><span class="pre">jsonlab-1.2.mltbx</span></code>. You will be asked if you would
+like to install <code class="docutils literal notranslate"><span class="pre">jsonlab</span></code>; you should, of course, say yes. Again, bear
+in mind that you might need to repeat this procedure; for some reason
+MATLAB doesn’t always “remember” that it has <code class="docutils literal notranslate"><span class="pre">jsonlab</span></code> installed when
+you restart it. I don’t know how to remedy this besides installing
+<code class="docutils literal notranslate"><span class="pre">jsonlab</span></code> for a second time. You can confirm that JSONLab is installed
+by opening a MATLAB session and seeing if <code class="docutils literal notranslate"><span class="pre">loadjson</span></code> is a valid
+command; if it is, then JSONLab has been successfully installed.</p>
+</div>
+</div>
+<div class="section" id="install-icecube-offline-software-with-root">
+<h2>Install IceCube Offline Software with Root<a class="headerlink" href="#install-icecube-offline-software-with-root" title="Permalink to this headline">¶</a></h2>
+<p>At the original time of writing, it was not necessary to <a class="reference internal" href="#install-icecube-offline-software">install IceCube
+offline software</a>. The following instructions are necessary in the event that
+IceCube software libraries with <a class="reference external" href="https://root.cern.ch/">ROOT</a> dependencies become needed by LLAMA.
+For some reason, IceCube offline software will not compile properly when
+using the version of ROOT installed by the system package manager, so it is
+necessary to install the IceCube I3_PORTS version, as detailed bellow.
+This installation is <strong>extremely time consuming</strong> and should be skipped
+unless IceCube packages containing root become necessary for LLAMA.</p>
+<p>First, install <a class="reference external" href="http://software.icecube.wisc.edu/offline_trunk/projects/cmake/platforms.html#platforms">dependencies</a>
+for the IceCube offline software (plus a few other requirements for LLAMA):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt-get -y install build-essential cmake libbz2-dev libgl1-mesa-dev <span class="se">\</span>
+    freeglut3-dev libxml2-dev subversion libboost-python-dev <span class="se">\</span>
+    libboost-system-dev libboost-signals-dev libboost-thread-dev <span class="se">\</span>
+    libboost-date-time-dev libboost-serialization-dev <span class="se">\</span>
+    libboost-filesystem-dev libboost-program-options-dev <span class="se">\</span>
+    libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev <span class="se">\</span>
+    libarchive-dev python-scipy ipython-qtconsole libqt4-dev <span class="se">\</span>
+    python-urwid python-tables libxft-dev
+</pre></div>
+</div>
+<p>Next, install I3 Ports, a set of executables that provide a consistent
+environment for IceCube offline software. <a class="reference external" href="http://software.icecube.wisc.edu/offline_trunk/projects/cmake/installing_ports.html">IceCube
+documentation</a>
+suggests running this as a user other than root. <em>This next step will take
+several hours to complete and must be restarted if it fails partway through.
+You might consider letting this run overnight or during some other
+unsupervised stretch of time. It will be significantly quicker on a fast
+system, but still painfully slow.</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+svn co http://code.icecube.wisc.edu/icetray-dist/tools/DarwinPorts/trunk <span class="se">\</span>
+    port_source
+<span class="nb">cd</span> port_source
+./i3-install.sh <span class="s2">&quot;</span><span class="nv">$I3_PORTS</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Next, check out IceCube offline software. <em>if you encounter a segmentation
+fault during SVN checkout, see the next set of instructions below the next code
+block.</em> These instructions are adapted from the <a class="reference external" href="http://software.icecube.wisc.edu/offline_trunk/metaproject/quickstart.html">original IceCube offline
+software installation
+instructions</a>;
+you can find all <a class="reference external" href="https://wiki.icecube.wisc.edu/index.php/IceTray_Releases#Release_Version:_V13-07-00">offline software releases
+here</a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/offline
+<span class="nb">cd</span> ~/offline
+svn co http://code.icecube.wisc.edu/svn/meta-projects/offline-software/releases/V15-08-00 src
+</pre></div>
+</div>
+<p><em>If you encounter a segmentation fault (a</em> <a class="reference external" href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736879">known bug</a>
+<em>on Debian Jesse’s SVN version), you can run</em> <code class="docutils literal notranslate"><span class="pre">svn</span> <span class="pre">cleanup</span> <span class="pre">src</span></code> <em>followed by</em>
+<code class="docutils literal notranslate"><span class="pre">svn</span> <span class="pre">update</span> <span class="pre">src</span></code> <em>and repeat until the source code has been fully checked
+out.</em></p>
+<p>Now it is time to build the IceTray software. <em>This step is also very long (if
+not as long as the previous one); set aside a couple of hours for it.
+Fortunately, this step can be resumed at the</em> <code class="docutils literal notranslate"><span class="pre">make</span></code> <em>step in the event of
+failure.</em></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/offline/build
+<span class="nb">cd</span> ~/offline/build
+<span class="s2">&quot;</span><span class="nv">$I3_PORTS</span><span class="s2">/bin/cmake&quot;</span> ../src
+make
+</pre></div>
+</div>
+<p>Finally, download some data used by IceCube test and example scripts.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make rsync
+</pre></div>
+</div>
+<p>You should now be able to open up an icecube environment using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./env-shell.sh
+</pre></div>
+</div>
+<p>You should see a “Welcome to Ice Tray” message. You can check whether the
+IceCube python module has been installed by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -c <span class="s1">&#39;from icecube import dataclasses; print(&quot;Success!&quot;)&#39;</span>
+</pre></div>
+</div>
+<p>If this runs without error and prints <code class="docutils literal notranslate"><span class="pre">Success!</span></code>, then you have successfully
+installed the IceCube python module. Well done! You can now exit the Ice Tray
+environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">exit</span>
+</pre></div>
+</div>
+<p>To make sure that IceCube software is available when logging in, you will have
+to add some new environmental variables to your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file with the
+install locations. Since environmental variables depend on where you installed
+the IceCube offline software, it is vital that you base the environmental
+variables off of your current installation configuration.
+<strong>Making sure that you are still in the build directory,</strong>
+run the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">eval</span> <span class="s2">&quot;</span><span class="k">$(</span>grep <span class="nv">ROOTSYS</span><span class="o">=</span> env-shell.sh<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nv">_I3_BUILD</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">pushd</span> ../src
+<span class="nv">_I3_SRC</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">popd</span>
+<span class="nb">pushd</span> <span class="s2">&quot;</span><span class="nv">$I3_PORTS</span><span class="s2">&quot;</span>
+<span class="nv">_I3_PORTS</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span><span class="nb">pwd</span> -P<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">popd</span>
+<span class="nv">_I3_TESTDATA</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$_I3_PORTS</span><span class="s2">/test-data&quot;</span>
+rm -f ~/.i3env
+<span class="nb">printf</span> <span class="s1">&#39;ROOTSYS=&quot;%s&quot;&#39;</span> <span class="s2">&quot;</span><span class="nv">$ROOTSYS</span><span class="s2">&quot;</span> &gt;&gt;~/.i3env
+<span class="nb">printf</span> <span class="s1">&#39;PYTHONPATH=&quot;%s&quot;/lib:&quot;%s&quot;/lib:&quot;$PYTHONPATH&quot;\n&#39;</span> <span class="se">\</span>
+    <span class="s2">&quot;</span><span class="nv">$_I3_BUILD</span><span class="s2">&quot;</span> <span class="s2">&quot;</span><span class="nv">$ROOTSYS</span><span class="s2">&quot;</span> &gt;&gt;~/.i3env
+<span class="nb">printf</span> <span class="s1">&#39;I3_BUILD=&quot;%s&quot;&#39;</span> <span class="s2">&quot;</span><span class="nv">$_I3_BUILD</span><span class="s2">&quot;</span> &gt;&gt;~/.i3env
+<span class="nb">printf</span> <span class="s1">&#39;I3_SRC=&quot;%s&quot;&#39;</span> <span class="s2">&quot;</span><span class="nv">$_I3_SRC</span><span class="s2">&quot;</span> &gt;&gt;~/.i3env
+<span class="nb">printf</span> <span class="s1">&#39;I3_PORTS=&quot;%s&quot;&#39;</span> <span class="s2">&quot;</span><span class="nv">$_I3_PORTS</span><span class="s2">&quot;</span> &gt;&gt;~/.i3env
+<span class="nb">printf</span> <span class="s1">&#39;I3_TESTDATA=&quot;%s&quot;&#39;</span> <span class="s2">&quot;</span><span class="nv">$_I3_TESTDATA</span><span class="s2">&quot;</span> &gt;&gt;~/.i3env
+</pre></div>
+</div>
+<p>You can now test whether your environment will run correctly by sourcing
+your <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>. ~/.bashrc
+</pre></div>
+</div>
+<p>You should see a message telling you that the IceCube software environment
+was successfully configured. Quickly test whether the IceCube python module
+is installed in the same way as before:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -c <span class="s1">&#39;from icecube import dataclasses; print(&quot;Success!&quot;)&#39;</span>
+</pre></div>
+</div>
+<p>Once again, you should see <code class="docutils literal notranslate"><span class="pre">Success!</span></code> printed on your console. If so,
+congratulations! You have successfully installed the IceCube environment.</p>
+</div>
+<div class="section" id="installing-ubuntu-for-windows">
+<span id="install-the-ubuntu-userspace"></span><h2>Installing Ubuntu for Windows<a class="headerlink" href="#installing-ubuntu-for-windows" title="Permalink to this headline">¶</a></h2>
+<p>With Windows 10, it is now possible to install an Ubuntu userspace (with
+Bash included) on a Windows machine. This means that Ubuntu packages can
+be installed and Ubuntu binaries can be run directly on Windows (thanks
+to some sort of system call translation wizardry). This provides a
+handy and straightforward way of connecting to remote servers via SSH,
+even if you are on Windows, without having to install something like
+<a class="reference external" href="http://www.putty.org">Putty</a>. This has some other nice advantages,
+and, for the purpose of this guide, I will assume you have Bash
+installed on your local computer (even if you are using SSH to connect
+to a remote server for installing the LLAMA software).</p>
+<p>You can follow the instructions in
+<a class="reference external" href="http://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/">this guide</a>
+to install Ubuntu for Windows.</p>
+</div>
+<div class="section" id="logging-in-to-a-remote-server-using-ssh">
+<span id="log-in-using-ssh"></span><h2>Logging in to a Remote Server Using SSH<a class="headerlink" href="#logging-in-to-a-remote-server-using-ssh" title="Permalink to this headline">¶</a></h2>
+<p>Start by opening up a <code class="docutils literal notranslate"><span class="pre">bash</span></code> instance.</p>
+<ul class="simple">
+<li><p>If you are on a Mac, you can do this by running Terminal.app, which
+should be in your /Applications folder, or by hitting <code class="docutils literal notranslate"><span class="pre">Command-Space</span></code>,
+typing “Terminal.app”, and hitting <code class="docutils literal notranslate"><span class="pre">Enter</span></code>.</p></li>
+<li><p>If you are on a PC running Windows 10, you can actually
+<a class="reference internal" href="#install-the-ubuntu-userspace">install the Ubuntu userspace</a> (with Bash included).
+Once this is installed, you can just open the Bash executable from your
+programs folder in the Start menu, or just hit the Windows button, type
+<code class="docutils literal notranslate"><span class="pre">bash</span></code>, and hit <code class="docutils literal notranslate"><span class="pre">Enter</span></code> to launch a new Bash session.</p></li>
+<li><p>If you are running Linux and don’t know how to start a terminal session,
+may God help you.</p></li>
+</ul>
+<p>Now, let’s say you are logging in to a server at IP address <code class="docutils literal notranslate"><span class="pre">1.2.3.4</span></code>,
+your username on the remote server is <code class="docutils literal notranslate"><span class="pre">vagrant</span></code>, and you have some
+password. Just run the following and enter your password when prompted:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh vagrant@1.2.3.4
+</pre></div>
+</div>
+<p>If you have your server mapped to a web URL, like <code class="docutils literal notranslate"><span class="pre">example.com</span></code>, you
+can use that instead of the IP address, as show below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh vagrant@example.com
+</pre></div>
+</div>
+<p>Congratulations! You should be logged in to your remote server. You can
+now proceed with installing the pipeline.</p>
+</div>
+<div class="section" id="getting-llama-software-onto-a-remote-server">
+<h2>Getting LLAMA Software onto a Remote Server<a class="headerlink" href="#getting-llama-software-onto-a-remote-server" title="Permalink to this headline">¶</a></h2>
+<p>Let’s assume someone sent you the LLAMA software in a compressed archive
+(e.g. a zipfile). You should have received a download link for the
+archive, in which case you can download the file directly from your
+LLAMA server. If you are running a remote machine,
+<a class="reference internal" href="#log-in-using-ssh">log in using SSH</a>;
+if you are running LLAMA locally or in a virtual machine, simply open
+up a terminal session.</p>
+<p>Let’s assume the URL for the LLAMA software archive is
+<code class="docutils literal notranslate"><span class="pre">example.com/llama.zip</span></code>. You can download the archive to your home
+directory as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+wget example.com/llama.zip
+</pre></div>
+</div>
+<p>Now, you can unzip the file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>unzip llama.zip
+</pre></div>
+</div>
+<p>You should now have a directory called <code class="docutils literal notranslate"><span class="pre">multimessenger-pipeline</span></code> in your
+home folder.</p>
+</div>
+<div class="section" id="ssh-with-x11-forwarding">
+<h2>SSH with X11 Forwarding<a class="headerlink" href="#ssh-with-x11-forwarding" title="Permalink to this headline">¶</a></h2>
+<p>This will allow you to run MATLAB’s installer GUI and the MATLAB GUI
+itself, both of which are necessary for the installation process, on a
+remote server or on a local virtual machine being accessed through
+<code class="docutils literal notranslate"><span class="pre">ssh</span></code>.</p>
+<ul>
+<li><p>On Macs, you must install <a class="reference external" href="https://www.xquartz.org/">XQuartz</a>.
+Then, when logging in to the LLAMA server, use the
+<code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">ForwardX11=yes</span></code> and <code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">ForwardX11Trusted=yes</span></code> flags to turn on X
+Window Forwarding. For example, if your server is <code class="docutils literal notranslate"><span class="pre">c137.com</span></code> and the
+username is <code class="docutils literal notranslate"><span class="pre">rick.sanchez</span></code>, you can log in with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh -o <span class="nv">ForwardX11</span><span class="o">=</span>yes -o <span class="nv">ForwardX11Trusted</span><span class="o">=</span>yes rick.sanchez@c137.com
+</pre></div>
+</div>
+</li>
+<li><p>On Linux, assuming you have a GUI, you probably have an X11 Server
+installed already. If that is the case, you can just <code class="docutils literal notranslate"><span class="pre">ssh</span></code> with the
+<code class="docutils literal notranslate"><span class="pre">-o</span> <span class="pre">ForwardX11=yes</span></code> and -o <code class="docutils literal notranslate"><span class="pre">ForwardX11Trusted=yes</span></code> flags, just as in the
+above example for Macs.</p></li>
+<li><p>On Windows machines, you can use
+<a class="reference external" href="https://sourceforge.net/projects/xming/">XMing</a> as your X Windows
+server and <a class="reference external" href="http://www.putty.org/">Putty</a> as your SSH client. If you
+have Windows 10, you can use Ubuntu for Windows (See instructions for
+<a class="reference internal" href="#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a>), and you can use <code class="docutils literal notranslate"><span class="pre">bash</span></code> instead of
+Putty. Once again, you can run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh -o <span class="nv">ForwardX11</span><span class="o">=</span>yes -o <span class="nv">ForwardX11Trusted</span><span class="o">=</span>yes rick.sanchez@c137.com
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If you use your <code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code> file for <code class="docutils literal notranslate"><span class="pre">ssh</span></code> settings (will work
+for Linux or Mac; I am not sure about Windows), you can
+also automatically turn on X11 forwarding for your LLAMA server by
+adding the lines</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ForwardX11</span> <span class="n">yes</span>
+<span class="n">ForwardX11Trusted</span> <span class="n">yes</span>
+</pre></div>
+</div>
+<p>to the site entry for your LLAMA server in your <code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code> file.
+For example, if you wanted to call the above server <code class="docutils literal notranslate"><span class="pre">earth</span></code>, you
+could add the following block to your <code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">earth</span>
+    <span class="n">HostName</span> <span class="n">c137</span><span class="o">.</span><span class="n">com</span>
+    <span class="n">User</span> <span class="n">rick</span><span class="o">.</span><span class="n">sanchez</span>
+    <span class="n">ForwardX11</span> <span class="n">yes</span>
+    <span class="n">ForwardX11Trusted</span> <span class="n">yes</span>
+</pre></div>
+</div>
+<p>Which makes connecting to the server with all of your desired settings
+much quicker (and saves you from having to remember ssh command
+syntax or the server URL):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh earth
+</pre></div>
+</div>
+<p>Once you have established an SSH connection with X11 forwarding enabled, you
+will need to make sure that the root account and the account you are logging
+into share the same <code class="docutils literal notranslate"><span class="pre">.Xauthority</span></code> file. To do so, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+<span class="k">if</span> sudo <span class="o">[</span> -e /root/.Xauthority <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    sudo mv /root/.Xauthority /root/.Xauthority.orig
+<span class="k">fi</span>
+sudo cp .Xauthority /root/.Xauthority
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-llama">
+<h2>Using LLAMA<a class="headerlink" href="#using-llama" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">llama</span></code> python module and its executables all have docstring
+documentation and are designed for interactive use. Read the help
+functions and play around with things in <code class="docutils literal notranslate"><span class="pre">ipython</span></code> to get a feel for
+how they work, and ask Stefan Countryman for help if you have any
+questions. I will put FAQs here if I find that any Qs have become F.</p>
+</div>
+<div class="section" id="documenting-llama">
+<h2>Documenting LLAMA<a class="headerlink" href="#documenting-llama" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="overview">
+<h3>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h3>
+<p>LLAMA uses <a class="reference external" href="https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst">reStructuredText</a> documents to generate nicely-formatted webpages
+and PDF files (via <a class="reference external" href="http://www.sphinx-doc.org/en/1.4.8/">Sphinx</a>). There is even a <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> included to
+facilitate publishing. The instructions below assume that you are starting
+from within the LLAMA installation folder (if you followed this installation
+guide, it will be in <code class="docutils literal notranslate"><span class="pre">~/multimessenger-pipeline</span></code>).</p>
+</div>
+<div class="section" id="publishing-to-gwhen-com-website">
+<h3>Publishing to gwhen.com Website<a class="headerlink" href="#publishing-to-gwhen-com-website" title="Permalink to this headline">¶</a></h3>
+<p>This repository contains tools for making a nice, reviewer/developer friendly
+website on the production server (<a class="reference external" href="http://gwhen.com">gwhen.com</a> at time of writing).
+Check out the <code class="docutils literal notranslate"><span class="pre">README.md</span></code> file in <code class="docutils literal notranslate"><span class="pre">~/multimessenger-pipeline/review-site</span></code>
+for instructions. Also make sure that the contents of
+<code class="docutils literal notranslate"><span class="pre">multimessenger-pipeline/git-hooks</span></code> has been copied to
+<code class="docutils literal notranslate"><span class="pre">multimessenger-pipeline/.git/hooks</span></code> (to ensure that documentation is
+automatically refreshed whenever the documentation source is changed).</p>
+<p>You can also enable the status server at <a class="reference external" href="http://gwhen.com/status">gwhen.com/status</a>. First, turn on
+CGI scripts:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo a2enmod cgi
+</pre></div>
+</div>
+<p>You’ll then need to add this alias to your apache configuration file (should be
+<code class="docutils literal notranslate"><span class="pre">/etc/apache2/apache2.conf</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ScriptAlias</span> <span class="s2">&quot;/status/&quot;</span> <span class="s2">&quot;/var/www/html/status/status.py&quot;</span>
+</pre></div>
+</div>
+<p>Finally, restart apache:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo service apache2 restart
+</pre></div>
+</div>
+</div>
+<div class="section" id="publishing-readme-to-git-host">
+<h3>Publishing Readme to Git Host<a class="headerlink" href="#publishing-readme-to-git-host" title="Permalink to this headline">¶</a></h3>
+<p>If your Git hosting provider (e.g. <a class="reference external" href="https://github.com">GitHub</a>) supports symbolic links and
+<a class="reference external" href="https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst">reStructuredText</a> rendering, you can just commit your changes and push them to
+the provider’s remote repository. The Readme will immediately be rendered and
+updated.</p>
+</div>
+<div class="section" id="publishing-pdfs">
+<h3>Publishing PDFs<a class="headerlink" href="#publishing-pdfs" title="Permalink to this headline">¶</a></h3>
+<p>From the LLAMA installation folder, navigate into
+the documentation folder and generate the PDF:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> docs
+make latexpdf
+</pre></div>
+</div>
+<p>You can check the quality of your handiwork immediately using <code class="docutils literal notranslate"><span class="pre">xpdf</span></code> to
+view the output file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>xpdf build/latex/<span class="se">\*</span>pdf
+</pre></div>
+</div>
+</div>
+<div class="section" id="publishing-html-web-pages">
+<h3>Publishing HTML Web Pages<a class="headerlink" href="#publishing-html-web-pages" title="Permalink to this headline">¶</a></h3>
+<p>From the LLAMA installation folder, navigate into
+the documentation folder and generate the HTML files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> docs
+make html
+</pre></div>
+</div>
+<p>You can run a python server from within docs to view the output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> build/html
+python -m SimpleHTTPServer
+</pre></div>
+</div>
+<p>While the python server is running, you can view the documentation webpage
+by opening any web browser and navigating to the URL of your server (you will
+have to append the port number, which defaults to 8000 for SimpleHTTPServer).
+If your server has the URL <code class="docutils literal notranslate"><span class="pre">example.com</span></code>, then you would want to navigate
+to <code class="docutils literal notranslate"><span class="pre">example.com:8000</span></code>. You should then be able to see the webpage.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting-llama">
+<h2>Troubleshooting LLAMA<a class="headerlink" href="#troubleshooting-llama" title="Permalink to this headline">¶</a></h2>
+<p><strong>Problem:</strong> <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code> <em>(or some other program that updates files)</em>
+keeps crashing when trying to generate a skymap or other data generated
+with MATLAB. The MATLAB log located at <code class="docutils literal notranslate"><span class="pre">logs/llama.matlab.log</span></code>
+mentions something about <code class="docutils literal notranslate"><span class="pre">loadjson</span></code> or <code class="docutils literal notranslate"><span class="pre">savejson</span></code> (or something else
+with <code class="docutils literal notranslate"><span class="pre">json</span></code> in it), like in the below error message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Undefined</span> <span class="n">function</span> <span class="s1">&#39;loadjson&#39;</span> <span class="k">for</span> <span class="nb">input</span> <span class="n">arguments</span> <span class="n">of</span> <span class="nb">type</span> <span class="s1">&#39;char&#39;</span><span class="o">.</span>
+</pre></div>
+</div>
+<p><strong>Solution:</strong> Make sure the JSONLab toolbox is installed in MATLAB.
+For some reason installation does not persist after the first
+installation, and a second installation is usually required. You can
+confirm that JSONLab is installed by opening a MATLAB session and seeing
+if <code class="docutils literal notranslate"><span class="pre">loadjson</span></code> is a valid command; if it is, then JSONLab has been
+successfully installed.</p>
+<p><strong>Problem:</strong> <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code> <em>(or some other program that updates files)</em>
+keeps crashing when trying to download <code class="docutils literal notranslate"><span class="pre">lvc_initial.fits.gz</span></code> or some
+other file located on GraceDB.</p>
+<p><strong>Solution:</strong> Refresh your LIGO authentication. See the section above
+on <a class="reference internal" href="#ligo-authentication">LIGO authentication</a>.</p>
+<p><strong>Problem:</strong> <code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code> <em>(or some other program that updates files)</em>
+keeps crashing when trying to generate a skymap or other data generated
+with MATLAB; MATLAB claims that files are missing.</p>
+<p><strong>Solution:</strong> Download the missing
+~/multimessenger-pipeline/Neutrinos/Data folder.</p>
+<p><strong>Problem:</strong> I am running this on a small throwaway server and am out of
+space, but I don’t want to spend more money on disk space.</p>
+<p><strong>Solution:</strong> Delete the contents of <code class="docutils literal notranslate"><span class="pre">/var/cache/apt</span></code> and
+<code class="docutils literal notranslate"><span class="pre">/usr/share/doc</span></code> to clear up (probably) around 3GB of data that are unlikely
+to be of further benefit.</p>
+</div>
+<div class="section" id="setting-up-the-review-server">
+<h2>Setting Up the Review Server<a class="headerlink" href="#setting-up-the-review-server" title="Permalink to this headline">¶</a></h2>
+<p>These instructions explain how to set up a server for reviewers to test the
+pipeline on.</p>
+<div class="section" id="provisioning-the-review-server">
+<h3>Provisioning the review server<a class="headerlink" href="#provisioning-the-review-server" title="Permalink to this headline">¶</a></h3>
+<p>Run the following command and enter your admin password (since we’re creating
+a new user named “reviewer”) as well as info for the new user:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/multimessenger-pipeline/review-site/provision
+</pre></div>
+</div>
+<p>This will get everything set up for a new reviewer. In particular, if the
+<code class="docutils literal notranslate"><span class="pre">reviewer</span></code> user account has not been made, a command will be run to create
+the account for you; in this case, you will have to specify a password, accept
+all other defaults, and then relaunch the <code class="docutils literal notranslate"><span class="pre">.provision</span></code> script.
+Now, assuming you have password-based authentication turned on, your reviewers
+can log in to the server using the username <code class="docutils literal notranslate"><span class="pre">reviewer</span></code> and the password you
+specified.</p>
+</div>
+<div class="section" id="running-the-review">
+<h3>Running the Review<a class="headerlink" href="#running-the-review" title="Permalink to this headline">¶</a></h3>
+<p>Run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/llamatest
+</pre></div>
+</div>
+<p>This script will run through a few injected test cases (as described on
+<a class="reference external" href="http://gwhen.com">gwhen.com</a>). It will describe what it has done and
+whether it succeeded; you can confirm the results for yourself by looking in
+the output directory, <code class="docutils literal notranslate"><span class="pre">~/.local/share/llama/current_run</span></code>. The python
+library used by <code class="docutils literal notranslate"><span class="pre">llamatest</span></code> is located in
+<code class="docutils literal notranslate"><span class="pre">~/multimessenger-pipeline/llama</span></code>.</p>
+</div>
+</div>
+<div class="section" id="ideas-for-the-future">
+<h2>Ideas for the Future<a class="headerlink" href="#ideas-for-the-future" title="Permalink to this headline">¶</a></h2>
+<p>This section contains exploratory notes and links on ideas, methods, and
+features that might be useful for the pipeline in the future.</p>
+</div>
+<div class="section" id="cvmfs">
+<h2>CVMFS<a class="headerlink" href="#cvmfs" title="Permalink to this headline">¶</a></h2>
+<p>It’s worth investigating using the <a class="reference external" href="https://cvmfs.readthedocs.io/en/stable/">CernVM-File System</a> (CernVM-FS, or CVMFS)
+as a software environment provisioning method. Software and data are
+represented in a virtual file-system mounted to <code class="docutils literal notranslate"><span class="pre">/cvmfs</span></code>, and file therefrom
+are downloaded and cached locally on an as-needed basis, promising fast
+provisioning times.</p>
+<p>LIGO seems to <a class="reference external" href="https://docs.ligo.org/lscsoft/conda/environments/#pre-built-environments">just be starting to support CVMFS</a>
+at time of writing, while IceCube seems to have <a class="reference external" href="http://software.icecube.wisc.edu/documentation/info/cvmfs.html#cvmfs">mature CVMFS support</a> based
+on a cursory viewing of their documentation. If software matures in both
+collaborations to the point where the distributions on CVMFS can dependibly
+provide all of the needed features, it might be possible to switch over to
+CVMFS for IceCube and LIGO software.</p>
+<div class="section" id="advantages">
+<h3>Advantages<a class="headerlink" href="#advantages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>If other projects support CVMFS, it will be faster to incorporate their
+tooling into the pipeline using CVMFS.</p></li>
+<li><p>We can create very lightweight virtual machine images and docker containers
+with empty CVMFS caches for archiving, development, and deployment purposes;
+they will be faster to provision, archive, download, and restart thanks to
+this reduces size (though in a cluster environment, it would of course cause
+multiple parallel downloads to CVMFS, which might be a bottleneck, or even
+worse, an unintentional DDoS attack on CVMFS).</p></li>
+</ul>
+</div>
+<div class="section" id="disadvantages">
+<h3>Disadvantages<a class="headerlink" href="#disadvantages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Less flexible than having a user-maintained Conda installation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">root</span></code> privileges would be necessary for sysadmin, and CVMFS idiosyncracies
+will likely make it much harder to support heterogeneous platforms in a
+fault-tolerant way (this is pretty important).</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="papers.html" class="btn btn-neutral float-right" title="Academic Papers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="developers.html" class="btn btn-neutral float-left" title="Developer Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2019, Stefan Trklja Countryman, Kenneth Rainer Corley, Doğa Veske
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

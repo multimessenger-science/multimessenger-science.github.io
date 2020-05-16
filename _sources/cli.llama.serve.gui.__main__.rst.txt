@@ -1,0 +1,9 @@
+``llama serve gui``
+===================
+
+.. argparse::
+   :module: llama.serve.gui.__main__
+   :func: get_parser
+   :prog: llama serve gui
+
+

@@ -1,0 +1,9 @@
+``llama listen gcn``
+====================
+
+.. argparse::
+   :module: llama.listen.gcn.__main__
+   :func: get_parser
+   :prog: llama listen gcn
+
+

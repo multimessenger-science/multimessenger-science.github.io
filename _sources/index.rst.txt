@@ -1,0 +1,127 @@
+Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)'s Documentation
+==============================================================================
+
+.. only:: html
+
+   +--------------+-------------+-------------+
+   | Docker Base  | Docker Env  | Docker Dev  |
+   +==============+=============+=============+
+   | |dockerbase| | |dockerenv| | |dockerdev| |
+   +--------------+-------------+-------------+
+   
+   .. |dockerbase| image:: https://img.shields.io/travis/stefco/llama-base?style=flat-square
+   .. |dockerenv| image:: https://img.shields.io/travis/stefco/llama-env?style=flat-square
+   .. |dockerdev| image:: https://img.shields.io/travis/stefco/llama-dev?style=flat-square
+
+LLAMA is a reliable and flexible multi-messenger astrophysics framework and
+search pipeline. It identifies astrophysical signals by combining observations
+from multiple types of astrophysical messengers and can either be run in online
+mode as a self-contained low-latency pipeline or in offline mode for post-hoc
+analyses. It was first used during Advanced LIGO's second observing run (O2)
+for the joint online LIGO/Virgo/IceCube Gravitational Wave/High-Energy Neutrino
+(GWHEN) search.
+
+LLAMA's search alorithm has been upgraded to run during LIGO's third observing
+run (O3).
+
+.. only:: html
+
+   .. figure:: _static/bayesian-calculation-diagram.png
+      :figwidth: 80 %
+      :align: center
+
+      Flowchart describing the significance calculation used in the O3 version
+      of the pipeline.
+
+.. only:: latex
+
+   .. figure:: _static/bayesian-calculation-diagram.pdf
+      :figwidth: 70 %
+      :align: center
+
+      Flowchart describing the significance calculation used in the O3 version
+      of the pipeline.
+
+.. only:: html
+
+   This full website can also be downloaded in 
+   :download:`printer-friendly PDF format
+   <../build/latex/llama.pdf>`.
+
+*The LLAMA team thanks the many researchers working in LIGO/Virgo, IceCube, and
+other astrophysics projects that enable this pipeline to operate successfully.
+In particular, they thank Scott Barthelmy and Leo Singer of NASA for providing
+helpful code and advice for working with GCN.*
+
+*The authors are grateful to the IceCube Collaboration for providing neutrino
+datasets and support for testing this algorithm. The Columbia
+Experimental Gravity group is grateful for the generous support of Columbia
+University in the City of New York and the National Science Foundation under
+grants PHY-1404462 and PHY-1708028. The authors are thankful for the generous
+support of the University of Florida and Columbia University in the City of New
+York.*
+
+.. toctree::
+   :maxdepth: 5
+   :caption: Info for Reviewers
+
+   reviewers
+
+.. toctree::
+   :maxdepth: 5
+   :caption: Quick Start Guide
+
+   readme.rst
+
+.. toctree::
+   :maxdepth: 5
+   :caption: Operators' Guide
+
+   operators
+
+.. toctree::
+   :maxdepth: 5
+   :caption: Developer's Guide
+
+   developers
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Bibliography
+
+   papers
+
+.. toctree::
+   :maxdepth: 6
+   :caption: API Documentation
+
+   llama
+
+.. include:: llama-subcomponents.rst
+
+.. toctree::
+   :maxdepth: 8
+   :caption: Code Reports
+
+   Unit Tests <https://multimessenger.science/pytest/>
+   Code Coverage  <https://multimessenger.science/coverage/>
+   profiling
+   reports
+
+.. _LLAMA-Command-Line-Interface:
+
+.. toctree::
+   :maxdepth: 6
+   :caption: Command Line Interface
+
+   cli.llama.__main__
+
+.. include:: cli.llama.rst
+
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

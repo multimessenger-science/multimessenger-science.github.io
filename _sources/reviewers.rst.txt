@@ -1,0 +1,155 @@
+Introduction for Reviewers
+==========================
+
+This page describes how to test run the low-latency multi-messenger analysis
+pipeline. This pipeline currently focuses on gravitational wave (GW) and
+high-energy neutrino (HEN) searches. This pipeline listens GW events and upon a
+trigger initiates searching for HENs and calculates a coincidence significance
+for spatially and temporally correlated GW and HEN. It then creates a joint
+skymap for candidate multi-messenger neutrino events. If the significance is
+higher than the determined threshold for multi-messenger events it sends a
+multi-messenger event alert.
+
+Purpose
+=======
+
+GWHEN-LLAMA (GWHEN search using Low-Latency Algorithm for Multi-messenger
+Astrophysics) is a low-latency GW+HEN analysis pipeline that ran during O2
+(using previously reviewed offline analysis methods) with the goal of rapidly
+identifying joint GW+HEN sources. This review targets the upgrades made to the
+pipeline, the most major of which is an upgrade to the significance calculation
+algorithm (see documentation section below).
+
+Documentation
+=============
+
+Software Documentation
+----------------------
+
+.. only:: html
+
+   The up-to-date full software documentation for the pipeline can be found
+   on this site (use the sidebar to navigate) or can be downloaded as a
+   :download:`printer-friendly PDF
+   <../build/latex/llama.pdf>`.
+   Additionally:
+
+.. only:: not html
+
+   The full software documentation for the pipeline is included in
+   this document. An up-to-date version can always be found at
+   `gwhen.com <http://gwhen.com>`__. Additionally:
+
+Review Wikis
+------------
+
+Wikis are being mainained for `LIGO <https://wiki.ligo.org/GWHEN/WebHome>`__
+and `IceCube <https://wiki.icecube.wisc.edu/index.php/GWHEN>`__ reviewers.
+Detailed review-specific information can be found at these sites.
+
+Papers
+------
+
+* The detailed technical structure of the pipeline can be
+  found in :ref:`this paper <llama-o2-paper>`.
+* The coincidence calculation is
+  based on :ref:`a new proposed Bayesian methodology <llama-bayesian-paper>`.
+
+Source Code
+-----------
+
+The complete source code can be accessed at
+`git.ligo.org <https://git.ligo.org/stefco/multimessenger-pipeline>`__,
+`bitbucket
+<https://bitbucket.org/stefancountryman/multimessenger-pipeline/src>`__,
+and on `IceCube SVN <http://code.icecube.wisc.edu/svn/analyses/gwhen/>`__
+(authentication required in all cases; reviewers will need to use the
+git.ligo.org or IceCube SVN links).
+
+Testing on Review Server
+========================
+
+First, SSH into the review server using the instructions on the
+`LIGO <https://wiki.ligo.org/GWHEN/WebHome>`__ or `IceCube
+<https://wiki.icecube.wisc.edu/index.php/GWHEN>`__ review wikis.
+
+During the test the pipeline will be fully functional (except for sending alerts
+for high significance events and uploading data products, which it will not do
+in this testing environment).
+
+Fake cases
+----------
+
+There are fake created edge test scenarios for this review whose significance
+magnitudes can be ordered easily with respect to each other.
+
+1. Precise GW skymap temporally and spatially coincident with a neutrino event
+2. Coarse GW skymap temporally and spatially coincident with a neutrino event
+3. Precise GW skymap temporally coincident with a neutrino event
+4. Precise GW skymap spatially coincident with a neutrino event
+5. Coarse GW skymap temporally coincident with a neutrino event
+
+Expectations for significances: ``a > b > e > c, d ~ 0``
+
+Running Fake Cases
+------------------
+
+After ``ssh``-ing in to ``reviewers.gwhen.com``, you can run the fake test
+cases with:
+
+.. code:: bash
+
+    ~/llamatest
+
+Verbose output will print to the terminal. In particular, you'll be
+able to see analysis outputs in ~/.local/share/llama/current_run/, which
+contains four test triggers (each in their own directory). You can also find
+these files at http://reviewers.gwhen.com/tests/, which displays the contents
+of ~/.local/share/llama/current_run/ in your web browser.
+
+Contents of the Output Folder
+=============================
+
+Inputs
+------
+
+* ``icecube_neutrino_list.json`` The list of IceCube neutrino triggers in the
+  +/-500s window around the GW event.
+* ``lvc_gracedb_event_data.json`` Metadata about the GW trigger pulled from
+  GraceDB.  For the test events, it's a minimal example with only a rho value,
+  though in general this is just the JSON pulled from GraceDB.
+* ``lvc_initial_skymap.fits.gz`` The LVC skymap selected for the analysis (an
+  injection for the purpose of the review process).
+* ``skymap_info.json`` Metadata specifying which skymap to use for
+  lvc_initial_skymap.fits.gz. Can be parsed from a GCN Notice, LVAlert,
+  GraceDB, or manually created by a pipeline operator.
+
+Main Outputs
+------------
+
+* ``coinc_significance_IceCube-LVC.json`` The immediate output of the new
+  significance calculation. Contains information on all inputs, search
+  parameters, and outputs. Not designed to be especially human-readable.
+* ``coinc_scatterplot_LVC-IceCube.pdf`` A joint skymap showing the neutrino
+  triggers scattered over the GW skymap in PDF form.
+
+Auxilliary Outputs
+------------------
+
+* ``coinc_scatterplot_LVC-IceCube.png`` A joint skymap showing the neutrino
+  triggers scattered over the GW skymap in PNG form for upload to GraceDB.
+* ``IceCubeNeutrinoList.tex`` The IceCube neutrinos in a LaTeX table together
+  with their odds ratios calculated for the GW trigger.
+* ``IceCubeNeutrinoList.txt`` Same, but in an ascii format used for GCN
+  circulars.
+* ``coinc_scatterplot_summary_LVC-IceCube.tex`` LaTeX file that can later be
+  used to manually generate a summary PDF,
+  coinc_scatterplot_summary_LVC-IceCube.pdf.
+* ``lvc_initial_skymap.hdf5`` The same LVC skymap as above, but converted to an
+  internal HDF5 representation.
+
+Real cases
+----------
+
+The pipeline can also be tested against real cases. Instructions for testing
+against real cases will be added soon.

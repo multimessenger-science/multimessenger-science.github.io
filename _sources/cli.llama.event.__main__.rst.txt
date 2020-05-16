@@ -1,0 +1,9 @@
+``llama event``
+===============
+
+.. argparse::
+   :module: llama.event.__main__
+   :func: get_parser
+   :prog: llama event
+
+

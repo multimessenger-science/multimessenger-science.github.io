@@ -1,0 +1,9 @@
+``llama run``
+=============
+
+.. argparse::
+   :module: llama.run.__main__
+   :func: get_parser
+   :prog: llama run
+
+

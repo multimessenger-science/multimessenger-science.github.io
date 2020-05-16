@@ -1,0 +1,9 @@
+``llama dev background table``
+==============================
+
+.. argparse::
+   :module: llama.dev.background.table.__main__
+   :func: get_parser
+   :prog: llama dev background table
+
+

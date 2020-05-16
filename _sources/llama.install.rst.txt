@@ -1,0 +1,16 @@
+llama.install package
+=====================
+
+.. automodule:: llama.install
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.install.manifest

@@ -1,0 +1,17 @@
+llama.serve.jupyter package
+===========================
+
+.. automodule:: llama.serve.jupyter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.serve.jupyter.logs
+   llama.serve.jupyter.utils

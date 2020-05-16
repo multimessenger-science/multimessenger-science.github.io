@@ -1,0 +1,7 @@
+llama.intent module
+===================
+
+.. automodule:: llama.intent
+   :members:
+   :undoc-members:
+   :show-inheritance:

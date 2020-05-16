@@ -1,0 +1,7 @@
+llama.files.coinc\_significance.subthreshold module
+===================================================
+
+.. automodule:: llama.files.coinc_significance.subthreshold
+   :members:
+   :undoc-members:
+   :show-inheritance:

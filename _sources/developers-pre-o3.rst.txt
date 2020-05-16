@@ -1,0 +1,1856 @@
+.. _developer-instructions-pre-o3:
+
+Developer Installation (Pre-O3)
+===============================
+
+**NOTE:** *Theses instructions are for older versions of the pipeline (pre-O3).
+They are kept in place in case you need to work with those versions, or in case
+you need a starting point for e.g. a full IceCube stack installation. If you
+are working with the latest versions of the code, please read previous sections
+of the developer guide.*
+
+System Requirements
+-------------------
+
+Make sure you have at least 4GB of memory (physical or virtual;
+`swap space`_ is fine) and 15GB of free space on your file
+system.
+
+Introduction
+------------
+
+To get up and running, start up a ``bash`` session and run each of the
+commands below. You should log in as a user other than root (more precisely,
+you should log in as the user who will run the LLAMA software in production;
+on a new install, you might need to `create a new user`_).
+If you are installing LLAMA on a remote server (i.e.
+a computer besides the one that you are currently sitting in front of), you
+can read the `SSH with X11 Forwarding`_ section for instructions on how to
+connect to a remote server via SSH.
+
+**The below instructions will only work on Debian 8 (Jessie).
+You can adapt them to other platforms if you know what you are doing,
+but Debian 8 is the only supported platform.
+It should be possible to finish installation by blindly running
+commands, but even so, make sure to copy and paste each line one-at-a-time
+to make sure they are entered properly. Don't worry about the explanatory bits
+if you are not interested, but make sure to read parts that are in bold. You
+don't have to click any of the hyperlinks in this guide; they are for reference
+purposes only.  If you encounter trouble, look in the** Appendix_.
+
+Installing LLAMA Dependencies
+-----------------------------
+
+There are a few dependencies you will need for LLAMA installation and
+development. Install these now:
+
+.. code:: bash
+
+    sudo apt-get -y update
+    sudo apt-get -y install python-sphinx rsync curl wget unzip git dtrx \
+        msmtp-mta heirloom-mailx xpdf debconf-utils make \
+        apache2 apache2-doc apache2-utils ncdu ack-grep silversearcher-ag \
+        python3-six python3-pytest \
+        python3-pytest-cov ipython3 pandoc libapache2-mod-python \
+        latexmk python-profiler python-wxgtk3.0 python-setuptools runsnakerun \
+        htop texlive-publishers
+
+You will also want to install git-lfs_, an extension to ``git`` used for large
+file storage (`git-lfs install instructions taken from here`_), which LLAMA
+uses to store large data files:
+
+.. _git-lfs: https://git-lfs.github.com/
+.. _git-lfs install instructions taken from here: https://github.com/git-lfs/git-lfs/wiki/Installation#debian
+
+.. code:: bash
+
+    curl -s \
+        https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh \
+        | sudo bash
+    sudo apt-get -y install git-lfs
+
+You must activate git-lfs on a per-user basis. **Make sure to run the following
+command as the user who will run the LLAMA server:**
+
+.. code:: bash
+
+    cd ~
+    git lfs install
+
+Obtaining the LLAMA Software (pre-O3)
+-------------------------------------
+
+LLAMA software is stored in a git_ repository with git-lfs_ used for
+large data file storage. You can obtain the entire LLAMA software repository
+with a quick ``git clone`` followed by a somewhat slower fetching of the large
+data files. First, though, you will want to `Generate SSH Keys`_ so that you
+don't need to enter your password over and over (SSH keys are actually required
+on git.ligo.org_ and, at time of writing, on the Bitbucket_ multimessenger
+pipeline repository). See the `Bitbucket Authentication`_ and `git.ligo.org
+Authentication`_ sections for instructions on adding your SSH keys to those
+sites.
+
+.. _git: https://git-scm.com/
+.. _git.ligo.org: https://git.ligo.org
+.. _Bitbucket: https://bitbucket.org
+
+Once you've set up SSH keys, it's time to actually clone the LLAMA
+repository:
+
+.. code:: bash
+
+    cd ~
+    git clone git@bitbucket.org:stefancountryman/multimessenger-pipeline.git
+
+You might be prompted to confirm that you want to connec to Bitbucket; if you
+see something like the following, just type ``yes`` and hit enter:
+
+    | The authenticity of host 'bitbucket.org (18.205.93.0)' can't be established.
+    | RSA key fingerprint is 97:8c:1b:f2:6f:14:6b:5c:3b:ec:aa:46:46:74:7c:40.
+    | Are you sure you want to continue connecting (yes/no)?
+
+You can (pretty much) confirm that the LLAMA software folder was created by
+running:
+
+.. code:: bash
+
+    cd multimessenger-pipeline && git status; cd ~
+
+If you see the following response:
+
+    | On branch master
+    | Your branch is up-to-date with 'origin/master'.
+    | nothing to commit, working directory clean
+
+then you have (most likely) succeeded in obtaining the LLAMA codebase.
+
+.. _at the beginning of this whole procedure:
+
+Setting up Configuration Files
+------------------------------
+
+You must now move the default configuration files into place *(this affects
+things like* `gw-astronomy.org`_ *access and email
+sending)*:
+
+.. _gw-astronomy.org: https://gw-astronomy.org
+
+.. code:: bash
+
+    ipython profile create
+    ln -s \
+        ~/multimessenger-pipeline/static/llama-ipython-startup.py \
+        ~/.ipython/profile_default/startup/llama-ipython-startup.py
+    ln -s multimessenger-pipeline/static/.gitattributes ~
+    ln -s multimessenger-pipeline/static/.inputrc ~
+    ln -s multimessenger-pipeline/static/.mailrc ~
+    cp multimessenger-pipeline/static/.msmtprc ~
+    cp multimessenger-pipeline/static/.netrc ~
+    cp multimessenger-pipeline/static/.twilio-credentials ~
+    ln -s multimessenger-pipeline/static/.vimrc ~
+    mkdir -p ~/.ssh
+    ln -s multimessenger-pipeline/static/.ssh/config ~/.ssh
+    chmod 0600 ~/.msmtprc
+    touch ~/.bashrc
+    [ -e ~/.bashrc.orig ] || cp ~/.bashrc ~/.bashrc.orig
+    cat \
+        ~/.bashrc.orig \
+        ~/multimessenger-pipeline/static/.bashrc-llama-addendum \
+        >~/.bashrc
+    . ~/.bashrc
+
+You should see "LLAMA" appear in big letters accross your terminal. You should
+also now be able to access the main LLAMA executable, ``llama``, which contains
+all user features as subcommands, as well as developer scripts, since they
+should all now be part of your shell's ``${PATH}`` variable.
+
+Now, you will want to preseed your Kerberos_ and HTCondor_ preferences to avoid
+being bugged later by debconf_ during your eventual Kerberos installation:
+
+.. _Kerberos: https://web.mit.edu/kerberos/
+.. _HTCondor: https://research.cs.wisc.edu/htcondor/description.html
+.. _debconf: https://wiki.debian.org/debconf
+
+.. code:: bash
+
+    sudo debconf-set-selections ~/multimessenger-pipeline/static/preseed.cfg
+
+Install git Hooks
+-----------------
+
+You can have the server automatically regenerate documentation and home page
+when they are modified by installing the included git hooks. From the
+repository directory, run:
+
+.. code:: bash
+
+    for h in git-hooks/*; do ln -fs ../../$h .git/hooks; done
+
+Install LLAMA dependencies
+--------------------------
+
+You can install (mostly non-LIGO) LLAMA dependencies from the
+``requirements.txt`` file:
+
+.. code:: bash
+
+   curl -O https://raw.githubusercontent.com/stefco/llama-env/master/requirements.txt
+   pip install -r requirements.txt
+   rm requirements.txt
+
+Install LIGO Software
+---------------------
+
+LIGO supports Scientific Linux, Debian, and (on a best-effort basis) OS
+X. The below instructions are for Debian 8 (Jessie).
+
+First, we will need to install LIGO dependencies. The first step is
+adding LIGO's package repositories to Debian's list of sources so that
+Debian's package manager knows where to find the LIGO software packages
+we are about to install. This simply requires copying the source list into
+Debian's source list directory. *Further documentation available on LIGO's*
+`Software Downloads
+page <https://wiki.ligo.org/DASWG/SoftwareDownloads>`_.
+
+.. code:: bash
+
+    sudo cp ~/multimessenger-pipeline/static/lscsoft.list \
+        /etc/apt/sources.list.d/lscsoft.list
+
+The following line should prevent the installation process from asking
+for user feedback. This is useful if you want to run installation in the
+background.
+
+.. code:: bash
+
+    export DEBIAN_FRONTEND=noninteractive
+
+You should always update your package manager's list of repositories
+before trying to install something new:
+
+.. code:: bash
+
+    sudo apt-get -y -qq update
+
+You will need to tell the package manager to trust LIGO software. **You
+might still get warnings about untrusted software packages; this is
+fine.**
+
+.. code:: bash
+
+    sudo apt-get install -y -qq --force-yes lscsoft-archive-keyring
+
+Update again.
+
+.. code:: bash
+
+    sudo apt-get -y -qq update
+
+Finally, install ``lscsoft-all``, the comprehensive LIGO software
+package.
+
+.. code:: bash
+
+    sudo apt-get install -y -qq --force-yes \
+        -o Dpkg::Options::="--force-confdef" \
+        -o Dpkg::Options::="--force-confold" \
+        lscsoft-all lalinference
+
+Next, install ligo datagrid; *this usually fails the first time and works the
+second time for some reason. If it fails, the below command will keep retrying
+until it succeeds, which generally seems to work.*
+
+.. code:: bash
+
+    retval=1
+    until [ $retval -eq 0 ]; do
+        echo 'ATTEMPTING TO INSTALL DATAGRID'
+        curl https://www.lsc-group.phys.uwm.edu/lscdatagrid/doc/ldg-client.sh \
+            >/tmp/ldg-client.sh \
+            && sudo bash /tmp/ldg-client.sh
+        retval=$?
+    done
+
+Once the script is finished executing, you can confirm that installation
+was successful by running:
+
+.. code:: bash
+
+    type ligo-proxy-init >/dev/null 2>&1 \
+        && { echo "LIGO Data Grid Installation succeeded."; } \
+        || { echo "LIGO Data Grid Installation failed! Try again."; }
+
+to check for one of the installed executables. This command will tell
+you whether installation was successful (again, if installation failed,
+just try repeating the previous step).
+
+Finally, install miscellaneous ``python`` dependencies using ``pip``.
+*One of these dependencies,* ``gwpy``, *is in active development and can
+be a bit finicky. The below instructions should "just work", but if not,
+further documentation is available on* `GWPy's install instructions
+page <https://gwpy.github.io/docs/stable/install.html>`_.
+
+Tell Debian to use the default locale (otherwise errors come up in the
+``scipy`` update):
+
+.. code:: bash
+
+    export LC_ALL=C
+
+Update the ``python`` package installer ``pip``:
+
+.. code:: bash
+
+    sudo pip install --upgrade pip
+
+Update ``scipy`` to a version recent enough for GWpy to work (the next
+line *might* take a while to finish and *might* produce a lot of ugly
+output depending on your precise version of Debian Jessie; don't be alarmed
+if this is the case.):
+
+.. code:: bash
+
+    sudo pip install 'scipy>=0.16'
+
+Install GWpy:
+
+.. code:: bash
+
+    sudo pip install gwpy
+
+Install IceCube Offline Software
+--------------------------------
+
+These packages are used for retrieving neutrino data from IceCube.
+
+Installing IceCube Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+First you'll need to make sure you're using a newer version of ``cmake`` than
+is available on Debian Jessie; do this by adding more recent backports to the
+``apt`` sources list:
+
+.. code:: bash
+
+    sudo cp ~/multimessenger-pipeline/static/backports.list \
+        /etc/apt/sources.list.d/backports.list
+
+Now you can install the latest cmake version by forcing ``apt-get`` to use the
+``jessie-backports`` repository:
+
+.. code:: bash
+
+    sudo apt-get -t jessie-backports install cmake
+
+Now, install `dependencies
+<http://software.icecube.wisc.edu/documentation/projects/cmake/supported_platforms/debian_variants.html>`__
+for the IceCube offline software (with all of the recommended extras):
+
+.. code:: bash
+
+    apt-get install build-essential cmake libbz2-dev libgl1-mesa-dev \
+        freeglut3-dev libxml2-dev subversion libboost-python-dev \
+        libboost-system-dev libboost-signals-dev libboost-thread-dev \
+        libboost-date-time-dev libboost-serialization-dev \
+        libboost-filesystem-dev libboost-program-options-dev \
+        libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev \
+        libarchive-dev python-scipy ipython-qtconsole libqt4-dev python-urwid \
+        libz-dev libqt5opengl5-dev libstarlink-pal-dev python-sphinx \
+        libopenblas-dev libcfitsio3-dev libsprng2-dev libmysqlclient-dev \
+        libsuitesparse-dev libcfitsio3-dev libmysqlclient-dev \
+        libhdf5-serial-dev root-system
+
+.. _entered your IceCube credentials:
+
+Entering IceCube Credentials
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next, store your IceCube username and password in the ``uname`` and ``pword``
+variables; we will use this to check out the IceCube repository. You should
+have received IceCube login credentials as part of the installation procedure.
+**The next two lines of commands will read your IceCube username and password
+in and store them as variables. If you make a mistake entering your password,
+or if something goes wrong while installing IceCube software, you should run
+these lines again just to make sure that your credentials are being passed
+to SVN in the next step.**
+
+.. code:: bash
+
+    read -p 'Enter your IceCube username: ' uname && \
+    read -sp 'Enter your IceCube password: ' pword && echo
+
+Next, check out
+IceCube offline software. These instructions are adapted from the `original
+IceCube offline software installation instructions
+<http://software.icecube.wisc.edu/documentation/info/quickstart.html>`__;
+you can find all `offline software releases here
+<https://code.icecube.wisc.edu/projects/icecube/browser/IceCube/meta-projects/offline-software/releases>`__.
+A full overview of IceCube software is available `here
+<http://software.icecube.wisc.edu/documentation/index.html>`__.
+Make sure to check out the latest version (if it is not the same as the one
+listed in the following code block).
+*The while loop is included to catch and handle segmentation faults during
+checkout; these are, unfortunately, a* `known
+bug <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736879>`_ *in Debian
+Jesse's SVN version.*
+
+.. code:: bash
+
+    sudo mkdir -p /usr/local/icecube/offline
+    cd /usr/local/icecube/offline
+    export IceCube_SVN=http://code.icecube.wisc.edu/svn
+    sudo svn --username "$uname" --password "$pword" co \
+        "$IceCube_SVN"/meta-projects/offline-software/releases/V18-06-00 src
+
+You should run the next code block to make sure that the SVN checkout
+succeeded in full.
+
+.. code:: bash
+
+    retval=$?
+    while ! [ $retval -eq 0 ]; do
+        echo 'QUIT EARLY DUE TO SEGFAULT IN SVN, RESTARTING CHECKOUT'
+        sudo svn cleanup src
+        sudo svn update src
+        retval=$?
+    done
+
+Now it is time to build the IceTray software. *This next step is very slow; let
+this run for a couple of hours while you go do something else.  Fortunately,
+this step can be resumed at the* ``make`` *command in the event of failure.*
+
+.. code:: bash
+
+    sudo mkdir -p /usr/local/icecube/offline/build
+    cd /usr/local/icecube/offline/build
+    sudo cmake -DSYSTEM_PACKAGES=True ../src
+    sudo make
+
+**If you get an error while running** ``cmake`` **or** ``make``, **there was
+probably an error that prevented you from fetching the entire software
+repository from SVN. You should go back a few steps and start over from when
+you** `entered your IceCube credentials`_ a few
+steps ago.  Finally, download some data used by IceCube test and example
+scripts.
+
+.. code:: bash
+
+    sudo make rsync
+
+The ``.bashrc`` modification you made 
+`at the beginning of this whole procedure`_
+has already put the necessary modifications to your environmental variables in
+place (e.g. your ``PYTHONPATH`` variable has been updated to
+include the location of the new IceCube python libraries, so that you can
+import them next time you run python). You can therefore test whether the
+IceCube python software was installed successfully:
+
+.. code:: bash
+
+    python -c 'from icecube import dataclasses; print("Success!")'
+
+You should see ``Success!`` printed on your console. If so,
+congratulations! You have successfully installed the IceCube offline software.
+Now, you will have to check out a set of neutrino querying python tools used
+by LLAMA. Change to the LLAMA software directory and check out the live
+software. Again, store your IceCube username and password in variables (you can
+skip this step if those variables are still initialized from before):
+
+.. code:: bash
+
+    read -p 'Enter your IceCube username: ' uname && \
+    read -sp 'Enter your IceCube password: ' pword && echo
+
+Now, check out the live querying software:
+
+.. code:: bash
+
+    cd ~/multimessenger-pipeline/icecube
+    export IceCube_SVN=http://code.icecube.wisc.edu/svn
+    svn --username "$uname" --password "$pword" co \
+        "$IceCube_SVN"/projects/realtime_tools/releases/V19-02-00/python \
+        realtime_tools
+    svn --username "$uname" --password "$pword" co \
+        "$IceCube_SVN"/projects/realtime_gfu/releases/V19-02-00/python \
+        realtime_gfu
+    pushd realtime_gfu
+    svn --username "$uname" --password "$pword" co \
+        "$IceCube_SVN"/projects/realtime_gfu/releases/V19-02-00/resources \
+        resources
+    popd
+    # this is a kludge to get the realtime_gfu resources in place
+    sudo cp -R \
+        ~/multimessenger-pipeline/icecube/realtime_gfu \
+        /usr/local/icecube/offline/build/
+
+Install MATLAB
+--------------
+
+**You will need to download the** `MATLAB
+Installer <https://www.mathworks.com/downloads/web_downloads/download_release?release=R2016b>`_
+**as well as the** `JSONLab
+toolbox <https://www.mathworks.com/matlabcentral/fileexchange/33381-jsonlab--a-toolbox-to-encode-decode-json-files>`_.
+**You must install the following three MATLAB Toolboxes at the same time
+that you install MATLAB, and you must make sure to also install MATLAB itself.
+Do so by selecting the following four items in the install dialog** (note that
+the MATLAB version might change from 9.1, but it should be at the top of the
+list):
+
+1. **MATLAB 9.1**
+2. **Image Processing Toolbox**
+3. **Mapping Toolbox**
+4. **Statistics and Machine Learning Toolbox**
+
+**Also make sure to check the box in the install dialogue asking if you would
+like to make symlinks to MATLAB.** This is necessary in order for command line
+calls to ``matlab`` to work (which is necessary for our scripts to run in the
+current iteration of the pipeline). **If you forget to do this,** you can
+manually add the symlink in with:
+
+.. code:: bash
+
+    sudo ln -s /usr/local/MATLAB/\*/bin/matlab /usr/local/bin/matlab
+
+You can confirm that the symlink was made by running:
+
+.. code:: bash
+
+    type matlab 2>/dev/null 1>&2 && echo 'success!' || echo 'symlink not found!'
+
+**You can install the JSONLab toolbox from within the MATLAB interface
+after it has been successfully installed. See the appendix for some**
+`MATLAB installation details`_.
+**You will usually have to install JSONLab twice before it remains
+permanently installed. It is not clear why this is, but it works after
+the second installation. You can confirm that JSONLab is installed by
+opening a MATLAB session and seeing if** ``loadjson`` **is a valid command;
+if it is, then JSONLab has been successfully installed. You can also
+simply run this command to see if JSONLab installed successfully:**
+
+.. code:: bash
+
+    matcmd=""
+    matcmd+="if exist('loadjson')"
+    matcmd+="    disp('JSONLab installed successfully.');"
+    matcmd+="else"
+    matcmd+="    disp('JSONLab failed to install.');"
+    matcmd+="end;"
+    matcmd+="exit"
+    matlab -nodesktop -nosplash -noFigureWindows -r "${matcmd}"
+
+**If JSONLab failed to install, just open up MATLAB and reinstall it. This
+is sometimes necessary for some reason.**
+
+Now, install the ``matlab`` python module, which will allow python code to call
+MATLAB scripts via the `MATLAB Engine API`_:
+
+.. _`MATLAB Engine API`: http://www.mathworks.com/help/matlab/matlab_external/get-started-with-matlab-engine-for-python.html
+
+.. code:: bash
+
+    cd $(sudo find / -path '\*/extern/engines/python')
+    sudo python setup.py install
+
+Confirm that installation of the Python MATLAB Engine API succeeded:
+
+.. code:: bash
+
+    python -c 'import matlab; print("success!")'
+
+.. _config-and-auth:
+
+Configuration and Authentication
+================================
+
+These steps involve entering your credentials for the services used by
+LLAMA, as well as some basic configuration. These instructions assume
+that you have LIGO login credentials. *Some of the steps require you to
+contact one of our partners (e.g. GCN or gw-astronomy.org) to configure
+authentication. These appear after this section in the* `external
+authentication`_ *section.*
+
+.. _generate-ssh-keys:
+
+Generate SSH Keys
+-----------------
+
+SSH keys are used to securely log in to other computers without a
+password. LLAMA uses them to upload data to
+`gw-astronomy.org`_. *A great and
+user-friendly guide to setting up SSH keys is available on* `Digital
+Ocean's
+blog <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_.
+*These instructions are pulled from that article.*
+
+First, check whether you have an SSH key already created. The following command
+will print "no SSH key found" if it doesn't find an existing key:
+
+.. code:: bash
+
+   [ -e ~/.ssh/id_rsa.pub ] || echo "no SSH key found."
+
+If you don't already have an SSH key, create a new one by running the following
+command and hitting enter repeatedly until it finishes (**WARNING: this will
+overwrite your existing SSH key if you do in fact have one already, possibly
+costing you access to servers you are currently able to SSH into.**):
+
+.. code:: bash
+
+   ssh-keygen
+
+You should see some funny ASCII art print out once it's finished. You can now
+print your SSH key with:
+
+.. code:: bash
+
+   cat ~/.ssh/id_rsa.pub
+
+*You will eventually have to make sure that the public key is on*
+`gw-astronomy.org`_'s *list of authorized
+keys; this step is discussed below in the* `external
+authentication`_ *section.*
+
+GMail Authentication
+--------------------
+
+1. Create a device (or "app", as Google calls it) password for
+   gw.hen.analysis@gmail.com (or your personal gmail, if you are just
+   trying to run some tests). This password is different from your login
+   password and is only to be used by a single device. You can generate
+   a device password
+   `here <https://security.google.com/settings/security/apppasswords>`__.
+2. Use your favorite text editor to open ``~/.msmtprc`` and replace
+   ``<WRITE-PASSWORD-HERE>`` with your newly-created device password.
+   *If you are using a personal gmail account (rather than
+   gw.hen.analysis@gmail.com), you will want to find each occurence of*
+   ``gw.hen.analysis@gmail.com`` *in this file and replace it with your
+   personal gmail address.*
+
+LIGO Authentication
+-------------------
+
+1. Run ``ligo-proxy-init your.username`` and enter your LIGO password.
+   This will allow you to download GW event data from GraceDB. *You will
+   need to do this every few days.*
+
+LV_Alert Authentication
+
+1. Make sure you have an LVAlert username and password set up. You can do this
+   `here <https://www.lsc-group.phys.uwm.edu/cgi-bin/jabber-acct.cgi>`__. You
+   can learn more about LVAlert on the
+   `official documentation pages <https://wiki.ligo.org/DASWG/LVAlertHowto>`__
+   and from the GraceDB
+   `LVAlert guide <https://gracedb.ligo.org/documentation/lvalert.html>`__.
+2. Use your favorite text editor to open ``~/.netrc`` and replace
+   ``<WRITE-USERNAME-HERE>`` with the LVAlert username you created in step 1
+   and ``<WRITE-PASSWORD-HERE>`` with the password for that LVAlert username.
+   If you already have a password but forgot it, you can easily reset it at
+   the link provided in step 1.
+3. *(Optional)* You can make sure that your credentials work by running
+
+.. code:: bash
+
+    lvalert_admin --username albert.einstein --subscriptions
+
+   where, of course, ``albert.einstein`` is replaced with the LVAlert username
+   you made in step 1.
+
+Setting Up SSL Certificates
+---------------------------
+
+In order to access the server using the HTTPS protocol (as is generally
+considered best practice, since this will traffic to/from the server when
+accessing it via browser), you'll need to get an SSL certificate. The easiest
+way to do this is by using the `EFF Certbot`_ (linked instructions for Debian
+Jessie, but just use the correct ones for whatever system is running the
+server) and using `Let's Encrypt`_.
+
+.. _`EFF Certbot`: https://certbot.eff.org/lets-encrypt/debianjessie-apache
+.. _`Let's Encrypt`: https://letsencrypt.org/getting-started/
+
+These instructions will let you install ``certbot-auto`` from EFF's website.
+``certbot-auto`` can automatically install certificates for an Apache server:
+
+.. code:: bash
+
+   sudo /usr/local/bin/certbot-auto --apache
+
+You can then automate renewal of the certificate (important because the certs
+expire after 90 days) by adding the following to your ``systemd timer`` or
+root ``crontab``:
+
+.. code:: bash
+
+   /usr/local/bin/certbot-auto renew
+
+Setting Up Passwords for Run Summary Pages
+------------------------------------------
+
+You can put the username and password for the current run in
+``~/.llama_run_credentials`` in ``.netrc`` format. This will be used for the
+run summary pages when basic HTTP authentication is in use with the ``flask``
+dev server.
+
+External Authentication
+=======================
+
+The services referenced in this section require credentials provided by LLAMA
+partners and commercial services. Authenticating with these
+services is not necessary for testing the majority of the
+LLAMA pipeline's functionality, but it does require either
+expenditure of funding (for Twilio) or getting help from our
+busy partners
+(for gw-astronomy.org and GCN). These are live services that
+are used to disseminate results, and testing their
+functionality requires care and coordination. **It is
+therefore highly recommended that this section be skipped
+by all users who are not actively deploying the LLAMA code into production.**
+
+.. _bitbucket-ssh-authentication:
+
+Bitbucket Authentication
+------------------------
+
+At time of writing, the main software repository is stored on Bitbucket_.
+
+The first step is to `Generate SSH Keys`_; once you've done that, you can
+access your SSH key by logging in to your LLAMA server and printing out your
+**public** key:
+
+.. code:: bash
+
+    cat ~/.ssh/id_rsa.pub
+
+You can now copy this key straight from your terminal and add it to Bitbucket.
+First, navigate to Bitbucket_'s website, followed by your user settings page,
+and then click the *SSH keys* section under *Security*. At time of writing, you
+can also directly access these settings at the following URL, where
+``USERNAME`` has been replaced with your bitbucket username:
+
+.. code::
+
+    https://bitbucket.org/account/user/USERNAME/ssh-keys/
+
+Once there, click *Add key* and type the name of your server under *Label* and
+paste the SSH key into the *Key* section. Hit *Add key* to finish the process.
+You should now be able to push and pull from your Bitbucket repositories at the
+command line on your server without needing to enter your username and
+password, and if you have permission to access the pipeline repository, you
+will now be able to clone it from its Bitbucket URL.
+
+git.ligo.org Authentication
+---------------------------
+
+The first step is to `Generate SSH Keys`_; once you've done that, you can
+access your SSH key by logging in to your LLAMA server and printing out your
+**public** key:
+
+.. code:: bash
+
+    cat ~/.ssh/id_rsa.pub
+
+You can now copy this key straight from your terminal and add it to
+git.ligo.org.
+Visit your `git.ligo.org SSH-key settings page`_.
+Once there, type the name of your server under *Title* and
+paste the SSH key into the *Key* section. Hit *Add key* to finish the process.
+You should now be able to push and pull from your git.ligo.org_ repositories at
+the command line on your server without needing to enter your username and
+password, and if you have permission to access the pipeline repository, you
+will now be able to clone it from its Bitbucket URL.
+
+.. _`git.ligo.org SSH-key settings page`: https://git.ligo.org/profile/keys
+
+Twilio Authentication
+---------------------
+
+We use `Twilio's <https://www.twilio.com>`__ API to send SMS messages to LLAMA
+operators for human-in-the-loop parts of the pipeline. To authenticate with
+Twilio, you will need to provide your credentials as environmental variables.
+The ``.bashrc`` file provided by default will try to run
+``~/.twilio-credentials``, so the easy way to do this is to put your credentials
+in that file. That file is pre-populated with the current LLAMA Twilio phone
+number, so you don't have to provide that.
+
+1. Go to `Twilio's dashboard <https://www.twilio.com/console/sms/dashboard>`__
+   and click "Show API Credentials" in the top right corner of the screen. Take
+   note of the *Account SID* and *Auth Token*.
+2. Open up ``~/.twilio-credentials`` with your prefered text editor
+3. Replace ``<YOUR-SID-HERE>`` with the *Account SID* you just got from Twilio's
+   website. Replace ``<YOUR-TOKEN-HERE>`` with the *Auth Token* you just got
+   and save the file.
+4. You will need to reload your credentials or your ``~/.bashrc`` file for the
+   changes to take effect. You can reload just the credentials by running:
+
+.. code:: bash
+
+    source ~/.twilio-credentials
+
+GW Astronomy Authentication
+---------------------------
+
+Make sure that the ``llama`` user on the
+`gw-astronomy.org`_ server has your
+public key saved to its ``authorized_keys`` file. If you have not set
+this up yet, you will need to email the webmaster at
+`gw-astronomy.org`_ and send your public
+key, ``~/.ssh/id_rsa.pub``, so that the webmaster can authorize you
+to log in to LLAMA's `gw-astronomy.org`_
+account. This is necessary for uploading analysis results. *If you
+don't know how to generate SSH keys, refer to the 
+instructions showing how to* `Generate SSH Keys`_ *above.*
+
+GCN Authentication
+------------------
+
+Make sure that you have an entry for this server in the
+`GCN <http://gcn.gsfc.nasa.gov/>`__ network's `Sites Configuration
+File <http://gcn.gsfc.nasa.gov/sites2_cfg.html>`_. This is necessary
+for receiving LVC events. In particular, you need to make sure there
+is a site entry containing your server's IP address (which **must**
+be static) under the ``DIST_ADDRESS`` as well as a properly set
+``LVC_Enabled`` field. You should also make sure you are set up to
+receive the proper alerts (including ``LVC_INITIAL_POS_MAP`` and
+``GWHEN_COINC`` at the time of writing).
+
+Turning on the Pipeline
+=======================
+
+Subscribing to LVAlert Nodes
+----------------------------
+
+Make sure you have subscribed to all of the LVAlert nodes used by the pipeline
+by running:
+
+.. code:: bash
+
+    lvalert_admin -i
+
+You should see all of the following (ordering does not matter):
+
+.. code:: bash
+
+    Node: superevent [ subscribed subid=k7hjUhAX0qLiLjXL6bCnXDPT1JngsDwFmZvCdGqp]
+    Node: cbc_gstlal [ subscribed subid=DRPc5g1ivFNn504a5uQk2mzHVdarHWVzxD6S3u8Y]
+    Node: cbc_lowmass [ subscribed subid=DGYiTkwsl58w3fwsFX72g2pIqERg0jfEY7fW9Bop]
+    Node: stc-testnode [ subscribed subid=7lzckGSYHH28wswE4Rl8JnlpncKi9SsL8uOJZzZa]
+    Node: cbc_pycbc [ subscribed subid=CDQriRVw7IsYU6Uh2Y738oHlwPnXkJJvdD9PWeTQ]
+    Node: cbc_mbtaonline [ subscribed subid=cfiMONixdKRnl2DmSupPSD0BSArF3PasuoMAPcFU]
+    Node: burst_cwb [ subscribed subid=LpOfqpgwdnNNn5XnRW9jNPCn7UZuxmtYJW7jlS7Z]
+    Node: test_superevent [ subscribed subid=T8W2oLnNMC8TUnwaSdBErJEG0My8VGlJEcnGMWFv]
+    Node: cbc_spiir [ subscribed subid=0H4qi2Fh5Uo7OnLjPaT1aydQLKiNdj0gxzmv5TXB]
+
+If any of the above nodes are missing, add them with
+``llama_lvalert_subscribe``, which just calls ``lvalert_admin --subscribe
+--node ...`` on every node we want to listen to. It's really just a shortcut
+for the following:
+
+.. code:: bash
+
+    lvalert_admin --subscribe --node superevent
+    lvalert_admin --subscribe --node cbc_gstlal
+    lvalert_admin --subscribe --node cbc_pycbc
+    lvalert_admin --subscribe --node cbc_mbtaonline
+    lvalert_admin --subscribe --node cbc_spiir
+    lvalert_admin --subscribe --node cbc_lowmass
+    lvalert_admin --subscribe --node stc-testnode
+    lvalert_admin --subscribe --node burst_cwb
+    lvalert_admin --subscribe --node test_superevent
+
+(Note: you can also always print a full list of available LVAlert nodes by
+running ``lvalert_admin -m``.)
+
+Starting Pipeline Daemons
+-------------------------
+
+Once you've subscribed to all of the above LVAlert nodes, navigate to the
+repository directory and run:
+
+.. code:: bash
+
+    llama run
+    llama listen lvalert
+    llama listen gcn
+    nohup serve_current_run 1>/dev/null 2>&1 </dev/null &
+
+These commands will start:
+
+1. The LVAlert listener, which listens for new LVC events and
+   uses them to create new event directories when skymaps become available;
+   mark events as ``EM_READY`` when they have been vetted as ready for EM
+   follow-up; and marks them as having a `superevent
+   <https://emfollow.docs.ligo.org/userguide/>`__ associated with them,
+   indicating that the results of a specific event can be distributed to the
+   public under the name of that superevent.
+2. The GCN Notice listener, which listens for new LVC events both as
+   confirmation that the event is public (and hence LLAMA can send out an
+   alert) and as a fallback to the LVAlert listener (in case something
+   non-standard happened in creating the superevent--as has happened in the
+   past with unusual events--which was corrected when the public-facing GCN
+   Notice was sent out).
+3. The LLAMA pipeline daemon (``llama run``), which checks the default event
+   directory for *non-test* events (hence the filter for GraceIDs starting
+   with "G"). When the GCN listener receives a new LVC VOEvent via a GCN Notice,
+   the LLAMA pipeline daemon will detect the new VOEvent and start running the
+   LLAMA joint analysis.
+4. The Current Run status page server (``serve_current_run``), which serves a
+   summary webpage with the current status of the LLAMA server and the events
+   processed as part of the current run over port 5000.
+   Assuming that the server is associated with the domain name ``gwhen.com``,
+   one can view the current status of the server (including memory usage and
+   whether daemon processes are running) by visiting
+   `gwhen.com:5000 <http://gwhen.com:5000>`__.
+
+(The ``< /dev/null`` part is necessary due to some strange behavior in
+MATLAB when running in the background using ``nohup``.)
+
+Testing LVAlert
+~~~~~~~~~~~~~~~
+
+Note that you can run a quick test to see if you're connected to LVAlert by
+starting up ``lvalert_listen`` (as described above) and submitting a test event
+in GraceDB's LVAlert JSON format using:
+
+.. code:: bash
+
+    lvalert_send -v --node stc-testnode \
+        --file ~/multimessenger-pipeline/static/mock_event.json
+
+You should see the contents of that mock event show up in the LVAlert handler's
+logs, and if there was some intended side-effect of that LVAlert, you should
+also see some verbose logging and a new/modified event in the default event
+directory (``~/.local/share/llama/current_run/``). Note that, because
+the test event was sent on ``stc-testnode``, the event will be flagged as a
+test event, and though the pipeline should run, no alerts will be sent to the
+public.
+
+Viewing Active Processes
+------------------------
+
+You can see if these processes are running with:
+
+.. code:: bash
+
+    llama run -R                    # find ``llama run`` processes
+    llama listen lvalert -R         # show lvalert listener processes (if any)
+    llama listen gcn -R             # show GCN listener processes (if any)
+    ps -ax | grep serve_current_run # find serve_current_run process
+
+Checking Pipeline Logs
+----------------------
+
+You can follow the log output in real time with:
+
+.. code:: bash
+
+    lvalertd -t
+    tail -f logs/llamad.log
+    tail -f logs/serve_current_run.log
+
+In general, all LLAMA pipeline output will be saved to the ``logs/``
+directory. This is true regardless of where you place the repository
+directory.
+
+Killing Pipeline Daemons
+------------------------
+
+You can shut down the pipeline processes with:
+
+.. code:: bash
+
+    llama run -k
+    llama listen lvalert -k
+    llama listen gcn -k
+    ps -ax | grep serve_current_run | sed /grep/d | awk '{print $1}' | xargs kill
+
+Deprecated: MATLAB Logs
+-----------------------
+
+When running the pipeline with MATLAB code, all MATLAB-specific logging should
+be viewable by running:
+
+.. code:: bash
+
+    tail -f logs/llama.matlab.log   # matlab process output goes here
+
+Developing for LLAMA
+====================
+
+This section is intended for new LLAMA developers.
+
+Introduction to Development
+---------------------------
+
+Structure of the Pipeline
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The LLAMA pipeline is designed to be flexible, robust, reproducible, parallel,
+and east to develop. This is accomplished by treating data processing as a
+bunch of methods for processing input data and producing output data
+independently of other parts of the analysis. LLAMA defines a python class
+called a ``FileHandler`` that specifies at minimum the following information
+about a data file:
+
+1. The filename
+2. The complete list of input files required to generate this file
+3. The code used to actually generate this file from its inputs
+
+Thus, each file is connected to the list of files necessary for its own
+generation, forming a file dependency graph (an instance of a Directed Acyclic
+Graph, or DAG, as used in other data analysis pipeline tools). When a file's
+dependencies are available, it will be generated without affecting
+neighboring parts of the analysis, and each step of the pipeline is reproducible
+using the saved files (which are the only stateful part of the pipeline).
+
+Adding Functionality
+~~~~~~~~~~~~~~~~~~~~
+
+This approach makes it very easy to add new data processing capabilities to
+LLAMA. Just follow these steps:
+
+1. Add a new python file in ``/llama/files`` that defines a subclass of
+   ``abstract.FileHandler`` You will have to implement a few abstract methods
+   and properties (see e.g.
+   ``llama/files/lvc_skymap_mat.py`` for a simple
+   example of a FileHandler implementation):
+
+   - The ``filename`` property, which gives the name of the new output file
+   - The ``dependencies`` property, which returns a list of FileHandler classes
+     for each input file required to generate this file (make sure to import
+     those FileHandler classes!)
+   - The ``_generate`` method, which defines the steps needed to generate this
+     file using input data. You can access things like the full path to a
+     dependency file by instantiating a copy of its FileHandler and getting the
+     ``fullpath`` property using e.g.
+     ``other_file_handler_class(self).fullpath``.
+
+2. Make sure that your new FileHandler is included in the actual pipeline by
+   importing the class in ``/llama/files/__init__.py``
+3. Test that the pipeline runs and produces desired output by running one of
+   the developer tests, e.g. ``make testpipeline7`` (or whatever test you feel
+   like using in the makefile). Check that the output data is what you would
+   expect for your new file by looking in the event directory for this test
+   (``/testout/events/testpipeline7`` in this example).
+4. If your new file looks good, run ``nosetests`` in the root repository
+   directory to make sure that you didn't somehow break anything.
+5. If ``nosetests`` pass, ``git commit`` your code and push it to the remote
+   repository.
+6. Last but not least, **remember to restart the pipeline** in order to see
+   your updates actually applied; the pipeline does not refresh its code
+   automatically (a good thing for developing). You can do so with the following
+   commands:
+
+.. code:: bash
+
+    llama run -k  # might need to run this twice
+    llama run
+
+Developer Conventions and Best Practices
+----------------------------------------
+
+Please follow the following standards with code written for the LLAMA pipeline:
+
+Data Format Conventions
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+- All event files must represent angles in *degrees*. This means that, when
+  querying external APIs, you *must convert radians to degrees* before saving
+  data in an event directory. (You should log any raw data you throw out so
+  that we can check the correctness of the conversion; see point on logging
+  below).
+
+Coding Best Practices
+~~~~~~~~~~~~~~~~~~~~~
+
+- Don't hard code filenames or other magic strings! If you need to get data from
+  a file, make sure that that file has its own FileHandler defining how it can
+  be *(reproducibly!)* generated, then import that FileHandler class,
+  instantiate a copy by feeding the current FileHandler as an argument to
+  the dependency FileHandler class, and get the data you want (like filename)
+  from that instance.
+- Log all actions. This can be done very easily by sticking to the FileHandler
+  subclass idiom defined by LLAMA.
+- Please verbosely log any incoming raw data before it is thrown out. This
+  way we can go back and see if we accidentally deleted good pulled data.
+
+Testing
+-------
+
+Go into the root repository directory (i.e. the top level directory of the
+git repository, which is assumed to be ``~/multimessenger-pipeline`` at the
+time of writing of this documentation) and run:
+
+.. code:: bash
+
+    make testgracedb
+
+to make sure that you are properly authenticated using your LIGO
+credentials. You should see the following output (or something like it)
+printed to console **(note that the following is output; don't type it
+into the console)**:
+
+::
+
+    llama/tests/testgracedb.py | tee -a logs/llama.testgracedb.log
+    running testgracedb at 2016-09-13 18:32:05.577660
+    Attempting to connect to GraceDB.
+    Attempting to download the boxin day even event.log.
+    Received successfully. Logging contents.
+    Pipeline: gstlal
+    Search: HighMass
+    MChirp: 9.555
+    MTot: 26.3501410484
+    End Time: 1135136350.647757924
+    SNR: 11.710
+    IFOs: H1,L1
+    FAR: 3.333e-11
+
+If your output does not match the above, then you most likely need to
+log in using your LIGO credentials (See `LIGO Authentication`_).
+
+Next, run the full collection of unit tests using:
+
+.. code:: bash
+
+    nosetests
+
+This will take a few minutes and will not produce much output while it is
+running. If all tests succeed, you will see the number of tests that were run
+and the status message ``OK``. You will be alerted at the end if any of the tests
+fail or if the tests themselves cannot be completed due to errors. Be aware
+that, if any of the tests fails, the output files will remain in ``/tmp``
+taking up a fair amount of space. They are hard links by default, so this
+shouldn't take up much extra space, but it is worth deleting directories of the
+form ``/tmp/tmp*`` after a failed run (after making sure you don't have other
+data matching that file pattern, of course).
+
+Appendix
+========
+
+.. _migrating-to-conda:
+
+Migrating to Conda
+------------------
+
+Migrating to Conda should simplify some LIGO dependency issues. It might make it
+harder to use IceCube software (have not checked whether this supports Conda
+packaging yet), but this is not currently an issue since we have IceCube stub
+methods installed.
+
+Note that, at time of writing, LVAlert had not migrated to Conda, and so the
+old installation method is still required to be able to use LVAlert.
+
+LIGO Wiki Documentation
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The latest documentation on installing from source should always be available
+from the `LSCSoft Conda`_ documentation page. The instructions below are pulled
+directly therefrom. We can also follow LSC's guide for `making a new Conda
+package`_ if we want to make the pipeline distributable by Conda in the future.
+
+.. _LSCSoft Conda: https://docs.ligo.org/lscsoft/conda/
+.. _making a new Conda package: https://wiki.ligo.org/Computing/CondaPackaging
+
+Installing LIGO Software via Conda
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Conda installs are done on a per-user basis, so you won't need to use sudo for
+any of the below.* Start by installing the latest version of Conda:
+
+.. code:: bash
+
+    curl -O https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh
+
+You'll now need to exit your SSH session and log in again for ``conda`` to show
+up as a command; run ``exit`` to exit and then SSH back into the server. Now,
+activate your Conda environment and add the ``conda-forge`` channel (used to
+distribute custom Conda packages):
+
+.. code:: bash
+
+    conda activate
+    conda config --add channels conda-forge
+
+Next, install all available LIGO software:
+
+.. code:: bash
+
+    wget -q https://git.ligo.org/lscsoft/conda/raw/master/environment-py36.yml
+    conda env create -f environment-py36.yml
+
+Finally, you can activate the LIGO python computing environment with:
+
+.. code:: bash
+
+    conda activate ligo-py36
+
+You will probably want to put this in your ``.bashrc`` if you plan on using it
+all the time.
+
+Troubleshooting Installation
+----------------------------
+
+**Problem:** ``cmake`` keeps failing while installing IceCube software.
+
+**Solution:** You probably did not check out the entire IceCube repository when
+you ran ``svn co``. You will need to remove the IceCube source and build
+directories by running ``sudo rm -rf /usr/local/icecube/offline/*`` and start
+over from when you `entered your IceCube credentials`_.
+
+.. _create a new user:
+
+Creating a new user
+~~~~~~~~~~~~~~~~~~~
+
+You should preferably not run the pipeline as ``root``. You can add a
+new user named, e.g., ``vagrant`` in Debian and Ubuntu with:
+
+.. code:: bash
+
+    adduser vagrant
+    
+You will then want to give this user ``sudo`` priviledges by adding
+them to the ``sudoers`` file (this will allow the user to do
+administrative tasks using the command ``sudo``). You will want to
+run
+
+.. code:: bash
+
+    visudo
+
+which will open up the ``sudoers`` file for editing in the default
+text editor (for Debian, this is probably nano_). You will need to
+add the following line anywhere in the file, then save and quit:
+
+.. _nano: https://www.nano-editor.org/dist/v2.7/nano.html#Editor-Basics
+
+.. code::
+
+    vagrant ALL=(ALL) NOPASSWD: ALL
+
+(Of course, if your username is not ``vagrant``, you should use a
+different name above.)
+
+You can test whether your update to ``sudoers`` succeeded by
+running:
+
+.. code:: bash
+
+    sudo echo 'Success! You have sudo priviledges.'
+
+If this succeeds, it will print a success message.
+
+.. _swap-space:
+
+Out of Memory
+~~~~~~~~~~~~~
+
+Add swap space (virtual memory) using the following commands:
+
+.. code:: bash
+
+    sudo fallocate -l 12G /swapfile
+    sudo chmod 0600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    sudo swapon -s
+    free -m
+    sudo bash -c \
+        "echo '/swapfile    none    swap    sw    0    0' >>/etc/fstab"
+    cat /etc/fstab
+
+.. _MATLAB installation details:
+
+MATLAB Installation Troubleshooting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You will probably want to install MATLAB using the GUI. This is easy if
+you are already on a desktop environment.
+
+*If you are configuring a remote server to run the LLAMA pipeline, you
+will need to make sure that you have X11 Forwarding enabled so that you
+can control the MATLAB installer GUI from your computer. See the
+appendix entry on* `SSH with X11 Forwarding`_ *for information.*
+
+Unzip the downloaded zip file with (note: the filename might change if you
+install a newer version of MATLAB.):
+
+.. code:: bash
+
+    unzip matlab_R2016b_ginxa64.zip -d ~/matlab
+
+and then run the ``install`` executable located in the unzipped
+directory, which will launch the MATLAB installer GUI:
+
+.. code:: bash
+
+    ~/matlab/install
+
+Make sure to select items 1-3 (listed in the `install
+MATLAB`_ section) in the installer window in addition
+to MATLAB itself. You can do without all of the other toolboxes. Once
+you are done, run matlab with
+
+.. code:: bash
+
+    matlab
+
+which will bring up the MATLAB GUI. Download ``jsonlab``, then change
+your MATLAB working directory to the folder containing ``jsonlab`` and
+double click on the ``jsonlab`` file, which should have a full name
+along the lines of ``jsonlab-1.2.mltbx``. You will be asked if you would
+like to install ``jsonlab``; you should, of course, say yes. Again, bear
+in mind that you might need to repeat this procedure; for some reason
+MATLAB doesn't always "remember" that it has ``jsonlab`` installed when
+you restart it. I don't know how to remedy this besides installing
+``jsonlab`` for a second time. You can confirm that JSONLab is installed
+by opening a MATLAB session and seeing if ``loadjson`` is a valid
+command; if it is, then JSONLab has been successfully installed.
+
+Install IceCube Offline Software with Root
+------------------------------------------
+
+At the original time of writing, it was not necessary to `install IceCube
+offline software`_. The following instructions are necessary in the event that
+IceCube software libraries with ROOT_ dependencies become needed by LLAMA.
+For some reason, IceCube offline software will not compile properly when
+using the version of ROOT installed by the system package manager, so it is
+necessary to install the IceCube I3_PORTS version, as detailed bellow.
+This installation is **extremely time consuming** and should be skipped
+unless IceCube packages containing root become necessary for LLAMA.
+
+.. _ROOT: https://root.cern.ch/
+
+First, install `dependencies
+<http://software.icecube.wisc.edu/offline_trunk/projects/cmake/platforms.html#platforms>`__
+for the IceCube offline software (plus a few other requirements for LLAMA):
+
+.. code:: bash
+
+    sudo apt-get -y install build-essential cmake libbz2-dev libgl1-mesa-dev \
+        freeglut3-dev libxml2-dev subversion libboost-python-dev \
+        libboost-system-dev libboost-signals-dev libboost-thread-dev \
+        libboost-date-time-dev libboost-serialization-dev \
+        libboost-filesystem-dev libboost-program-options-dev \
+        libboost-regex-dev libboost-iostreams-dev libgsl0-dev libcdk5-dev \
+        libarchive-dev python-scipy ipython-qtconsole libqt4-dev \
+        python-urwid python-tables libxft-dev
+
+Next, install I3 Ports, a set of executables that provide a consistent
+environment for IceCube offline software. `IceCube
+documentation <http://software.icecube.wisc.edu/offline_trunk/projects/cmake/installing_ports.html>`_
+suggests running this as a user other than root. *This next step will take
+several hours to complete and must be restarted if it fails partway through.
+You might consider letting this run overnight or during some other
+unsupervised stretch of time. It will be significantly quicker on a fast
+system, but still painfully slow.*
+
+.. code:: bash
+
+    cd ~
+    svn co http://code.icecube.wisc.edu/icetray-dist/tools/DarwinPorts/trunk \
+        port_source
+    cd port_source
+    ./i3-install.sh "$I3_PORTS"
+
+Next, check out IceCube offline software. *if you encounter a segmentation
+fault during SVN checkout, see the next set of instructions below the next code
+block.* These instructions are adapted from the `original IceCube offline
+software installation
+instructions <http://software.icecube.wisc.edu/offline_trunk/metaproject/quickstart.html>`_;
+you can find all `offline software releases
+here <https://wiki.icecube.wisc.edu/index.php/IceTray_Releases#Release_Version:_V13-07-00>`_.
+
+.. code:: bash
+
+    mkdir ~/offline
+    cd ~/offline
+    svn co http://code.icecube.wisc.edu/svn/meta-projects/offline-software/releases/V15-08-00 src
+
+*If you encounter a segmentation fault (a* `known bug <https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=736879>`_
+*on Debian Jesse's SVN version), you can run* ``svn cleanup src`` *followed by*
+``svn update src`` *and repeat until the source code has been fully checked
+out.*
+
+Now it is time to build the IceTray software. *This step is also very long (if
+not as long as the previous one); set aside a couple of hours for it.
+Fortunately, this step can be resumed at the* ``make`` *step in the event of
+failure.*
+
+.. code:: bash
+
+    mkdir ~/offline/build
+    cd ~/offline/build
+    "$I3_PORTS/bin/cmake" ../src
+    make
+
+Finally, download some data used by IceCube test and example scripts.
+
+.. code:: bash
+
+    make rsync
+
+You should now be able to open up an icecube environment using:
+
+.. code:: bash
+
+    ./env-shell.sh
+
+You should see a "Welcome to Ice Tray" message. You can check whether the
+IceCube python module has been installed by running:
+
+.. code:: bash
+
+    python -c 'from icecube import dataclasses; print("Success!")'
+
+If this runs without error and prints ``Success!``, then you have successfully
+installed the IceCube python module. Well done! You can now exit the Ice Tray
+environment:
+
+.. code:: bash
+
+    exit
+
+To make sure that IceCube software is available when logging in, you will have
+to add some new environmental variables to your ``.bashrc`` file with the
+install locations. Since environmental variables depend on where you installed
+the IceCube offline software, it is vital that you base the environmental
+variables off of your current installation configuration.
+**Making sure that you are still in the build directory,**
+run the following commands:
+
+.. code:: bash
+
+    eval "$(grep ROOTSYS= env-shell.sh)"
+    _I3_BUILD="$(pwd -P)"
+    pushd ../src
+    _I3_SRC="$(pwd -P)"
+    popd
+    pushd "$I3_PORTS"
+    _I3_PORTS="$(pwd -P)"
+    popd
+    _I3_TESTDATA="$_I3_PORTS/test-data"
+    rm -f ~/.i3env
+    printf 'ROOTSYS="%s"' "$ROOTSYS" >>~/.i3env
+    printf 'PYTHONPATH="%s"/lib:"%s"/lib:"$PYTHONPATH"\n' \
+        "$_I3_BUILD" "$ROOTSYS" >>~/.i3env
+    printf 'I3_BUILD="%s"' "$_I3_BUILD" >>~/.i3env
+    printf 'I3_SRC="%s"' "$_I3_SRC" >>~/.i3env
+    printf 'I3_PORTS="%s"' "$_I3_PORTS" >>~/.i3env
+    printf 'I3_TESTDATA="%s"' "$_I3_TESTDATA" >>~/.i3env
+
+You can now test whether your environment will run correctly by sourcing
+your ``.bashrc`` file:
+
+.. code:: bash
+
+    . ~/.bashrc
+
+You should see a message telling you that the IceCube software environment
+was successfully configured. Quickly test whether the IceCube python module
+is installed in the same way as before:
+
+.. code:: bash
+
+    python -c 'from icecube import dataclasses; print("Success!")'
+
+Once again, you should see ``Success!`` printed on your console. If so,
+congratulations! You have successfully installed the IceCube environment.
+
+.. _install the Ubuntu userspace:
+
+Installing Ubuntu for Windows
+-----------------------------
+ 
+With Windows 10, it is now possible to install an Ubuntu userspace (with
+Bash included) on a Windows machine. This means that Ubuntu packages can
+be installed and Ubuntu binaries can be run directly on Windows (thanks
+to some sort of system call translation wizardry). This provides a
+handy and straightforward way of connecting to remote servers via SSH,
+even if you are on Windows, without having to install something like
+`Putty <http://www.putty.org>`__. This has some other nice advantages,
+and, for the purpose of this guide, I will assume you have Bash
+installed on your local computer (even if you are using SSH to connect
+to a remote server for installing the LLAMA software).
+
+You can follow the instructions in
+`this guide <http://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/>`__
+to install Ubuntu for Windows.
+
+.. _log in using SSH:
+
+Logging in to a Remote Server Using SSH
+---------------------------------------
+
+Start by opening up a ``bash`` instance.
+
+- If you are on a Mac, you can do this by running Terminal.app, which
+  should be in your /Applications folder, or by hitting ``Command-Space``,
+  typing "Terminal.app", and hitting ``Enter``.
+- If you are on a PC running Windows 10, you can actually
+  `install the Ubuntu userspace`_ (with Bash included).
+  Once this is installed, you can just open the Bash executable from your
+  programs folder in the Start menu, or just hit the Windows button, type
+  ``bash``, and hit ``Enter`` to launch a new Bash session.
+- If you are running Linux and don't know how to start a terminal session,
+  may God help you.
+
+Now, let's say you are logging in to a server at IP address ``1.2.3.4``,
+your username on the remote server is ``vagrant``, and you have some
+password. Just run the following and enter your password when prompted:
+
+.. code:: bash
+
+    ssh vagrant@1.2.3.4
+
+If you have your server mapped to a web URL, like ``example.com``, you
+can use that instead of the IP address, as show below:
+
+.. code:: bash
+
+    ssh vagrant@example.com
+
+Congratulations! You should be logged in to your remote server. You can
+now proceed with installing the pipeline.
+
+Getting LLAMA Software onto a Remote Server
+---------------------------------------------
+
+Let's assume someone sent you the LLAMA software in a compressed archive
+(e.g. a zipfile). You should have received a download link for the
+archive, in which case you can download the file directly from your
+LLAMA server. If you are running a remote machine,
+`log in using SSH`_;
+if you are running LLAMA locally or in a virtual machine, simply open
+up a terminal session.
+
+Let's assume the URL for the LLAMA software archive is
+``example.com/llama.zip``. You can download the archive to your home
+directory as follows:
+
+.. code:: bash
+
+    cd ~
+    wget example.com/llama.zip
+
+Now, you can unzip the file:
+
+.. code:: bash
+
+    unzip llama.zip
+
+You should now have a directory called ``multimessenger-pipeline`` in your
+home folder.
+
+SSH with X11 Forwarding
+-----------------------
+
+This will allow you to run MATLAB's installer GUI and the MATLAB GUI
+itself, both of which are necessary for the installation process, on a
+remote server or on a local virtual machine being accessed through
+``ssh``.
+
+-  On Macs, you must install `XQuartz <https://www.xquartz.org/>`__.
+   Then, when logging in to the LLAMA server, use the
+   ``-o ForwardX11=yes`` and ``-o ForwardX11Trusted=yes`` flags to turn on X
+   Window Forwarding. For example, if your server is ``c137.com`` and the
+   username is ``rick.sanchez``, you can log in with:
+
+   .. code:: bash
+
+       ssh -o ForwardX11=yes -o ForwardX11Trusted=yes rick.sanchez@c137.com
+
+-  On Linux, assuming you have a GUI, you probably have an X11 Server
+   installed already. If that is the case, you can just ``ssh`` with the
+   ``-o ForwardX11=yes`` and -o ``ForwardX11Trusted=yes`` flags, just as in the
+   above example for Macs.
+-  On Windows machines, you can use
+   `XMing <https://sourceforge.net/projects/xming/>`__ as your X Windows
+   server and `Putty <http://www.putty.org/>`__ as your SSH client. If you
+   have Windows 10, you can use Ubuntu for Windows (See instructions for
+   `Installing Ubuntu for Windows`_), and you can use ``bash`` instead of
+   Putty. Once again, you can run
+
+   .. code:: bash
+
+       ssh -o ForwardX11=yes -o ForwardX11Trusted=yes rick.sanchez@c137.com
+
+If you use your ``~/.ssh/config`` file for ``ssh`` settings (will work
+for Linux or Mac; I am not sure about Windows), you can
+also automatically turn on X11 forwarding for your LLAMA server by
+adding the lines
+
+::
+
+        ForwardX11 yes
+        ForwardX11Trusted yes
+
+to the site entry for your LLAMA server in your ``~/.ssh/config`` file.
+For example, if you wanted to call the above server ``earth``, you
+could add the following block to your ``~/.ssh/config`` file:
+
+::
+
+    Host earth
+        HostName c137.com
+        User rick.sanchez
+        ForwardX11 yes
+        ForwardX11Trusted yes
+
+Which makes connecting to the server with all of your desired settings
+much quicker (and saves you from having to remember ssh command
+syntax or the server URL):
+
+.. code:: bash
+
+    ssh earth
+
+Once you have established an SSH connection with X11 forwarding enabled, you
+will need to make sure that the root account and the account you are logging
+into share the same ``.Xauthority`` file. To do so, run:
+
+.. code:: bash
+
+    cd ~
+    if sudo [ -e /root/.Xauthority ]; then
+        sudo mv /root/.Xauthority /root/.Xauthority.orig
+    fi
+    sudo cp .Xauthority /root/.Xauthority
+
+Using LLAMA
+-----------
+
+The ``llama`` python module and its executables all have docstring
+documentation and are designed for interactive use. Read the help
+functions and play around with things in ``ipython`` to get a feel for
+how they work, and ask Stefan Countryman for help if you have any
+questions. I will put FAQs here if I find that any Qs have become F.
+
+Documenting LLAMA
+-----------------
+
+Overview
+~~~~~~~~
+
+LLAMA uses reStructuredText_ documents to generate nicely-formatted webpages
+and PDF files (via Sphinx_). There is even a ``Makefile`` included to
+facilitate publishing. The instructions below assume that you are starting
+from within the LLAMA installation folder (if you followed this installation
+guide, it will be in ``~/multimessenger-pipeline``).
+
+.. _reStructuredText: https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst
+.. _Sphinx: http://www.sphinx-doc.org/en/1.4.8/
+
+Publishing to gwhen.com Website
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This repository contains tools for making a nice, reviewer/developer friendly
+website on the production server (gwhen.com_ at time of writing).
+Check out the ``README.md`` file in ``~/multimessenger-pipeline/review-site``
+for instructions. Also make sure that the contents of
+``multimessenger-pipeline/git-hooks`` has been copied to
+``multimessenger-pipeline/.git/hooks`` (to ensure that documentation is
+automatically refreshed whenever the documentation source is changed).
+
+You can also enable the status server at `gwhen.com/status`_. First, turn on
+CGI scripts:
+
+.. code:: bash
+
+    sudo a2enmod cgi
+
+You'll then need to add this alias to your apache configuration file (should be
+``/etc/apache2/apache2.conf``):
+
+.. code::
+
+    ScriptAlias "/status/" "/var/www/html/status/status.py"
+
+Finally, restart apache:
+
+.. code:: bash
+
+    sudo service apache2 restart
+
+.. _gwhen.com: http://gwhen.com
+.. _`gwhen.com/status`: http://gwhen.com/status
+
+Publishing Readme to Git Host
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If your Git hosting provider (e.g. GitHub_) supports symbolic links and
+reStructuredText_ rendering, you can just commit your changes and push them to
+the provider's remote repository. The Readme will immediately be rendered and
+updated.
+
+.. _GitHub: https://github.com
+
+Publishing PDFs
+~~~~~~~~~~~~~~~
+
+From the LLAMA installation folder, navigate into
+the documentation folder and generate the PDF:
+
+.. code:: bash
+
+    cd docs
+    make latexpdf
+
+You can check the quality of your handiwork immediately using ``xpdf`` to
+view the output file:
+
+.. code:: bash
+
+    xpdf build/latex/\*pdf
+
+Publishing HTML Web Pages
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+From the LLAMA installation folder, navigate into
+the documentation folder and generate the HTML files:
+
+.. code:: bash
+
+    cd docs
+    make html
+
+You can run a python server from within docs to view the output:
+
+.. code:: bash
+
+    cd build/html
+    python -m SimpleHTTPServer
+
+While the python server is running, you can view the documentation webpage
+by opening any web browser and navigating to the URL of your server (you will
+have to append the port number, which defaults to 8000 for SimpleHTTPServer).
+If your server has the URL ``example.com``, then you would want to navigate
+to ``example.com:8000``. You should then be able to see the webpage.
+
+Troubleshooting LLAMA
+---------------------
+
+**Problem:** ``llama run`` *(or some other program that updates files)*
+keeps crashing when trying to generate a skymap or other data generated
+with MATLAB. The MATLAB log located at ``logs/llama.matlab.log``
+mentions something about ``loadjson`` or ``savejson`` (or something else
+with ``json`` in it), like in the below error message:
+
+::
+
+    Undefined function 'loadjson' for input arguments of type 'char'.
+
+**Solution:** Make sure the JSONLab toolbox is installed in MATLAB.
+For some reason installation does not persist after the first
+installation, and a second installation is usually required. You can
+confirm that JSONLab is installed by opening a MATLAB session and seeing
+if ``loadjson`` is a valid command; if it is, then JSONLab has been
+successfully installed.
+
+**Problem:** ``llama run`` *(or some other program that updates files)*
+keeps crashing when trying to download ``lvc_initial.fits.gz`` or some
+other file located on GraceDB.
+
+**Solution:** Refresh your LIGO authentication. See the section above
+on `LIGO authentication`_.
+
+**Problem:** ``llama run`` *(or some other program that updates files)*
+keeps crashing when trying to generate a skymap or other data generated
+with MATLAB; MATLAB claims that files are missing.
+
+**Solution:** Download the missing
+~/multimessenger-pipeline/Neutrinos/Data folder.
+
+**Problem:** I am running this on a small throwaway server and am out of
+space, but I don't want to spend more money on disk space.
+
+**Solution:** Delete the contents of ``/var/cache/apt`` and
+``/usr/share/doc`` to clear up (probably) around 3GB of data that are unlikely
+to be of further benefit.
+
+Setting Up the Review Server
+------------------------------
+
+These instructions explain how to set up a server for reviewers to test the
+pipeline on.
+
+Provisioning the review server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Run the following command and enter your admin password (since we're creating
+a new user named "reviewer") as well as info for the new user:
+
+.. code:: bash
+
+    ~/multimessenger-pipeline/review-site/provision
+
+This will get everything set up for a new reviewer. In particular, if the
+``reviewer`` user account has not been made, a command will be run to create
+the account for you; in this case, you will have to specify a password, accept
+all other defaults, and then relaunch the ``.provision`` script.
+Now, assuming you have password-based authentication turned on, your reviewers
+can log in to the server using the username ``reviewer`` and the password you
+specified.
+
+Running the Review
+~~~~~~~~~~~~~~~~~~
+
+Run:
+
+.. code:: bash
+
+    ~/llamatest
+
+This script will run through a few injected test cases (as described on
+`gwhen.com <http://gwhen.com>`__). It will describe what it has done and
+whether it succeeded; you can confirm the results for yourself by looking in
+the output directory, ``~/.local/share/llama/current_run``. The python
+library used by ``llamatest`` is located in
+``~/multimessenger-pipeline/llama``.
+
+Ideas for the Future
+--------------------
+
+This section contains exploratory notes and links on ideas, methods, and
+features that might be useful for the pipeline in the future.
+
+CVMFS
+-----
+
+It's worth investigating using the `CernVM-File System`_ (CernVM-FS, or CVMFS)
+as a software environment provisioning method. Software and data are
+represented in a virtual file-system mounted to ``/cvmfs``, and file therefrom
+are downloaded and cached locally on an as-needed basis, promising fast
+provisioning times.
+
+.. _CernVM-File System: https://cvmfs.readthedocs.io/en/stable/
+
+LIGO seems to `just be starting to support CVMFS
+<https://docs.ligo.org/lscsoft/conda/environments/#pre-built-environments>`__
+at time of writing, while IceCube seems to have `mature CVMFS support
+<http://software.icecube.wisc.edu/documentation/info/cvmfs.html#cvmfs>`__ based
+on a cursory viewing of their documentation. If software matures in both
+collaborations to the point where the distributions on CVMFS can dependibly
+provide all of the needed features, it might be possible to switch over to
+CVMFS for IceCube and LIGO software.
+
+Advantages
+~~~~~~~~~~
+
+- If other projects support CVMFS, it will be faster to incorporate their
+  tooling into the pipeline using CVMFS.
+- We can create very lightweight virtual machine images and docker containers
+  with empty CVMFS caches for archiving, development, and deployment purposes;
+  they will be faster to provision, archive, download, and restart thanks to
+  this reduces size (though in a cluster environment, it would of course cause
+  multiple parallel downloads to CVMFS, which might be a bottleneck, or even
+  worse, an unintentional DDoS attack on CVMFS).
+
+Disadvantages
+~~~~~~~~~~~~~
+
+- Less flexible than having a user-maintained Conda installation.
+- ``root`` privileges would be necessary for sysadmin, and CVMFS idiosyncracies
+  will likely make it much harder to support heterogeneous platforms in a
+  fault-tolerant way (this is pretty important).

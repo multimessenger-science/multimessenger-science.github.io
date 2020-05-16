@@ -1,0 +1,9 @@
+``llama files skymap_info``
+===========================
+
+.. argparse::
+   :module: llama.files.skymap_info.__main__
+   :func: get_parser
+   :prog: llama files skymap_info
+
+

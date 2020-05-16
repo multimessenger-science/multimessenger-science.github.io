@@ -1,0 +1,9 @@
+``llama batch``
+===============
+
+.. argparse::
+   :module: llama.batch.__main__
+   :func: get_parser
+   :prog: llama batch
+
+

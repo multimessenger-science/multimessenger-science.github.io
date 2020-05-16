@@ -1,0 +1,7 @@
+llama.batch package
+===================
+
+.. automodule:: llama.batch
+   :members:
+   :undoc-members:
+   :show-inheritance:

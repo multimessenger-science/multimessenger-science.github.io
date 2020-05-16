@@ -1,0 +1,7 @@
+llama.vetoes module
+===================
+
+.. automodule:: llama.vetoes
+   :members:
+   :undoc-members:
+   :show-inheritance:

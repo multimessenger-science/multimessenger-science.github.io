@@ -1,0 +1,18 @@
+llama.files.coinc\_significance package
+=======================================
+
+.. automodule:: llama.files.coinc_significance
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.files.coinc_significance.opa
+   llama.files.coinc_significance.subthreshold
+   llama.files.coinc_significance.utils

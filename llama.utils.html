@@ -1,0 +1,1611 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>llama.utils module &mdash; Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) 3.5.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="http://gwhen.comllama.utils.html"/>
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="llama.version module" href="llama.version.html" />
+    <link rel="prev" title="llama.test.test_utils module" href="llama.test.test_utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                3.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Info for Reviewers</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html">Introduction for Reviewers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#purpose">Purpose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#documentation">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#software-documentation">Software Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#review-wikis">Review Wikis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#papers">Papers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#source-code">Source Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#testing-on-review-server">Testing on Review Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#fake-cases">Fake cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#running-fake-cases">Running Fake Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reviewers.html#contents-of-the-output-folder">Contents of the Output Folder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#inputs">Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#main-outputs">Main Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#auxilliary-outputs">Auxilliary Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reviewers.html#real-cases">Real cases</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Quick Start Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Using the Docker Images</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-cloud">Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#getting-llama-images">Getting LLAMA Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#choosing-the-image">Choosing the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#getting-updating-the-image">Getting/Updating the Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#removing-images">Removing Images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#running-a-llama-container">Running a LLAMA Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#mounting-directories">Mounting Directories</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-macos-linux">Mounting in MacOS/Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="readme.html#mounting-in-windows">Mounting in Windows</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#out-of-memory-disk">Out of Memory/Disk</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#running-on-habanero">Running on Habanero</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#interactive-habanero-jobs">Interactive Habanero Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#docker-hub-authentication-with-singularity">Docker Hub Authentication with Singularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#fixing-singularity-cache-on-habanero">Fixing Singularity Cache on Habanero</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#load-singularity-module">Load Singularity Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#pull-llama-image">Pull LLAMA Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#local-installation">Local Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#installing-conda">Installing Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#setting-up-a-production-server">Setting Up a Production Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker">Install Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#install-docker-compose">Install Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#log-in-to-docker-cloud">Log in to Docker Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#get-docker-compose-yml">Get <cite>docker-compose.yml</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="readme.html#starting-llama-production-app">Starting LLAMA Production App</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Operators' Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="operators.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#how-data-is-organized">How Data is Organized</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#event-directories">Event Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#gcn-notice-archive">GCN Notice Archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#log-files">Log Files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-automatically">Running the Pipeline Automatically</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#running-the-pipeline-manually">Running the Pipeline Manually</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#using-defaults-with-skymap-info">Using Defaults with <code class="docutils literal notranslate"><span class="pre">skymap_info</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-o3b">Sensitivity and Background Studies (O3B)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="operators.html#sensitivity-and-background-studies-pre-o3b">Sensitivity and Background Studies (pre-O3B)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#editing-your-bashrc">Editing your .bashrc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#using-the-digitalocean-api">Using the DigitalOcean API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#llama-scripts">LLAMA Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#adding-your-ssh-keys-to-the-droplets">Adding Your SSH Keys to the Droplets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#installing-requirements">Installing Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#digitalocean-administration-examples">DigitalOcean Administration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#preparing-a-server">Preparing a Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#server-preparation-overview">Server Preparation Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#moving-data-into-place">Moving Data into Place</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="operators.html#running-the-analysis-in-parallel">Running the Analysis in Parallel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#starting-the-servers">Starting the Servers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#running-the-analysis">Running the Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operators.html#collecting-results">Collecting Results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Developer's Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">Developer Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#obtaining-the-llama-source-code">Obtaining the LLAMA Source Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developers.html#using-the-docker-dev-image">Using the Docker Dev Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#list-bin-docker-commands">List <code class="docutils literal notranslate"><span class="pre">bin/docker</span></code> Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#getting-the-latest-development-image">Getting the Latest Development Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#starting-a-dev-container">Starting a Dev Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#sketch-of-a-bug-fix">Sketch of a Bug Fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers.html#destroying-your-dev-container">Destroying your Dev Container</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developers.html#previous-llama-versions">Previous LLAMA Versions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html">Developer Installation (Pre-O3)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-llama-dependencies">Installing LLAMA Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#obtaining-the-llama-software-pre-o3">Obtaining the LLAMA Software (pre-O3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-configuration-files">Setting up Configuration Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-git-hooks">Install git Hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-llama-dependencies">Install LLAMA dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-ligo-software">Install LIGO Software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software">Install IceCube Offline Software</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-icecube-dependencies">Installing IceCube Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#entering-icecube-credentials">Entering IceCube Credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-matlab">Install MATLAB</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#configuration-and-authentication">Configuration and Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#generate-ssh-keys">Generate SSH Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gmail-authentication">GMail Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ligo-authentication">LIGO Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-ssl-certificates">Setting Up SSL Certificates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-passwords-for-run-summary-pages">Setting Up Passwords for Run Summary Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#external-authentication">External Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#bitbucket-authentication">Bitbucket Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#git-ligo-org-authentication">git.ligo.org Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#twilio-authentication">Twilio Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gw-astronomy-authentication">GW Astronomy Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#gcn-authentication">GCN Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#turning-on-the-pipeline">Turning on the Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#subscribing-to-lvalert-nodes">Subscribing to LVAlert Nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#starting-pipeline-daemons">Starting Pipeline Daemons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#testing-lvalert">Testing LVAlert</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#viewing-active-processes">Viewing Active Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#checking-pipeline-logs">Checking Pipeline Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#killing-pipeline-daemons">Killing Pipeline Daemons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#deprecated-matlab-logs">Deprecated: MATLAB Logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#developing-for-llama">Developing for LLAMA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#introduction-to-development">Introduction to Development</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#structure-of-the-pipeline">Structure of the Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#adding-functionality">Adding Functionality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#developer-conventions-and-best-practices">Developer Conventions and Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#data-format-conventions">Data Format Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#coding-best-practices">Coding Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="developers-pre-o3.html#appendix">Appendix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#migrating-to-conda">Migrating to Conda</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#ligo-wiki-documentation">LIGO Wiki Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#installing-ligo-software-via-conda">Installing LIGO Software via Conda</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-installation">Troubleshooting Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#creating-a-new-user">Creating a new user</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#out-of-memory">Out of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#matlab-installation-troubleshooting">MATLAB Installation Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#install-icecube-offline-software-with-root">Install IceCube Offline Software with Root</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#installing-ubuntu-for-windows">Installing Ubuntu for Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#logging-in-to-a-remote-server-using-ssh">Logging in to a Remote Server Using SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#getting-llama-software-onto-a-remote-server">Getting LLAMA Software onto a Remote Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ssh-with-x11-forwarding">SSH with X11 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#using-llama">Using LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#documenting-llama">Documenting LLAMA</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-to-gwhen-com-website">Publishing to gwhen.com Website</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-readme-to-git-host">Publishing Readme to Git Host</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-pdfs">Publishing PDFs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#publishing-html-web-pages">Publishing HTML Web Pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#troubleshooting-llama">Troubleshooting LLAMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#setting-up-the-review-server">Setting Up the Review Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#provisioning-the-review-server">Provisioning the review server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#running-the-review">Running the Review</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#ideas-for-the-future">Ideas for the Future</a></li>
+<li class="toctree-l3"><a class="reference internal" href="developers-pre-o3.html#cvmfs">CVMFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#advantages">Advantages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="developers-pre-o3.html#disadvantages">Disadvantages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Bibliography</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Academic Papers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#low-latency-algorithm-for-multi-messenger-astrophysics-llama-with-gravitational-wave-and-high-energy-neutrino-candidates">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA) with Gravitational-Wave and High-Energy Neutrino Candidates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="papers.html#bayesian-multi-messenger-search-method-for-common-sources-of-gravitational-waves-and-high-energy-neutrinos">Bayesian Multi-Messenger Search Method for Common Sources of Gravitational Waves and High-Energy Neutrinos</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="llama.html">llama package</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="llama.batch.html">llama.batch package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.classes.html">llama.classes module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.cli.html">llama.cli module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.com.html">llama.com package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.dl.html">llama.com.dl package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.do.html">llama.com.do package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.email.html">llama.com.email package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.gracedb.html">llama.com.gracedb package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.s3.html">llama.com.s3 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.slack.html">llama.com.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.com.utils.html">llama.com.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.detectors.html">llama.detectors module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.detectors.html#available-detectors">Available Detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.dev.html">llama.dev package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.background.html">llama.dev.background package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.pvalue.html">llama.dev.background.pvalue package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table.html">llama.dev.background.table package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.background.table_singles.html">llama.dev.background.table_singles package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.clean.html">llama.dev.clean package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.data.html">llama.dev.data package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.data.i3.html">llama.dev.data.i3 package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.docs.html">llama.dev.docs package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.docs.cli.html">llama.dev.docs.cli package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.dv.html">llama.dev.dv package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.log.html">llama.dev.log package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.dev.log.lvalert.html">llama.dev.log.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.dev.upload.html">llama.dev.upload package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.event.html">llama.event package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.filehandler.html">llama.filehandler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.classes.html">llama.filehandler.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.filehandler.mixins.html">llama.filehandler.mixins module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.files.html">llama.files package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_significance.html">llama.files.coinc_significance package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.opa.html">llama.files.coinc_significance.opa module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.subthreshold.html">llama.files.coinc_significance.subthreshold module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.coinc_significance.utils.html">llama.files.coinc_significance.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.healpix.html">llama.files.healpix package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.plotters.html">llama.files.healpix.plotters module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.psf.html">llama.files.healpix.psf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.skymap.html">llama.files.healpix.skymap module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.healpix.utils.html">llama.files.healpix.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.i3.html">llama.files.i3 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.json.html">llama.files.i3.json module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.realtime_tools_stubs.html">llama.files.i3.realtime_tools_stubs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.tex.html">llama.files.i3.tex module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.txt.html">llama.files.i3.txt module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.i3.utils.html">llama.files.i3.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap.html">llama.files.lvc_skymap package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.skymap_info.html">llama.files.skymap_info package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.cli.html">llama.files.skymap_info.cli module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.files.skymap_info.utils.html">llama.files.skymap_info.utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.slack.html">llama.files.slack package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.advok.html">llama.files.advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_analyses.html">llama.files.coinc_analyses module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_o2.html">llama.files.coinc_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.coinc_plots.html">llama.files.coinc_plots module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.fermi_grb.html">llama.files.fermi_grb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gcn_draft_o2.html">llama.files.gcn_draft_o2 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gracedb.html">llama.files.gracedb module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.gwastro.html">llama.files.gwastro module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_advok.html">llama.files.lvalert_advok module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvalert_json.html">llama.files.lvalert_json module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_mat.html">llama.files.lvc_skymap_mat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.lvc_skymap_txt.html">llama.files.lvc_skymap_txt module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.matlab.html">llama.files.matlab module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.sms_receipts.html">llama.files.sms_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.team_receipts.html">llama.files.team_receipts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.timing_checks.html">llama.files.timing_checks module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.uw_summary.html">llama.files.uw_summary module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.files.ztf_trigger_list.html">llama.files.ztf_trigger_list module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.flags.html">llama.flags package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.flags.cli.html">llama.flags.cli module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.install.html">llama.install package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.install.manifest.html">llama.install.manifest module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.intent.html">llama.intent module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.io.html">llama.io package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.default.html">llama.io.default package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.io.default.generate.html">llama.io.default.generate module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.classes.html">llama.io.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.io.registry.html">llama.io.registry module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.listen.html">llama.listen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.gcn.html">llama.listen.gcn package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.listen.lvalert.html">llama.listen.lvalert package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.lock.html">llama.lock module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.meta.html">llama.meta module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.pipeline.html">llama.pipeline module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.pipeline.html#pipelines">Pipelines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.poll.html">llama.poll package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.poll.gracedb.html">llama.poll.gracedb package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.run.html">llama.run package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.serve.html">llama.serve package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.gui.html">llama.serve.gui package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.wsgi.html">llama.serve.gui.wsgi package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.gui.domain.html">llama.serve.gui.domain module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.serve.jupyter.html">llama.serve.jupyter package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.logs.html">llama.serve.jupyter.logs module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="llama.serve.jupyter.utils.html">llama.serve.jupyter.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="llama.test.html">llama.test package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_files.html">llama.test.test_files package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_listeners.html">llama.test.test_listeners package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="llama.test.test_listeners.test_gcn.html">llama.test.test_listeners.test_gcn module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.classes.html">llama.test.classes module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_bin.html">llama.test.test_bin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_filehandler.html">llama.test.test_filehandler module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_pipeline.html">llama.test.test_pipeline module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llama.test.test_utils.html">llama.test.test_utils module</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">llama.utils module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.version.html">llama.version module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.versioning.html">llama.versioning module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llama.vetoes.html">llama.vetoes module</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Code Reports</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/pytest/">Unit Tests</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://multimessenger.science/coverage/">Code Coverage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiling.html">Performance Profiling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-combined.html">Combined Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-combined.html#combined">combined</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-unit.html">Unit Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test">test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-default-pipeline-consistency">test_default_pipeline_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-filehandler-definition-consistency">test_filehandler_definition_consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-make-grid">test_get_grid_make_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-get-grid-north-pole">test_get_grid_north_pole</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-pipeline-parser">test_llama_pipeline_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-llama-run-parser">test_llama_run_parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize">test_memoize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-class">test_memoize_class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-memoize-helper">test_memoize_helper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-mjd-interval">test_mjd_interval</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-rotate-angs2vec">test_rotate_angs2vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-unit.html#test-write-gzip">test_write_gzip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="test-profiling-llama.html">Doctests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.com.html">llama.com</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.com.gracedb.html">llama.com.gracedb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.com.gracedb.html#llama-com-gracedb-gracedb">llama.com.gracedb.GraceDb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.dev.html">llama.dev</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.data.html">llama.dev.data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.data.i3.html">llama.dev.data.i3</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.dev.upload.html">llama.dev.upload</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.dev.upload.html#llama-dev-upload-upload-and-get-manifest">llama.dev.upload.upload_and_get_manifest</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.filehandler.html">llama.filehandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html">llama.filehandler.JSONFile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.filehandler.JSONFile.html#llama-filehandler-jsonfile-checksum">llama.filehandler.JSONFile.checksum</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.files.html">llama.files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html">llama.files.fermi_grb</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.fermi_grb.html#llama-files-fermi-grb-get-grbs-from-csv">llama.files.fermi_grb.get_grbs_from_csv</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.healpix.html">llama.files.healpix</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.HEALPixSkyMapFileHandler.html">llama.files.healpix.HEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.LvcHEALPixSkyMapFileHandler.html">llama.files.healpix.LvcHEALPixSkyMapFileHandler</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.psf.html">llama.files.healpix.psf</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.skymap.html">llama.files.healpix.skymap</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.healpix.utils.html">llama.files.healpix.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.i3.html">llama.files.i3</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.json.html">llama.files.i3.json</a></li>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.i3.utils.html">llama.files.i3.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html">llama.files.lvc_gcn_xml</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_gcn_xml.html#llama-files-lvc-gcn-xml-parse-ivorn">llama.files.lvc_gcn_xml.parse_ivorn</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.html">llama.files.lvc_skymap</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.lvc_skymap.utils.html">llama.files.lvc_skymap.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.files.matlab.html">llama.files.matlab</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="test-profiling-llama.files.matlab.html#llama-files-matlab-matlab-eval">llama.files.matlab.matlab_eval</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="test-profiling-llama.utils.html">llama.utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-param">llama.utils.get_voevent_param</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-get-voevent-time">llama.utils.get_voevent_time</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-parameter-factory">llama.utils.parameter_factory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2angs">llama.utils.rotate_angs2angs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-rotate-angs2vec">llama.utils.rotate_angs2vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-gzip">llama.utils.write_gzip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="test-profiling-llama.utils.html#llama-utils-write-to-zip">llama.utils.write_to_zip</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reports.html">Source Code Plots</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Command Line Interface</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span></code> Command Line Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.batch.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">batch</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#logging settings">logging settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.batch.__main__.html#simulation configuration">simulation configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.com.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.do.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">do</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.do.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">gracedb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.gracedb.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.com.slack.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">com</span> <span class="pre">slack</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.com.slack.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.dev.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.background.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">pvalue</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.pvalue.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">background</span> <span class="pre">table</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.background.table.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.clean.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">clean</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.clean.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.data.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">data</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.data.i3.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.docs.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">docs</span> <span class="pre">cli</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.docs.cli.__main__.html#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.dv.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">dv</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.dv.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.log.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">log</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cli.llama.dev.log.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.dev.upload.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">dev</span> <span class="pre">upload</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.dev.upload.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.event.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">event</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.event.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.files.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.files.i3.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">files</span> <span class="pre">i3</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.files.i3.__main__.html#output formats (specify at least 1)">output formats (specify at least 1)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.flags.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">flags</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.flags.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.install.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">install</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.install.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.listen.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">gcn</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.gcn.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">listen</span> <span class="pre">lvalert</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.listen.lvalert.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.poll.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.poll.gracedb.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">poll</span> <span class="pre">gracedb</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.run.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">run</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#choose pipeline (see ``llama.pipeline``)">choose pipeline (see ``llama.pipeline``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#filter runs and events (see: ``llama.run``)">filter runs and events (see: ``llama.run``)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.run.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.llama.serve.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.__main__.html#subcommands (call one with ``--help`` for details on each)">subcommands (call one with ``–help`` for details on each)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.gui.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">gui</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.gui.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html"><code class="docutils literal notranslate"><span class="pre">llama</span> <span class="pre">serve</span> <span class="pre">jupyter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.llama.serve.jupyter.__main__.html#logging settings">logging settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Low-Latency Algorithm for Multi-messenger Astrophysics (LLAMA)</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>llama.utils module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/llama.utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-llama.utils">
+<span id="llama-utils-module"></span><h1>llama.utils module<a class="headerlink" href="#module-llama.utils" title="Permalink to this headline">¶</a></h1>
+<p>Utility functions for LLAMA with <em>no dependencies</em> on other LLAMA tooling.</p>
+<dl class="class">
+<dt id="llama.utils.ColorFormatter">
+<em class="property">class </em><code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">ColorFormatter</code><span class="sig-paren">(</span><em class="sig-param">fmt=None</em>, <em class="sig-param">datefmt=None</em>, <em class="sig-param">style='%'</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.ColorFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Formatter</span></code></p>
+<p>A formatter that colors log output for easier reading.</p>
+<dl class="attribute">
+<dt id="llama.utils.ColorFormatter.COLORS">
+<code class="sig-name descname">COLORS</code><em class="property"> = {'CRITICAL': '\x1b[91m', 'DEBUG': '\x1b[94m', 'ERROR': '\x1b[93m', 'INFO': '\x1b[92m', 'WARNING': '\x1b[95m'}</em><a class="headerlink" href="#llama.utils.ColorFormatter.COLORS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="llama.utils.ColorFormatter.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.ColorFormatter.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the specified record as text.</p>
+<p>The record’s attribute dictionary is used as the operand to a
+string formatting operation which yields the returned string.
+Before formatting the dictionary, a couple of preparatory steps
+are carried out. The message attribute of the record is computed
+using LogRecord.getMessage(). If the formatting string uses the
+time (as determined by a call to usesTime(), formatTime() is
+called to format the event time. If there is exception information,
+it is formatted using formatException() and appended to the message.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.utils.RemoteFileCacher">
+<em class="property">class </em><code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">RemoteFileCacher</code><a class="headerlink" href="#llama.utils.RemoteFileCacher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#llama.utils.RemoteFileCacherTuple" title="llama.utils.RemoteFileCacherTuple"><code class="xref py py-class docutils literal notranslate"><span class="pre">llama.utils.RemoteFileCacherTuple</span></code></a></p>
+<p>A simple loader for remotely-cached data accessible on public URLs. Use
+this to download cloud-based resources and locally cache them in /root/.cache/llama/objects.
+Files will only be downloaded as-needed to save space and bandwidth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – Specify the URL of the remote resource.</p></li>
+<li><p><strong>localpath</strong> (<em>str</em><em>, </em><em>optional</em>) – The (optional) local path at which to cache this resource. By default,
+will just be <code class="docutils literal notranslate"><span class="pre">/root/.cache/llama/objects/filename</span></code> where <code class="docutils literal notranslate"><span class="pre">filename</span></code> is actually
+taken from the remote URL filename.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="llama.utils.RemoteFileCacher.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">query=None</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.RemoteFileCacher.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the file is not available locally, download it and store it at
+<code class="docutils literal notranslate"><span class="pre">localpath</span></code> (do nothing if present). Return <code class="docutils literal notranslate"><span class="pre">localpath</span></code>. Optionally
+append a query string <code class="docutils literal notranslate"><span class="pre">query</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="llama.utils.RemoteFileCacherTuple">
+<em class="property">class </em><code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">RemoteFileCacherTuple</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">localpath</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.RemoteFileCacherTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="method">
+<dt id="llama.utils.RemoteFileCacherTuple.localpath">
+<em class="property">property </em><code class="sig-name descname">localpath</code><a class="headerlink" href="#llama.utils.RemoteFileCacherTuple.localpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="llama.utils.RemoteFileCacherTuple.url">
+<em class="property">property </em><code class="sig-name descname">url</code><a class="headerlink" href="#llama.utils.RemoteFileCacherTuple.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.archive_figs">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">archive_figs</code><span class="sig-paren">(</span><em class="sig-param">plots</em>, <em class="sig-param">outfile</em>, <em class="sig-param">exts=('pdf'</em>, <em class="sig-param">'png')</em>, <em class="sig-param">fname_list=None</em>, <em class="sig-param">close_figs=False</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.archive_figs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a list of figures and save them with filenames that look like
+<code class="docutils literal notranslate"><span class="pre">{fname}.{suffix}</span></code> to a <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> archive named <code class="docutils literal notranslate"><span class="pre">outfile</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">list_index</span></code> will be the zero-padded index of the given plot in the
+<code class="docutils literal notranslate"><span class="pre">plots</span></code> list. Default filenames are generated if <code class="docutils literal notranslate"><span class="pre">fname_list</span></code> is not
+given. For instance, with no <code class="docutils literal notranslate"><span class="pre">fname_list</span></code> specified, the third plot in
+<code class="docutils literal notranslate"><span class="pre">plots</span></code> would have files named named <code class="docutils literal notranslate"><span class="pre">plt_003.pdf</span></code> and <code class="docutils literal notranslate"><span class="pre">plt_003.png</span></code>
+saved to <code class="docutils literal notranslate"><span class="pre">outfile</span></code> (assuming default <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> values).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plots</strong> (<em>list</em>) – A list of <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> figures to save to file.</p></li>
+<li><p><strong>outfile</strong> (<em>str</em>) – Filename of the output archive. Should end in <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> since this will
+be a zipped tarball of figures.</p></li>
+<li><p><strong>exts</strong> (<em>list</em><em>, </em><em>optional</em>) – List of filename extensions to use. Each extension becomes the
+<code class="docutils literal notranslate"><span class="pre">suffix</span></code> in the above format string. Allows multiple image formats to
+be saved for each plot.</p></li>
+<li><p><strong>fname_list</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of file names to use for each figure (sans file extensions).
+<em>NOTE:</em> If not provided, some default filenames are generated instead.
+These follow the filename pattern <code class="docutils literal notranslate"><span class="pre">plt_{list_index}.{suffix}</span></code>.</p></li>
+<li><p><strong>close_figs</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, clear the figures in <code class="docutils literal notranslate"><span class="pre">plots</span></code> after plotting is finished.
+This will help reduce memory usage if the plots are not going to be
+reused.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.bytes2str">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">bytes2str</code><span class="sig-paren">(</span><em class="sig-param">bytes_or_str</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.bytes2str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an object that could be a bytes object (in python3) to a str
+object. If it is already a str object, leave it alone. Used for
+python2/python3 compatibility.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.color">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">color</code><span class="sig-paren">(</span><em class="sig-param">fg=None</em>, <em class="sig-param">bg=None</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return full-color escape codes for changing foreground and background in
+terminals with RGB color support.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fg</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – The foreground (text) color. A 3-item list containing integer values
+for red, green, and blue <em>or</em> a hexadecimal representation of the color
+prefixed by an octothorpe (like in CSS). Background will not be set if
+not specified.</p></li>
+<li><p><strong>bg</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – The background color. Same type as <code class="docutils literal notranslate"><span class="pre">fg</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>esc</strong> – The teriminal escape code to use.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">fg</span></code> or <code class="docutils literal notranslate"><span class="pre">bg</span></code> are not as specified.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.color_logger">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">color_logger</code><span class="sig-paren">(</span><em class="sig-param">loglevel=None</em>, <em class="sig-param">outfile=&lt;_io.TextIOWrapper name='&lt;stdout&gt;' mode='w' encoding='utf-8'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.color_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a function <code class="docutils literal notranslate"><span class="pre">log</span></code> that prints formatted strings to either
+<code class="docutils literal notranslate"><span class="pre">sys.stdout</span></code> or with the logger using a certain log level (if
+<code class="docutils literal notranslate"><span class="pre">loglevel</span></code> is specified). If <code class="docutils literal notranslate"><span class="pre">loglevel</span></code> is specified, then <code class="docutils literal notranslate"><span class="pre">outfile</span></code>
+is ignored.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.find_in_submodules">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">find_in_submodules</code><span class="sig-paren">(</span><em class="sig-param">modulename: str</em>, <em class="sig-param">predicate: function</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.find_in_submodules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of fully-qualified variable names mapping to all objects
+in <code class="docutils literal notranslate"><span class="pre">modulename</span></code> and its submodules for which <code class="docutils literal notranslate"><span class="pre">predicate</span></code> is True.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.getVOEventGPSNanoseconds">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">getVOEventGPSNanoseconds</code><span class="sig-paren">(</span><em class="sig-param">voeventpath</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.getVOEventGPSNanoseconds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the number of nanoseconds past the start of the current
+GPS second of the event described in this VOEvent file. For example,
+if the current GPS time is 123456789.033, this method will return
+33000000.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.getVOEventGPSSeconds">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">getVOEventGPSSeconds</code><span class="sig-paren">(</span><em class="sig-param">voeventpath</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.getVOEventGPSSeconds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the GPS time of the event described in this VOEvent file
+to the nearest second.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.get_grid">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">get_grid</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec</em>, <em class="sig-param">radius</em>, <em class="sig-param">pixels=100</em>, <em class="sig-param">degrees=True</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.get_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of pixel positions arranged in a rectangular grid and filling
+a square with sizes of length <code class="docutils literal notranslate"><span class="pre">radius</span></code> centered at Right Ascension <code class="docutils literal notranslate"><span class="pre">ra</span></code>
+and Declination <code class="docutils literal notranslate"><span class="pre">dec</span></code> with <code class="docutils literal notranslate"><span class="pre">pixels</span></code> as the width and height in pixels
+of the square grid.</p>
+<p>This technically only works properly if the radius is very small, so a
+ValueError will be raised for radii larger than <code class="docutils literal notranslate"><span class="pre">MAX_GRID_SCALE_RAD</span></code>.
+For larger sky areas, HEALPix pixelizations should be used to assure equal
+area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra</strong> (<em>float</em>) – The Right Ascension of the center of the grid.</p></li>
+<li><p><strong>dec</strong> (<em>float</em>) – The Declination of the center of the grid.</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – The radius of the circle. Must be larger than <code class="docutils literal notranslate"><span class="pre">MAX_GRID_SCALE_RAD</span></code>
+(in radians) to keep pixel areas nearly constant.</p></li>
+<li><p><strong>pixels</strong> (<em>float</em><em>, </em><em>optional</em>) – The diameter, in pixels, of the circle along the cardinal directions of
+the grid. Higher values imply higher resolutions for the grid.</p></li>
+<li><p><strong>degrees</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true, interpret all input and returned angles as being measured in
+degrees. Otherwise, interpret them all as being measured in radians.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>ras</strong> (<em>array</em>) – Right Ascension values of the grid pixels in the specified units.</p></li>
+<li><p><strong>decs</strong> (<em>array</em>) – Declination values of the grid pixels in the specified units.</p></li>
+<li><p><strong>area</strong> (<em>float</em>) – the (approximate) solid-angle per-pixel in the specified units.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – Raised when the <code class="docutils literal notranslate"><span class="pre">radius</span></code> is too large (larger than
+    <code class="docutils literal notranslate"><span class="pre">MAX_GRID_SCALE_RAD</span></code>, see note above).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.get_test_file">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">get_test_file</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">eventid</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.get_test_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the path to an example file as would be generated by LLAMA. These
+are stored in a single directory (equivalent to an event directory) and can
+be used for unit, integration, and doc tests.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – The name of the file as it would appear in an event directory with no
+path information before it.</p></li>
+<li><p><strong>eventid</strong> (<em>str</em>) – The name of the event directory we will be using for this unit test.
+Since different test cases apply to different file handlers, you’ll
+need to make sure to avoid specifying an <code class="docutils literal notranslate"><span class="pre">eventid</span></code> that this
+filehandler is not meant to be tested on (whatever the reason).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>test_filepath</strong> – The full path to the file to be used for testing.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.get_voevent_gps_time">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">get_voevent_gps_time</code><span class="sig-paren">(</span><em class="sig-param">voeventpath</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.get_voevent_gps_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the GPS time of the event described in this VOEvent file.
+Maximum precision is in nanoseconds, though in practice it will
+not be this high.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.get_voevent_notice_time">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">get_voevent_notice_time</code><span class="sig-paren">(</span><em class="sig-param">voeventpath</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.get_voevent_notice_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a unicode string with the date and time of the notification rather
+than the event itself. Is in ISO format.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.get_voevent_param">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">get_voevent_param</code><span class="sig-paren">(</span><em class="sig-param">voeventpath</em>, <em class="sig-param">param_name</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.get_voevent_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a ‘What’ parameter from a VOEvent XML file and return it as a string
+(no clever type inference is performed). For example, get the FAR
+(False Alarm Rate) for event G298048 (first BNS detection), which is
+included as a standard test case in ‘llama/data/tests/voevents’:</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_voevent_param</span><span class="p">(</span><span class="n">get_test_file</span><span class="p">(</span><span class="s1">&#39;lvc_gcn.xml&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="s1">&#39;MS181101ab-2-Initial&#39;</span><span class="p">),</span> <span class="s1">&#39;FAR&#39;</span><span class="p">)</span>
+<span class="go">&#39;9.11069936486e-14&#39;</span>
+</pre></div>
+</div>
+<p>Note that the type of the returned data will (probably) be a unicode
+string, so be sure to convert as necessary.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.get_voevent_role">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">get_voevent_role</code><span class="sig-paren">(</span><em class="sig-param">voeventpath</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.get_voevent_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the role of this VOEvent, test or observation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.get_voevent_time">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">get_voevent_time</code><span class="sig-paren">(</span><em class="sig-param">voeventpath</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.get_voevent_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a unicode string with the ISO date and time of the event:</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">get_voevent_time</span><span class="p">(</span><span class="n">get_test_file</span><span class="p">(</span><span class="s1">&#39;lvc_gcn.xml&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                               <span class="s1">&#39;MS181101ab-2-Initial&#39;</span><span class="p">))</span>
+<span class="go">&#39;2018-11-01T22:22:46.654437&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.gps2mjd">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">gps2mjd</code><span class="sig-paren">(</span><em class="sig-param">gps</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.gps2mjd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GPS seconds to MJD time</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.gps2utc">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">gps2utc</code><span class="sig-paren">(</span><em class="sig-param">gps</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.gps2utc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert GPS seconds to UTC string</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.is_main_process">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">is_main_process</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.is_main_process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether this is the main process (as opposed to a worker process).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.label_worker_proc">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">label_worker_proc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.label_worker_proc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Label the current process as a worker process (not the main process). You
+should only call this as the initializer to an executor.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.memoize">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">memoize</code><span class="sig-paren">(</span><em class="sig-param">method=False</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.memoize" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator that takes a method and memoizes it by storing the
+value in a class or instance variable. Useful when the same arguments are
+likely to keep recurring and the computation time is long. Data is
+stored in the function (for regular functions and staticmethods), the class
+(for classmethods) or in the instance (for properties and methods), this
+approach can’t work for staticmethods nor bare
+functions. For this to work, all arguments (except <code class="docutils literal notranslate"><span class="pre">self</span></code> or <code class="docutils literal notranslate"><span class="pre">cls</span></code>)
+must be hashable.</p>
+<p>NOTE: all arguments must be hashable (with the exception of the class or
+instance when <code class="docutils literal notranslate"><span class="pre">method</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>; see below).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>method</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If true, treat this function like a method, so that the first argument
+is a class or instance, and store the cache with that class or instance
+instead of storing it with the function. This lets you use function
+memoization on properties, classmethods, and instance methods even if
+the class or instance is not hashable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.mjd2gps">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">mjd2gps</code><span class="sig-paren">(</span><em class="sig-param">mjd</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.mjd2gps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert MJD time to GPS seconds</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.mjd2utc">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">mjd2utc</code><span class="sig-paren">(</span><em class="sig-param">mjd</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.mjd2utc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert MJD time to UTC string</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.parameter_factory">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">parameter_factory</code><span class="sig-paren">(</span><em class="sig-param">classname</em>, <em class="sig-param">description</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.parameter_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a class that can be used as a namespace for a bunch of
+parameters related to a specific search. Very similar to defining a
+<code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> except that each parameter is defined as a property with a
+docstring, making these objects suitable for interactive use without having
+to open the source code to see parameter descriptions. Parameter names are
+provided as keyword argument names (see below).</p>
+<p>The main point of this factory is that it provides a compact way of
+defining a new hashable class with descriptive docstrings; these features
+are good for classes representing collections of parameters (hence the
+function name).</p>
+<p>The reason to implement this as a factory function rather than an abstract
+superclass is that the returned class has static attributes with docstrings
+available in a way that ipython can parse, making for easier interactive
+use of the built-in documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>classname</strong> (<em>str</em>) – The name of the new class.</p></li>
+<li><p><strong>description</strong> (<em>str</em>) – A description of what sort of analysis these parameters are to be used
+for. Becomes part of the docstring of the new class (along with the
+descriptions included in <code class="docutils literal notranslate"><span class="pre">parameters</span></code>).</p></li>
+<li><p><strong>kwargs</strong> (<em>str</em><em> or </em><em>function</em>) – The names and descriptions (or, for derived values, formulas) of
+parameters to be stored. The names of the arguments become the
+parameter names; these will be attributes of the returned class. The
+values of the arguments
+can be strings serving as descriptions of the parameter (for
+INDEPENDENT parameters provided by the user, in which case the
+descriptive string becomes the docstring for the parameter in the
+returned class) or functions that take <code class="docutils literal notranslate"><span class="pre">self</span></code> as
+their only argument where <code class="docutils literal notranslate"><span class="pre">self</span></code> is an instance of the new parameter
+class and some of the attributes of said instance are
+used to calculate the value of this (DEPENDENT) parameter; in these
+cases, the docstring of the function is reused for that parameter.
+These dependent parameters become properties of the new class and are
+calculated dynamically from the class’s other values (possibly
+including other dependent parameters as long as there are no circular
+method calls).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>new_class</strong> – a class whose name is <code class="docutils literal notranslate"><span class="pre">classname</span></code>, whose properties are all the
+parameter names, whose docstrings are their descriptions, whose
+docstring is the class <code class="docutils literal notranslate"><span class="pre">description</span></code> combined with the names and
+descriptions in the <code class="docutils literal notranslate"><span class="pre">kwargs</span></code> parameters, and whose <code class="docutils literal notranslate"><span class="pre">__init__</span></code>
+signature requires that the parameters be passed as kwargs for the sake
+of explicitness in instantiation.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">buz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="s2">&quot;bar+baz&quot;</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">baz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">boz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="s2">&quot;double buz&quot;</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">buz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Foo</span> <span class="o">=</span> <span class="n">parameter_factory</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;Foo&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;A silly example set of parameters.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">bar</span><span class="o">=</span><span class="s1">&#39;a fake param&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">baz</span><span class="o">=</span><span class="s1">&#39;another fake param&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">buz</span><span class="o">=</span><span class="n">buz</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">boz</span><span class="o">=</span><span class="n">boz</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="go">&#39;(independent)\na fake param&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Foo</span><span class="o">.</span><span class="n">baz</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="go">&#39;(independent)\nanother fake param&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Foo</span><span class="o">.</span><span class="n">buz</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="go">&#39;(dependent)\nbar+baz&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Foo</span><span class="o">.</span><span class="n">boz</span><span class="o">.</span><span class="vm">__doc__</span>
+<span class="go">&#39;(dependent)\ndouble buz&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quux</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">(</span><span class="n">bar</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">baz</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quux</span><span class="o">.</span><span class="n">bar</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quux</span><span class="o">.</span><span class="n">baz</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quux</span><span class="o">.</span><span class="n">buz</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quux</span><span class="o">.</span><span class="n">boz</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.plot_graphviz">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">plot_graphviz</code><span class="sig-paren">(</span><em class="sig-param">dot</em>, <em class="sig-param">outfile</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.plot_graphviz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a <code class="docutils literal notranslate"><span class="pre">.dot</span></code> graph (graph here used in the mathematical sense) and save
+it to <code class="docutils literal notranslate"><span class="pre">outfile</span></code>. Calls graphviz <code class="docutils literal notranslate"><span class="pre">dot</span></code> executable, used for plotting
+<code class="docutils literal notranslate"><span class="pre">.dot</span></code> graphs, so graphviz must be installed on the system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dot</strong> (<em>str</em>) – Graphviz <code class="docutils literal notranslate"><span class="pre">.dot</span></code> format graph (the same contents you would expect in a
+<code class="docutils literal notranslate"><span class="pre">.dot</span></code> file).</p></li>
+<li><p><strong>outfile</strong> (<em>str</em>) – Output file to save graph to. File type is inferred from <code class="docutils literal notranslate"><span class="pre">outfile</span></code>’s
+extension. This file type must be one of the ones recognized in
+<code class="docutils literal notranslate"><span class="pre">GRAPH_EXTENSIONS</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>subprocess.CalledProcessError</strong> – If the <code class="docutils literal notranslate"><span class="pre">dot</span></code> process fails to generate the output file. This
+    exception object will have the nonzero return code in it.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.rotate_angs2angs">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">rotate_angs2angs</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec</em>, <em class="sig-param">yrot</em>, <em class="sig-param">zrot</em>, <em class="sig-param">degrees=True</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.rotate_angs2angs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a list of angular sky positions (points on the sphere) and rotate
+them first through an angle <code class="docutils literal notranslate"><span class="pre">yrot</span></code> about the y-axis (right-handed)
+followed by an angle <code class="docutils literal notranslate"><span class="pre">zrot</span></code> about the z-axis. Return the new points as
+(ra, dec) coordinates of the rotated vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra</strong> (<em>array-like</em>) – A list or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of Right Ascension values for each point on
+the sphere.</p></li>
+<li><p><strong>dec</strong> (<em>array-like</em>) – A list or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of Declination values for each point on the
+sphere. Must have same length as <code class="docutils literal notranslate"><span class="pre">ra</span></code>.</p></li>
+<li><p><strong>yrot</strong> (<em>float</em>) – The angle through which to do a right-handed rotation about the
+positive y-axis. This rotation is applied first.</p></li>
+<li><p><strong>zrot</strong> (<em>float</em>) – The angle through which to do a right-handed rotation about the
+positive z-axis. This rotation is applied second.</p></li>
+<li><p><strong>degrees</strong> (<em>bool</em><em>, </em><em>optional</em>) – (DEFAULT: True) If true, interpret all input angles as being measured
+in degrees and return values in degrees. Otherwise, interpret them as
+being measured in radians and return values in radians.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>outra</strong> (<em>array</em>) – The Right Ascensions of the rotated input vectors in the specified
+units.</p></li>
+<li><p><strong>outdec</strong> (<em>array</em>) – The Declinations of the rotated input vectors in the specified units.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">eql</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="mf">1e-13</span><span class="p">,</span> <span class="n">mod</span><span class="o">=</span><span class="mi">360</span><span class="p">):</span>  <span class="c1"># compares floating point arrays</span>
+<span class="gp">... </span>    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">prec</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">a</span><span class="o">%</span><span class="n">mod</span> <span class="o">-</span> <span class="n">b</span><span class="o">%</span><span class="n">mod</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ra</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">360</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2angs</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.rotate_angs2vec">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">rotate_angs2vec</code><span class="sig-paren">(</span><em class="sig-param">ra</em>, <em class="sig-param">dec</em>, <em class="sig-param">yrot</em>, <em class="sig-param">zrot</em>, <em class="sig-param">degrees=True</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.rotate_angs2vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a list of angular sky positions (points on the sphere) and rotate
+them first through an angle <code class="docutils literal notranslate"><span class="pre">yrot</span></code> about the y-axis (right-handed)
+followed by an angle <code class="docutils literal notranslate"><span class="pre">zrot</span></code> about the z-axis. Return the new points as
+(x, y, z) coordinates of the rotated directions as vectors on the unit
+sphere.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra</strong> (<em>array-like</em>) – A list or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of Right Ascension values for each point on
+the sphere.</p></li>
+<li><p><strong>dec</strong> (<em>array-like</em>) – A list or <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of Declination values for each point on the
+sphere. Must have same length as <code class="docutils literal notranslate"><span class="pre">ra</span></code>.</p></li>
+<li><p><strong>yrot</strong> (<em>float</em>) – The angle through which to do a right-handed rotation about the
+positive y-axis. This rotation is applied first.</p></li>
+<li><p><strong>zrot</strong> (<em>float</em>) – The angle through which to do a right-handed rotation about the
+positive z-axis. This rotation is applied second.</p></li>
+<li><p><strong>degrees</strong> (<em>bool</em><em>, </em><em>optional</em>) – (DEFAULT: True) If true, interpret all input angles as being measured
+in degrees. Otherwise, interpret them as being measured in radians.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>x</strong> (<em>array</em>) – The x-coordinates of the rotated input vectors [cartesian].</p></li>
+<li><p><strong>y</strong> (<em>array</em>) – The y-coordinates of the rotated input vectors [cartesian].</p></li>
+<li><p><strong>z</strong> (<em>array</em>) – The z-coordinates of the rotated input vectors [cartesian].</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">eql</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">):</span>  <span class="c1"># compares floating point arrays</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">prec</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2vec</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2vec</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2vec</span><span class="p">(</span><span class="mi">270</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2vec</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2vec</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2vec</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eql</span><span class="p">(</span><span class="n">rotate_angs2vec</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.send_email">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">send_email</code><span class="sig-paren">(</span><em class="sig-param">subject</em>, <em class="sig-param">recipients</em>, <em class="sig-param">body=''</em>, <em class="sig-param">attachments=()</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.send_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send an email using the default configured email address. No return
+value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>recipients</strong> (<em>list</em>) – A list of strings representing email addresses of the recipients.</p></li>
+<li><p><strong>body</strong> (<em>str</em><em> or </em><em>file-like</em><em>, </em><em>optional</em>) – Send contents of this string or file-like object.</p></li>
+<li><p><strong>attachments</strong> (<em>str</em><em> or </em><em>list</em><em>, </em><em>optional</em>) – A single filepath or a list of filepaths to files that should also be
+attached to this email.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.setup_logger">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">setup_logger</code><span class="sig-paren">(</span><em class="sig-param">logfile</em>, <em class="sig-param">loglevel='DEBUG'</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.setup_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up a logger for <code class="docutils literal notranslate"><span class="pre">llama</span></code> and all submodules that logs to both
+<code class="docutils literal notranslate"><span class="pre">logfile</span></code> and to STDOUT. You will still need to actually make a logger
+for whatever module you are calling this from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logfile</strong> (<em>str</em>) – The logfile to write all output to. If the path equals or resolves to
+<code class="docutils literal notranslate"><span class="pre">/dev/null</span></code>, no logfile will be configured.</p></li>
+<li><p><strong>loglevel</strong> (<em>int</em><em>, </em><em>str</em><em>, or </em><em>NoneType</em><em>, </em><em>optional</em>) – The loglevel to pass to <code class="docutils literal notranslate"><span class="pre">setLevel</span></code> for the <code class="docutils literal notranslate"><span class="pre">StreamHandler</span></code> writing
+to the terminal; the <code class="docutils literal notranslate"><span class="pre">logfile</span></code> handler always writes at maximum
+verbosity (<code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.sizeof_fmt">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">sizeof_fmt</code><span class="sig-paren">(</span><em class="sig-param">num</em>, <em class="sig-param">suffix='B'</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.sizeof_fmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the size of a file in a human-readable way. <code class="docutils literal notranslate"><span class="pre">num</span></code> is the file
+size, presumed to be in bytes. Specify <code class="docutils literal notranslate"><span class="pre">suffix='b'</span></code> to indicate that the
+unit of <code class="docutils literal notranslate"><span class="pre">num</span></code> is bits.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.sort_files_by_modification_time">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">sort_files_by_modification_time</code><span class="sig-paren">(</span><em class="sig-param">paths</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.sort_files_by_modification_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the list of <code class="docutils literal notranslate"><span class="pre">path</span></code> strings sorted by ascending modification
+time. This is the last time the contents were modified, or, for a new file,
+its creation time.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.tbhighlight">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">tbhighlight</code><span class="sig-paren">(</span><em class="sig-param">tb</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.tbhighlight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Syntax-highlight a traceback for a 256-color terminal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tb</strong> (<em>str</em>) – The traceback string (as provided by <code class="docutils literal notranslate"><span class="pre">traceback.format_exc()</span></code>)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>highlighted_tb</strong> – The same traceback string with syntax highlighting applied.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.utc2gps">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">utc2gps</code><span class="sig-paren">(</span><em class="sig-param">utc</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.utc2gps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert UTC time string to GPS seconds</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.utc2mjd">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">utc2mjd</code><span class="sig-paren">(</span><em class="sig-param">utc</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.utc2mjd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert UTC time string to MJD time</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.veccls">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">veccls</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.veccls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like <code class="docutils literal notranslate"><span class="pre">vecstr</span></code> but for class arguments instead of string arguments.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.vecfh">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">vecfh</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.vecfh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like <code class="docutils literal notranslate"><span class="pre">vecstr</span></code> but for <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> instances.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.vecstr">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">vecstr</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.vecstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a function taking a <code class="docutils literal notranslate"><span class="pre">FileHandler</span></code> instance <code class="docutils literal notranslate"><span class="pre">fh</span></code> and a
+<code class="docutils literal notranslate"><span class="pre">query</span></code> argument and returning a <code class="docutils literal notranslate"><span class="pre">bool</span></code>, return a function with the
+same signature that first checks whether <code class="docutils literal notranslate"><span class="pre">query</span></code> is a <code class="docutils literal notranslate"><span class="pre">str</span></code> before
+calling <code class="docutils literal notranslate"><span class="pre">func</span></code>. If <code class="docutils literal notranslate"><span class="pre">query</span></code> is a <code class="docutils literal notranslate"><span class="pre">str</span></code>, return <code class="docutils literal notranslate"><span class="pre">func(fh,</span> <span class="pre">query)</span></code>,
+and if it is not, return <code class="docutils literal notranslate"><span class="pre">any(func(fh,</span> <span class="pre">q)</span> <span class="pre">for</span> <span class="pre">q</span> <span class="pre">in</span> <span class="pre">query)</span></code>, i.e. check
+whether <code class="docutils literal notranslate"><span class="pre">func</span></code> is true for any of the values given in <code class="docutils literal notranslate"><span class="pre">query</span></code>. Note
+that this means <code class="docutils literal notranslate"><span class="pre">query</span></code> can either be a check against a <code class="docutils literal notranslate"><span class="pre">str</span></code> or
+against several possible values of <code class="docutils literal notranslate"><span class="pre">str</span></code> contained in an iterable. This
+function is an implementation detail used for downselection checks.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.vectypes">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">vectypes</code><span class="sig-paren">(</span><em class="sig-param">func</em>, <em class="sig-param">types</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.vectypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of <code class="docutils literal notranslate"><span class="pre">vecstr</span></code> and <code class="docutils literal notranslate"><span class="pre">veccls</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.write_gzip">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">write_gzip</code><span class="sig-paren">(</span><em class="sig-param">infile</em>, <em class="sig-param">outfilename</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.write_gzip" title="Permalink to this definition">¶</a></dt>
+<dd><p>See whether a file is actually a valid gzip file. If not, zip it. Either
+way, write the result to <code class="docutils literal notranslate"><span class="pre">outfilename</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infile</strong> (<em>file-like</em>) – File-like object to be compressed to a gzip file.</p></li>
+<li><p><strong>outfilename</strong> (<em>str</em>) – Path to the output compressed file. Will be overwritten if it already
+exists.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>success</strong> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if it was already a valid gzip file and <code class="docutils literal notranslate"><span class="pre">False</span></code> if we were
+forced to compress it.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Compress a string in a file-like <code class="docutils literal notranslate"><span class="pre">BytesIO</span></code> wrapper to some temporary
+<code class="docutils literal notranslate"><span class="pre">.gz</span></code> file:
+&gt;&gt;&gt; from io import BytesIO
+&gt;&gt;&gt; import tempfile
+&gt;&gt;&gt; with tempfile.NamedTemporaryFile(suffix=’.gz’, delete=False) as f:
+…     outfilename = f.name
+&gt;&gt;&gt; infile = BytesIO(‘this is obviously not a valid gzip file’.encode())
+&gt;&gt;&gt; assert not write_gzip(infile, outfilename)
+&gt;&gt;&gt; with open(outfilename, ‘rb’) as actuallyzippedfile:
+…     assert write_gzip(actuallyzippedfile, outfilename)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="llama.utils.write_to_zip">
+<code class="sig-prename descclassname">llama.utils.</code><code class="sig-name descname">write_to_zip</code><span class="sig-paren">(</span><em class="sig-param">fname_list</em>, <em class="sig-param">write_functions</em>, <em class="sig-param">outfilename</em>, <em class="sig-param">suffix=''</em><span class="sig-paren">)</span><a class="headerlink" href="#llama.utils.write_to_zip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> tarfile archive names <code class="docutils literal notranslate"><span class="pre">outfilename</span></code> and fill
+it with filenames given in <code class="docutils literal notranslate"><span class="pre">fname_list</span></code>. <code class="docutils literal notranslate"><span class="pre">write_functions</span></code> should
+be a list of functions that takes an input filename as its only argument
+and writes data to that filename. It should have the same length as
+<code class="docutils literal notranslate"><span class="pre">fname_list</span></code>, since each element of <code class="docutils literal notranslate"><span class="pre">write_functions</span></code> will be used to
+generate the corresponding file in <code class="docutils literal notranslate"><span class="pre">fname_list</span></code>. If the
+<code class="docutils literal notranslate"><span class="pre">write_functions</span></code> expect some sort of specific file extension, that can
+be provided by manually setting <code class="docutils literal notranslate"><span class="pre">suffix</span></code> (DEFAULT: ‘’) to the appropriate
+extension. If each file requires its own specific filename extension, then
+<code class="docutils literal notranslate"><span class="pre">suffix</span></code> can be specified as a list of suffixes with length matching
+<code class="docutils literal notranslate"><span class="pre">fname_list</span></code> and <code class="docutils literal notranslate"><span class="pre">write_functions</span></code>.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tempfile</span><span class="o">,</span> <span class="nn">tarfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;foo!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">write_functions</span> <span class="o">=</span> <span class="p">[</span><span class="n">foo</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fname_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bar.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;baz.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;quux.txt&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outfile</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outfilename</span> <span class="o">=</span> <span class="n">outfile</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">outfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">write_to_zip</span><span class="p">(</span><span class="n">fname_list</span><span class="p">,</span> <span class="n">write_functions</span><span class="p">,</span> <span class="n">outfilename</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">outfilename</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tar</span><span class="o">.</span><span class="n">getmembers</span><span class="p">()]</span>
+<span class="go">[&#39;bar.txt&#39;, &#39;baz.txt&#39;, &#39;quux.txt&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">outfilename</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="llama.version.html" class="btn btn-neutral float-right" title="llama.version module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="llama.test.test_utils.html" class="btn btn-neutral float-left" title="llama.test.test_utils module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016-2019, Stefan Trklja Countryman, Kenneth Rainer Corley, Doğa Veske
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

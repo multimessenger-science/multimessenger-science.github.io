@@ -1,0 +1,20 @@
+Source Code Plots
+=================
+
+These plots show the lifetime of lines of code in the pipeline. They were
+generated using ``git-of-theseus`` and are here primarily for amusement. You
+can regenerate these plots in the source code directory by running ``make
+theseus`` and committing the updated plots.
+
+.. figure:: _static/stack_plot.png
+   :figwidth: 80 %
+   :align: center
+
+   History of ``python`` code in the repository over time, showing rates at
+   which code has been added and replaced.
+
+.. figure:: _static/survival_plot.png
+   :figwidth: 80 %
+   :align: center
+
+   Average lifetimes of lines of code in the repository.

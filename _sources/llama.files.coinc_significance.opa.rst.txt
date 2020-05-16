@@ -1,0 +1,7 @@
+llama.files.coinc\_significance.opa module
+==========================================
+
+.. automodule:: llama.files.coinc_significance.opa
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+llama.files.sms\_receipts module
+================================
+
+.. automodule:: llama.files.sms_receipts
+   :members:
+   :undoc-members:
+   :show-inheritance:

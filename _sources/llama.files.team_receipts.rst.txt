@@ -1,0 +1,7 @@
+llama.files.team\_receipts module
+=================================
+
+.. automodule:: llama.files.team_receipts
+   :members:
+   :undoc-members:
+   :show-inheritance:

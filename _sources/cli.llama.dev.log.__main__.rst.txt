@@ -1,0 +1,15 @@
+``llama dev log``
+=================
+
+.. argparse::
+   :module: llama.dev.log.__main__
+   :func: get_parser
+   :prog: llama dev log
+
+
+.. toctree::
+   :maxdepth: 6
+
+   cli.llama.dev.log.lvalert.__main__
+
+

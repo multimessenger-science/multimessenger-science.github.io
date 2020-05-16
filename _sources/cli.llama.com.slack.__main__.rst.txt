@@ -1,0 +1,9 @@
+``llama com slack``
+===================
+
+.. argparse::
+   :module: llama.com.slack.__main__
+   :func: get_parser
+   :prog: llama com slack
+
+

@@ -1,0 +1,9 @@
+``llama dev data i3``
+=====================
+
+.. argparse::
+   :module: llama.dev.data.i3.__main__
+   :func: get_parser
+   :prog: llama dev data i3
+
+

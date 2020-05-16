@@ -1,0 +1,7 @@
+llama.files.i3.realtime\_tools\_stubs module
+============================================
+
+.. automodule:: llama.files.i3.realtime_tools_stubs
+   :members:
+   :undoc-members:
+   :show-inheritance:

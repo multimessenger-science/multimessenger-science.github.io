@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+function show_all_extras() {
+    find_all('.col-result').forEach(show_extras);
+}
+
+function hide_all_extras() {
+    find_all('.col-result').forEach(hide_extras);
+}
+
+function show_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.remove("collapsed");
+    expandcollapse.classList.remove("expander");
+    expandcollapse.classList.add("collapser");
+}
+
+function hide_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.add("collapsed");
+    expandcollapse.classList.remove("collapser");
+    expandcollapse.classList.add("expander");
+}
+
+function show_filters() {
+    var filter_items = document.getElementsByClassName('filter');
+    for (var i = 0; i < filter_items.length; i++)
+        filter_items[i].hidden = false;
+}
+
+function add_collapse() {
+    // Add links for show/hide all
+    var resulttable = find('table#results-table');
+    var showhideall = document.createElement("p");
+    showhideall.innerHTML = '<a href="javascript:show_all_extras()">Show all details</a> / ' +
+                            '<a href="javascript:hide_all_extras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    find_all('.col-result').forEach(function(elem) {
+        var collapsed = get_query_parameter('collapsed') || 'Passed';
+        var extras = elem.parentNode.nextElementSibling;
+        var expandcollapse = document.createElement("span");
+        if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add("collapsed");
+            expandcollapse.classList.add("expander");
+        } else {
+            expandcollapse.classList.add("collapser");
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener("click", function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains("collapsed")) {
+                show_extras(event.currentTarget);
+            } else {
+                hide_extras(event.currentTarget);
+            }
+        });
+    })
+}
+
+function get_query_parameter(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () {
+    reset_sort_headers();
+
+    add_collapse();
+
+    show_filters();
+
+    sort_column(find('.initial-sort'));
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+};
+
+function sort_table(clicked, key_func) {
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+    var sorted_rows = sort(rows, key_func, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    var thead = document.getElementById("results-table-head");
+    document.getElementById('results-table').remove();
+    var parent = document.createElement("table");
+    parent.id = "results-table";
+    parent.appendChild(thead);
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName("BODY")[0].appendChild(parent);
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+
+        if (key_a == key_b) return 0;
+
+        if (reversed) {
+            return (key_a < key_b ? 1 : -1);
+        } else {
+            return (key_a > key_b ? 1 : -1);
+        }
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+                       'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function is_all_rows_hidden(value) {
+  return value.hidden == false;
+}
+
+function filter_table(elem) {
+    var outcome_att = "data-test-result";
+    var outcome = elem.getAttribute(outcome_att);
+    class_outcome = outcome + " results-table-row";
+    var outcome_rows = document.getElementsByClassName(class_outcome);
+
+    for(var i = 0; i < outcome_rows.length; i++){
+        outcome_rows[i].hidden = !elem.checked;
+    }
+
+    var rows = find_all('.results-table-row').filter(is_all_rows_hidden);
+    var all_rows_hidden = rows.length == 0 ? true : false;
+    var not_found_message = document.getElementById("not-found-message");
+    not_found_message.hidden = !all_rows_hidden;
+}
+</script>
+    <h1>index.html</h1>
+    <p>Report generated on 16-May-2020 at 21:14:36 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v2.0.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>BITBUCKET_BUILD_NUMBER</td>
+        <td>134</td></tr>
+      <tr>
+        <td>BITBUCKET_CLONE_DIR</td>
+        <td>/opt/atlassian/pipelines/agent/build</td></tr>
+      <tr>
+        <td>BITBUCKET_COMMIT</td>
+        <td>3ea8122d0b9e4764f80f6c02ab1c85ac1a6f8a3e</td></tr>
+      <tr>
+        <td>BITBUCKET_REPO_OWNER</td>
+        <td>stefancountryman</td></tr>
+      <tr>
+        <td>BITBUCKET_REPO_OWNER_UUID</td>
+        <td>{e97f2c46-17bd-4c19-9f75-a8048a1ef558}</td></tr>
+      <tr>
+        <td>BITBUCKET_REPO_SLUG</td>
+        <td>multimessenger-pipeline</td></tr>
+      <tr>
+        <td>BITBUCKET_REPO_UUID</td>
+        <td>{5314ffc6-3f72-4f8c-b3d6-6c65e25a0043}</td></tr>
+      <tr>
+        <td>BITBUCKET_TAG</td>
+        <td>v3.5.1</td></tr>
+      <tr>
+        <td>CI</td>
+        <td>true</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{&apos;pytest&apos;: &apos;5.3.2&apos;, &apos;py&apos;: &apos;1.8.1&apos;, &apos;pluggy&apos;: &apos;0.12.0&apos;}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Linux-4.19.95-flatcar-x86_64-with-debian-9.11</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{&apos;profiling&apos;: &apos;1.7.0&apos;, &apos;html&apos;: &apos;2.0.1&apos;, &apos;metadata&apos;: &apos;1.8.0&apos;, &apos;cov&apos;: &apos;2.8.1&apos;, &apos;astropy-header&apos;: &apos;0.1.2&apos;, &apos;hypothesis&apos;: &apos;5.1.1&apos;, &apos;doctestplus&apos;: &apos;0.4.0&apos;, &apos;openfiles&apos;: &apos;0.4.0&apos;, &apos;remotedata&apos;: &apos;0.3.1&apos;, &apos;arraydiff&apos;: &apos;0.3&apos;, &apos;celery&apos;: &apos;4.4.0rc1&apos;}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.7.5</td></tr></table>
+    <h2>Summary</h2>
+    <p>61 tests ran in 33.45 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="passed">47 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="failed">14 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">com/gracedb/__init__.py::llama.com.gracedb.GraceDb</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">272             renewal. The path to the new/renewed certificate **must** be the<br/>273             same as for the old certificate.<br/>274         reload_buffer (:obj:`int`, optional): buffer (in seconds) for reloading<br/>275             a certificate in advance of its expiration. Only used if<br/>276             ``reload_certificate`` is ``True``.<br/>277 <br/>278     Examples:<br/>279         Instantiate a client to use the production GraceDB server:<br/>280 <br/>281         &gt;&gt;&gt; g = GraceDb()<br/>UNEXPECTED EXCEPTION: RuntimeError(&#x27;No authentication credentials found.&#x27;)<br/>Traceback (most recent call last):<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/doctest.py&quot;, line 1329, in __run<br/>    compileflags, 1), test.globs)<br/><br/>  File &quot;&lt;doctest llama.com.gracedb.GraceDb[0]&gt;&quot;, line 1, in &lt;module&gt;<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/com/gracedb/__init__.py&quot;, line 258, in __init__<br/>    super().__init__(*args, fail_if_noauth=fail_if_noauth, **kwargs)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py&quot;, line 663, in __init__<br/>    reload_certificate=reload_certificate, reload_buffer=reload_buffer<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py&quot;, line 203, in __init__<br/>    raise RuntimeError(&#x27;No authentication credentials found.&#x27;)<br/><br/>RuntimeError: No authentication credentials found.<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/com/gracedb/__init__.py:281: UnexpectedException<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">dev/upload/__init__.py::llama.dev.upload.upload_and_get_manifest</td>
+          <td class="col-duration">0.23</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">094     directory to confirm that you have access rights.<br/>095 <br/>096     &gt;&gt;&gt; # coding: utf-8<br/>097     &gt;&gt;&gt; import os<br/>098     &gt;&gt;&gt; from llama.dev.upload import upload_and_get_manifest<br/>099     &gt;&gt;&gt; from tempfile import TemporaryDirectory<br/>100     &gt;&gt;&gt; from pathlib import Path<br/>101     &gt;&gt;&gt; from requests import get<br/>102     &gt;&gt;&gt; from hashlib import sha256<br/>103     &gt;&gt;&gt; with TemporaryDirectory() as tmpdirpath:<br/>UNEXPECTED EXCEPTION: S3UploadFailedError(&#x27;Failed to upload /tmp/tmpmqypybo2/foo to test/llama/dev/upload/fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9: An error occurred (NoSuchBucket) when calling the PutObject operation: Unknown&#x27;)<br/>Traceback (most recent call last):<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/boto3/s3/transfer.py&quot;, line 279, in upload_file<br/>    future.result()<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/s3transfer/futures.py&quot;, line 73, in result<br/>    return self._coordinator.result()<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/s3transfer/futures.py&quot;, line 233, in result<br/>    raise self._exception<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/s3transfer/tasks.py&quot;, line 126, in __call__<br/>    return self._execute_main(kwargs)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/s3transfer/tasks.py&quot;, line 150, in _execute_main<br/>    return_value = self._main(**kwargs)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/s3transfer/upload.py&quot;, line 692, in _main<br/>    client.put_object(Bucket=bucket, Key=key, Body=body, **extra_args)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/botocore/client.py&quot;, line 324, in _api_call<br/>    return self._make_api_call(operation_name, kwargs)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/botocore/client.py&quot;, line 622, in _make_api_call<br/>    raise error_class(parsed_response, operation_name)<br/><br/>botocore.errorfactory.NoSuchBucket: An error occurred (NoSuchBucket) when calling the PutObject operation: Unknown<br/><br/><br/>During handling of the above exception, another exception occurred:<br/><br/><br/>Traceback (most recent call last):<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/doctest.py&quot;, line 1329, in __run<br/>    compileflags, 1), test.globs)<br/><br/>  File &quot;&lt;doctest llama.dev.upload.upload_and_get_manifest[6]&gt;&quot;, line 9, in &lt;module&gt;<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/dev/upload/__init__.py&quot;, line 142, in upload_and_get_manifest<br/>    **kwargs)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/com/s3/__init__.py&quot;, line 143, in upload_file<br/>    client.upload_file(filename, bucket, key)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/boto3/s3/inject.py&quot;, line 110, in upload_file<br/>    extra_args=ExtraArgs, callback=Callback)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/boto3/s3/transfer.py&quot;, line 287, in upload_file<br/>    filename, &#x27;/&#x27;.join([bucket, key]), e))<br/><br/>boto3.exceptions.S3UploadFailedError: Failed to upload /tmp/tmpmqypybo2/foo to test/llama/dev/upload/fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9: An error occurred (NoSuchBucket) when calling the PutObject operation: Unknown<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/dev/upload/__init__.py:103: UnexpectedException<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">files/lvc_skymap/utils.py::llama.files.lvc_skymap.utils.SkymapFilename.canonicalize</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">126         ``ligo.gracedb.rest.HTTPError`` if a GraceDB query fails to connect.<br/>127 <br/>128         For this event, a second version (v1) of ``bayestar.fits`` was created<br/>129         at 2019-05-10 04:03:40 UTC; canonicalizing at an earlier date should<br/>130         return v0 (the original) while a later date should return v1 (the<br/>131         update):<br/>132 <br/>133         &gt;&gt;&gt; from dateutil.parser import parse<br/>134         &gt;&gt;&gt; skymap = SkymapFilename(&quot;bayestar.fits&quot;)<br/>135         &gt;&gt;&gt; skymap.canonicalize(&quot;S190510g&quot;, parse(&quot;2019-05-10 04:03:30 UTC&quot;))<br/>UNEXPECTED EXCEPTION: RuntimeError(&#x27;No authentication credentials found.&#x27;)<br/>Traceback (most recent call last):<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/doctest.py&quot;, line 1329, in __run<br/>    compileflags, 1), test.globs)<br/><br/>  File &quot;&lt;doctest llama.files.lvc_skymap.utils.SkymapFilename.canonicalize[2]&gt;&quot;, line 1, in &lt;module&gt;<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/files/lvc_skymap/utils.py&quot;, line 160, in canonicalize<br/>    logs = GraceDb().logs(graceid).json()[&#x27;log&#x27;]<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/com/gracedb/__init__.py&quot;, line 258, in __init__<br/>    super().__init__(*args, fail_if_noauth=fail_if_noauth, **kwargs)<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py&quot;, line 663, in __init__<br/>    reload_certificate=reload_certificate, reload_buffer=reload_buffer<br/><br/>  File &quot;/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py&quot;, line 203, in __init__<br/>    raise RuntimeError(&#x27;No authentication credentials found.&#x27;)<br/><br/>RuntimeError: No authentication credentials found.<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/files/lvc_skymap/utils.py:135: UnexpectedException<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_bin.py::TestS190412mSkymapInfoCliTest::test</td>
+          <td class="col-duration">0.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_bin.TestS190412mSkymapInfoCliTest object at 0x7f47348c6150&gt;<br/><br/>    def test(self):<br/>        &quot;&quot;&quot;Run this test with ``execute`` and then check whether outputs are as<br/>        expected with ``compare``.&quot;&quot;&quot;<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            print(&quot;CREATED TMPDIR FOR &quot;, self.EVENTID, &quot;: &quot;, tmpdir)<br/>            self.run = Run(tmpdir)<br/>            print(&quot;SET self.run for &quot;, self, &quot; TO &quot;, self.run)<br/>            self.provision()<br/>            print(&quot;PROVISIONED TMPDIR FOR &quot;, self.EVENTID, &quot;, CONTENTS: &quot;,<br/>                  os.listdir(tmpdir))<br/>&gt;           self.execute()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/classes.py:135: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_bin.py:175: in execute<br/>    run_on_args(cliargs=cmd)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/files/skymap_info/__main__.py:105: in run_on_args<br/>    args.skymap)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/files/skymap_info/__init__.py:134: in generate_from_gracedb_superevent<br/>    superevent = GraceDb().superevent(graceid).json()<br/>/opt/anaconda/lib/python3.7/site-packages/llama/com/gracedb/__init__.py:258: in __init__<br/>    super().__init__(*args, fail_if_noauth=fail_if_noauth, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py:663: in __init__<br/>    reload_certificate=reload_certificate, reload_buffer=reload_buffer<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;llama.com.gracedb.GraceDb object at 0x7f4747f086d0&gt;<br/>url = &#x27;https://gracedb.ligo.org/api/&#x27;, proxy_host = None, proxy_port = 3128<br/>cred = None, username = None, password = None, force_noauth = False<br/>fail_if_noauth = True, reload_certificate = False, reload_buffer = 300<br/><br/>    def __init__(self, url=DEFAULT_SERVICE_URL, proxy_host=None,<br/>                 proxy_port=3128, cred=None, username=None, password=None,<br/>                 force_noauth=False, fail_if_noauth=False,<br/>                 reload_certificate=False, reload_buffer=300):<br/>        &quot;&quot;&quot;<br/>        url (:obj:`str`, optional): URL of server API<br/>        proxy_host (:obj:`str`, optional): proxy host<br/>        proxy_port (:obj:`str`, optional): proxy port<br/>        cred (:obj:`tuple` or :obj:`str, optional): a tuple or list of<br/>            (``/path/to/cert/file``, ``/path/to/key/file) or a single path to<br/>            a combined proxy file (if using an X.509 certificate for<br/>            authentication)<br/>        username (:obj:`str`, optional): username for basic auth<br/>        password (:obj:`str`, optional): password for basic auth<br/>        force_noauth (:obj:`bool`, optional): set to True if you want to skip<br/>            credential lookup and use this client as an unauthenticated user<br/>        fail_if_noauth (:obj:`bool`, optional): set to True if you want the<br/>            constructor to fail if no authentication credentials are provided<br/>            or found<br/>        reload_certificate (:obj:`bool`, optional): if ``True``, your<br/>            certificate will be checked before each request whether it is<br/>            within ``reload_buffer`` seconds of expiration, and if so, it will<br/>            be reloaded. Useful for processes which may live longer than the<br/>            certificate lifetime and have an automated method for certificate<br/>            renewal. The path to the new/renewed certificate **must** be the<br/>            same as for the old certificate.<br/>        reload_buffer (:obj:`int`, optional): buffer (in seconds) for reloading<br/>            a certificate in advance of its expiration. Only used if<br/>            ``reload_certificate`` is ``True``.<br/>    <br/>        Authentication details:<br/>        You can:<br/>            1. Provide a path to an X.509 certificate and key or a single<br/>               combined proxy file<br/>            2. Provide a username and password<br/>        Or:<br/>            The code will look for a certificate in a default location<br/>                (``/tmp/x509up_u%d``, where ``%d`` is your user ID)<br/>            The code will look for a username and password for the specified<br/>                server in ``$HOME/.netrc``<br/>        &quot;&quot;&quot;<br/>        # Process service URL<br/>        o = urlparse(url)<br/>        host = o.hostname<br/>        port = o.port or 443<br/>    <br/>        # Store some of this information<br/>        self._server_host = host<br/>        self._server_port = port<br/>        self._proxy_host = proxy_host<br/>        self._proxy_port = proxy_port<br/>        self._reload_certificate = reload_certificate<br/>        self._reload_buffer = reload_buffer<br/>    <br/>        # Store information about credentials and authentication type<br/>        self.credentials = {}<br/>        self.auth_type = None<br/>    <br/>        # Fail if conflicting arguments: (fail if no auth, but force no auth)<br/>        if fail_if_noauth and force_noauth:<br/>            err_msg = (&#x27;You have provided conflicting parameters to the &#x27;<br/>                       &#x27;client constructor: fail_if_noauth=True and &#x27;<br/>                       &#x27;force_noauth=True.&#x27;)<br/>            raise ValueError(err_msg)<br/>    <br/>        # Try to get user-provided credentials, if we aren&#x27;t forcing<br/>        # no authentication<br/>        if not force_noauth:<br/>            credentials_provided = self._process_credentials(<br/>                cred, username, password)<br/>    <br/>        # If the user didn&#x27;t provide credentials in the constructor,<br/>        # we try to look up the credentials<br/>        if not force_noauth and not credentials_provided:<br/>            # Look for X509 certificate and key<br/>            cred = self._find_x509_credentials()<br/>            if cred:<br/>                self.credentials[&#x27;cert_file&#x27;], self.credentials[&#x27;key_file&#x27;] = \<br/>                    cred<br/>                self.auth_type = &#x27;x509&#x27;<br/>            else:<br/>                # Look for basic auth credentials in .netrc file<br/>                try:<br/>                    basic_auth_tuple = safe_netrc().authenticators(host)<br/>                except IOError:<br/>                    # IOError = no .netrc file found, pass<br/>                    pass<br/>                else:<br/>                    # If credentials were found for host, set them up!<br/>                    if basic_auth_tuple is not None:<br/>                        self.credentials[&#x27;username&#x27;] = basic_auth_tuple[0]<br/>                        self.credentials[&#x27;password&#x27;] = basic_auth_tuple[2]<br/>                        self.auth_type = &#x27;basic&#x27;<br/>    <br/>        if (fail_if_noauth and not self.credentials):<br/>&gt;           raise RuntimeError(&#x27;No authentication credentials found.&#x27;)<br/><span class="error">E           RuntimeError: No authentication credentials found.</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py:203: RuntimeError<br/> ------------------------------Captured stdout call------------------------------ <br/>CREATED TMPDIR FOR  S190412m :  /tmp/tmpmoe61ew7
+SET self.run for  &lt;llama.test.test_bin.TestS190412mSkymapInfoCliTest object at 0x7f47348c6150&gt;  TO  Run(rundir=&quot;/tmp/tmpmoe61ew7&quot;,
+    pipeline=&quot;Pipeline(&lt;[&#x27;Advok&#x27;, &#x27;CoincScatterI3LvcPdf&#x27;, &#x27;CoincScatterI3LvcPng&#x27;, &#x27;CoincScatterZtfI3LvcPdf&#x27;, &#x27;CoincScatterZtfI3LvcPng&#x27;, &#x27;CoincScatterZtfLVCPdf&#x27;, &#x27;CoincScatterZtfLVCPng&#x27;, &#x27;CoincSignificanceI3Lvc&#x27;, &#x27;CoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;CoincSummaryI3LvcPdf&#x27;, &#x27;CoincSummaryI3LvcTex&#x27;, &#x27;FermiGRBsJSON&#x27;, &#x27;IceCubeNeutrinoList&#x27;, &#x27;IceCubeNeutrinoListCoincTxt&#x27;, &#x27;IceCubeNeutrinoListTex&#x27;, &#x27;IceCubeNeutrinoListTxt&#x27;, &#x27;LVAlertAdvok&#x27;, &#x27;LVAlertJSON&#x27;, &#x27;LVCGraceDbEventData&#x27;, &#x27;LvcDistancesJson&#x27;, &#x27;LvcGcnXml&#x27;, &#x27;LvcRetractionXml&#x27;, &#x27;LvcSkymapFits&#x27;, &#x27;LvcSkymapHdf5&#x27;, &#x27;PAstro&#x27;, &#x27;RctSlkI3CoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPng&#x27;, &#x27;RctSlkLmaCoincSignificanceI3Lvc&#x27;, &#x27;RctSlkLmaCoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;RctSlkLmaCoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaLVAlertJSON&#x27;, &#x27;RctSlkLmaLVCGraceDbEventData&#x27;, &#x27;RctSlkLmaLvcDistancesJson&#x27;, &#x27;RctSlkLmaLvcGcnXml&#x27;, &#x27;RctSlkLmaLvcRetractionXml&#x27;, &#x27;RctSlkLmaSkymapInfo&#x27;, &#x27;SkymapInfo&#x27;, &#x27;ZtfTriggerList&#x27;]&gt;)&quot;)
+PROVISIONED TMPDIR FOR  S190412m , CONTENTS:  []
+<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_bin.py::TestS190412mSkymapInfoCliPublic::test</td>
+          <td class="col-duration">0.03</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_bin.TestS190412mSkymapInfoCliPublic object at 0x7f47348c6b10&gt;<br/><br/>    def test(self):<br/>        &quot;&quot;&quot;Run this test with ``execute`` and then check whether outputs are as<br/>        expected with ``compare``.&quot;&quot;&quot;<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            print(&quot;CREATED TMPDIR FOR &quot;, self.EVENTID, &quot;: &quot;, tmpdir)<br/>            self.run = Run(tmpdir)<br/>            print(&quot;SET self.run for &quot;, self, &quot; TO &quot;, self.run)<br/>            self.provision()<br/>            print(&quot;PROVISIONED TMPDIR FOR &quot;, self.EVENTID, &quot;, CONTENTS: &quot;,<br/>                  os.listdir(tmpdir))<br/>&gt;           self.execute()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/classes.py:135: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_bin.py:175: in execute<br/>    run_on_args(cliargs=cmd)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/files/skymap_info/__main__.py:105: in run_on_args<br/>    args.skymap)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/files/skymap_info/__init__.py:134: in generate_from_gracedb_superevent<br/>    superevent = GraceDb().superevent(graceid).json()<br/>/opt/anaconda/lib/python3.7/site-packages/llama/com/gracedb/__init__.py:258: in __init__<br/>    super().__init__(*args, fail_if_noauth=fail_if_noauth, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py:663: in __init__<br/>    reload_certificate=reload_certificate, reload_buffer=reload_buffer<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;llama.com.gracedb.GraceDb object at 0x7f47348eb350&gt;<br/>url = &#x27;https://gracedb.ligo.org/api/&#x27;, proxy_host = None, proxy_port = 3128<br/>cred = None, username = None, password = None, force_noauth = False<br/>fail_if_noauth = True, reload_certificate = False, reload_buffer = 300<br/><br/>    def __init__(self, url=DEFAULT_SERVICE_URL, proxy_host=None,<br/>                 proxy_port=3128, cred=None, username=None, password=None,<br/>                 force_noauth=False, fail_if_noauth=False,<br/>                 reload_certificate=False, reload_buffer=300):<br/>        &quot;&quot;&quot;<br/>        url (:obj:`str`, optional): URL of server API<br/>        proxy_host (:obj:`str`, optional): proxy host<br/>        proxy_port (:obj:`str`, optional): proxy port<br/>        cred (:obj:`tuple` or :obj:`str, optional): a tuple or list of<br/>            (``/path/to/cert/file``, ``/path/to/key/file) or a single path to<br/>            a combined proxy file (if using an X.509 certificate for<br/>            authentication)<br/>        username (:obj:`str`, optional): username for basic auth<br/>        password (:obj:`str`, optional): password for basic auth<br/>        force_noauth (:obj:`bool`, optional): set to True if you want to skip<br/>            credential lookup and use this client as an unauthenticated user<br/>        fail_if_noauth (:obj:`bool`, optional): set to True if you want the<br/>            constructor to fail if no authentication credentials are provided<br/>            or found<br/>        reload_certificate (:obj:`bool`, optional): if ``True``, your<br/>            certificate will be checked before each request whether it is<br/>            within ``reload_buffer`` seconds of expiration, and if so, it will<br/>            be reloaded. Useful for processes which may live longer than the<br/>            certificate lifetime and have an automated method for certificate<br/>            renewal. The path to the new/renewed certificate **must** be the<br/>            same as for the old certificate.<br/>        reload_buffer (:obj:`int`, optional): buffer (in seconds) for reloading<br/>            a certificate in advance of its expiration. Only used if<br/>            ``reload_certificate`` is ``True``.<br/>    <br/>        Authentication details:<br/>        You can:<br/>            1. Provide a path to an X.509 certificate and key or a single<br/>               combined proxy file<br/>            2. Provide a username and password<br/>        Or:<br/>            The code will look for a certificate in a default location<br/>                (``/tmp/x509up_u%d``, where ``%d`` is your user ID)<br/>            The code will look for a username and password for the specified<br/>                server in ``$HOME/.netrc``<br/>        &quot;&quot;&quot;<br/>        # Process service URL<br/>        o = urlparse(url)<br/>        host = o.hostname<br/>        port = o.port or 443<br/>    <br/>        # Store some of this information<br/>        self._server_host = host<br/>        self._server_port = port<br/>        self._proxy_host = proxy_host<br/>        self._proxy_port = proxy_port<br/>        self._reload_certificate = reload_certificate<br/>        self._reload_buffer = reload_buffer<br/>    <br/>        # Store information about credentials and authentication type<br/>        self.credentials = {}<br/>        self.auth_type = None<br/>    <br/>        # Fail if conflicting arguments: (fail if no auth, but force no auth)<br/>        if fail_if_noauth and force_noauth:<br/>            err_msg = (&#x27;You have provided conflicting parameters to the &#x27;<br/>                       &#x27;client constructor: fail_if_noauth=True and &#x27;<br/>                       &#x27;force_noauth=True.&#x27;)<br/>            raise ValueError(err_msg)<br/>    <br/>        # Try to get user-provided credentials, if we aren&#x27;t forcing<br/>        # no authentication<br/>        if not force_noauth:<br/>            credentials_provided = self._process_credentials(<br/>                cred, username, password)<br/>    <br/>        # If the user didn&#x27;t provide credentials in the constructor,<br/>        # we try to look up the credentials<br/>        if not force_noauth and not credentials_provided:<br/>            # Look for X509 certificate and key<br/>            cred = self._find_x509_credentials()<br/>            if cred:<br/>                self.credentials[&#x27;cert_file&#x27;], self.credentials[&#x27;key_file&#x27;] = \<br/>                    cred<br/>                self.auth_type = &#x27;x509&#x27;<br/>            else:<br/>                # Look for basic auth credentials in .netrc file<br/>                try:<br/>                    basic_auth_tuple = safe_netrc().authenticators(host)<br/>                except IOError:<br/>                    # IOError = no .netrc file found, pass<br/>                    pass<br/>                else:<br/>                    # If credentials were found for host, set them up!<br/>                    if basic_auth_tuple is not None:<br/>                        self.credentials[&#x27;username&#x27;] = basic_auth_tuple[0]<br/>                        self.credentials[&#x27;password&#x27;] = basic_auth_tuple[2]<br/>                        self.auth_type = &#x27;basic&#x27;<br/>    <br/>        if (fail_if_noauth and not self.credentials):<br/>&gt;           raise RuntimeError(&#x27;No authentication credentials found.&#x27;)<br/><span class="error">E           RuntimeError: No authentication credentials found.</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/ligo/gracedb/rest.py:203: RuntimeError<br/> ------------------------------Captured stdout call------------------------------ <br/>CREATED TMPDIR FOR  S190412m :  /tmp/tmpkai_54gf
+SET self.run for  &lt;llama.test.test_bin.TestS190412mSkymapInfoCliPublic object at 0x7f47348c6b10&gt;  TO  Run(rundir=&quot;/tmp/tmpkai_54gf&quot;,
+    pipeline=&quot;Pipeline(&lt;[&#x27;Advok&#x27;, &#x27;CoincScatterI3LvcPdf&#x27;, &#x27;CoincScatterI3LvcPng&#x27;, &#x27;CoincScatterZtfI3LvcPdf&#x27;, &#x27;CoincScatterZtfI3LvcPng&#x27;, &#x27;CoincScatterZtfLVCPdf&#x27;, &#x27;CoincScatterZtfLVCPng&#x27;, &#x27;CoincSignificanceI3Lvc&#x27;, &#x27;CoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;CoincSummaryI3LvcPdf&#x27;, &#x27;CoincSummaryI3LvcTex&#x27;, &#x27;FermiGRBsJSON&#x27;, &#x27;IceCubeNeutrinoList&#x27;, &#x27;IceCubeNeutrinoListCoincTxt&#x27;, &#x27;IceCubeNeutrinoListTex&#x27;, &#x27;IceCubeNeutrinoListTxt&#x27;, &#x27;LVAlertAdvok&#x27;, &#x27;LVAlertJSON&#x27;, &#x27;LVCGraceDbEventData&#x27;, &#x27;LvcDistancesJson&#x27;, &#x27;LvcGcnXml&#x27;, &#x27;LvcRetractionXml&#x27;, &#x27;LvcSkymapFits&#x27;, &#x27;LvcSkymapHdf5&#x27;, &#x27;PAstro&#x27;, &#x27;RctSlkI3CoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPng&#x27;, &#x27;RctSlkLmaCoincSignificanceI3Lvc&#x27;, &#x27;RctSlkLmaCoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;RctSlkLmaCoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaLVAlertJSON&#x27;, &#x27;RctSlkLmaLVCGraceDbEventData&#x27;, &#x27;RctSlkLmaLvcDistancesJson&#x27;, &#x27;RctSlkLmaLvcGcnXml&#x27;, &#x27;RctSlkLmaLvcRetractionXml&#x27;, &#x27;RctSlkLmaSkymapInfo&#x27;, &#x27;SkymapInfo&#x27;, &#x27;ZtfTriggerList&#x27;]&gt;)&quot;)
+PROVISIONED TMPDIR FOR  S190412m , CONTENTS:  []
+<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_filehandler.py::TestObsolescenceAndLocking::test</td>
+          <td class="col-duration">0.14</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_filehandler.TestObsolescenceAndLocking object at 0x7f4737fd6b10&gt;<br/><br/>    def test(self):<br/>        &quot;&quot;&quot;Run the ``main`` test after having set everything up in a temporary<br/>        test directory.&quot;&quot;&quot;<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            self.rundir = tmpdir<br/>            event = self.event<br/>            event.init()<br/>            event.files.MockFh1.generate()<br/>            event.files.update()<br/>&gt;           assert all(f.exists() for f in event.files.values())<br/><span class="error">E           assert False</span><br/><span class="error">E            +  where False = all(&lt;generator object AbstractTestObsolescence.test.&lt;locals&gt;.&lt;genexpr&gt; at 0x7f47348fc050&gt;)</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_filehandler.py:104: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_filehandler.py::TestGenerationOrder::test</td>
+          <td class="col-duration">0.13</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_filehandler.TestGenerationOrder object at 0x7f47348f68d0&gt;<br/><br/>    def test(self):<br/>        &quot;&quot;&quot;Run the ``main`` test after having set everything up in a temporary<br/>        test directory.&quot;&quot;&quot;<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            self.rundir = tmpdir<br/>            event = self.event<br/>            event.init()<br/>            event.files.MockFh1.generate()<br/>&gt;           event.files.update()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_filehandler.py:103: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:693: in update<br/>    return get_io(&#x27;file&#x27;).generate.submit(regenlist)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/io/default/generate.py:52: in submit<br/>    for fh in graph.values())<br/>/opt/anaconda/lib/python3.7/site-packages/llama/io/default/generate.py:52: in &lt;genexpr&gt;<br/>    for fh in graph.values())<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>args = [], kwargs = {}<br/>self = &lt;concurrent.futures.process.ProcessPoolExecutor object at 0x7f4734860d10&gt;<br/>fn = &lt;bound method FileHandler.generate of MockFh2(eventid=&quot;obsolescence&quot;, rundir=&quot;/tmp/tmp2vru21mf&quot;)&gt;<br/><br/>    def submit(*args, **kwargs):<br/>        if len(args) &gt;= 2:<br/>            self, fn, *args = args<br/>        elif not args:<br/>            raise TypeError(&quot;descriptor &#x27;submit&#x27; of &#x27;ProcessPoolExecutor&#x27; object &quot;<br/>                            &quot;needs an argument&quot;)<br/>        elif &#x27;fn&#x27; in kwargs:<br/>            fn = kwargs.pop(&#x27;fn&#x27;)<br/>            self, *args = args<br/>        else:<br/>            raise TypeError(&#x27;submit expected at least 1 positional argument, &#x27;<br/>                            &#x27;got %d&#x27; % (len(args)-1))<br/>    <br/>        with self._shutdown_lock:<br/>            if self._broken:<br/>&gt;               raise BrokenProcessPool(self._broken)<br/><span class="error">E               concurrent.futures.process.BrokenProcessPool: A child process terminated abruptly, the process pool is not usable anymore</span><br/><br/>/opt/anaconda/lib/python3.7/concurrent/futures/process.py:625: BrokenProcessPool<br/> ------------------------------Captured stderr call------------------------------ <br/>Process ForkProcess-3:
+Traceback (most recent call last):
+  File &quot;/opt/anaconda/lib/python3.7/multiprocessing/process.py&quot;, line 297, in _bootstrap
+    self.run()
+  File &quot;/opt/anaconda/lib/python3.7/multiprocessing/process.py&quot;, line 99, in run
+    self._target(*self._args, **self._kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/concurrent/futures/process.py&quot;, line 233, in _process_worker
+    call_item = call_queue.get(block=True)
+  File &quot;/opt/anaconda/lib/python3.7/multiprocessing/queues.py&quot;, line 113, in get
+    return _ForkingPickler.loads(res)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/classes.py&quot;, line 240, in __new__
+    raise ValueError(f&#x27;rundir must exist. rundir specified: {rundir}&#x27;)
+ValueError: rundir must exist. rundir specified: /tmp/tmpvez7hzdi
+<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_utils.py::test_memoize</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">def test_memoize():<br/>        &quot;&quot;&quot;Test in-memory ``memoize`` on a function.&quot;&quot;&quot;<br/>&gt;       memoize_func_helper()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_utils.py:100: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_utils.py:91: in memoize_func_helper<br/>    assert func(*arguments) == results[i]<br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_utils.py:81: in func<br/>    return bare_func(*args)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>args = (&#x27;bar&#x27;,), kwargs = {}, @py_assert0 = False, @py_format2 = &#x27;assert False&#x27;<br/><br/>    def called_once(*args, **kwargs):  # pylint: disable=unused-argument<br/>        &quot;&quot;&quot;This function can only be called once, or else it fails.&quot;&quot;&quot;<br/>&gt;       assert has_not_been_called[0]<br/><span class="error">E       assert False</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_utils.py:38: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_utils.py::test_memoize_class</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">def test_memoize_class():<br/>        &quot;&quot;&quot;Test ``utils.memoize`` for classes.&quot;&quot;&quot;<br/>        # pick a few different return values<br/>        result_collections = [(), (3,), (3, 4)]<br/>        results = [None, 3, (3, 4)]<br/>        # pick a few different possible (hashable!) inputs<br/>        arg_collections = [(), (&#x27;age&#x27;,), (4, &#x27;foo&#x27;, (&#x27;a&#x27;, &#x27;tuple&#x27;))]<br/>        for i, returnvals in enumerate(result_collections):<br/>            for arguments in arg_collections:<br/>                instance_method = memoize_helper(*returnvals)<br/>                class_method = memoize_helper(*returnvals)<br/>                property_method = memoize_helper(*returnvals)<br/>    <br/>                class CallOnce(object):<br/>                    &quot;&quot;&quot;This class has methods that can only be called once.&quot;&quot;&quot;<br/>    <br/>                    @utils.memoize(method=True)<br/>                    def meth(self, *args):<br/>                        &quot;&quot;&quot;Test whether instance methods are memoizeable.&quot;&quot;&quot;<br/>                        # we are immediately using this class within this loop, so<br/>                        # we don&#x27;t need to worry about ``instance_methods`` (or the<br/>                        # others) referring to a changing variable. For details,<br/>                        # see: stackoverflow.com/questions/25314547<br/>                        # pylint: disable=cell-var-from-loop<br/>                        return instance_method(self, *args)<br/>    <br/>                    @classmethod<br/>                    @utils.memoize(method=True)<br/>                    def clas(cls, *args):<br/>                        &quot;&quot;&quot;Test whether classmethods are memoizeable.&quot;&quot;&quot;<br/>                        # pylint: disable=cell-var-from-loop<br/>                        return class_method(cls, *args)<br/>    <br/>                    @property<br/>                    @utils.memoize(method=True)<br/>                    def prop(self):<br/>                        &quot;&quot;&quot;Test whether properties are memoizeable.&quot;&quot;&quot;<br/>                        # pylint: disable=cell-var-from-loop<br/>                        return property_method(self)<br/>    <br/>                instance = CallOnce()<br/>    <br/>                # we should be able to call the below methods once to cache them...<br/>                assert instance.meth(*arguments) == results[i]<br/>                assert instance.clas(*arguments) == results[i]<br/>                assert instance.prop == results[i]<br/>    <br/>                # then we can assert that the functions they rely on will raise<br/>                # exceptions if called again...<br/>                with pytest.raises(AssertionError):<br/>                    instance_method(instance, *arguments)<br/>                with pytest.raises(AssertionError):<br/>                    class_method(CallOnce, *arguments)<br/>                with pytest.raises(AssertionError):<br/>                    property_method(instance)<br/>    <br/>                # but due to caching, we should still get the same return values as<br/>                # before when using the @memoize methods.<br/>&gt;               assert instance.meth(*arguments) == results[i]<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_utils.py:173: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_utils.py:139: in meth<br/>    return instance_method(self, *args)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>args = (&lt;llama.test.test_utils.test_memoize_class.&lt;locals&gt;.CallOnce object at 0x7f47346513d0&gt;,)<br/>kwargs = {}, @py_assert0 = False, @py_format2 = &#x27;assert False&#x27;<br/><br/>    def called_once(*args, **kwargs):  # pylint: disable=unused-argument<br/>        &quot;&quot;&quot;This function can only be called once, or else it fails.&quot;&quot;&quot;<br/>&gt;       assert has_not_been_called[0]<br/><span class="error">E       assert False</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_utils.py:38: AssertionError<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_listeners/test_gcn.py::TestLlamaHandlerMS181101ab::test</td>
+          <td class="col-duration">0.09</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_listeners.test_gcn.TestLlamaHandlerMS181101ab object at 0x7f4734650b10&gt;<br/><br/>    def test(self):<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            self.gcn_archive = tmpdir<br/>            # if you run the test at midnight, the files might be different<br/>            # based on the date switch, so look for files in both places in<br/>            # case the date switches in the middle of the test<br/>            start = datetime.utcnow()<br/>&gt;           super().test()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:82: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/classes.py:135: in test<br/>    self.execute()<br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:73: in execute<br/>    run_on_voevent_file(files=filehandler.fullpath, handler=self.handler)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:313: in run_on_voevent_file<br/>    handler(payload, fromstring(payload))<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:187: in __call__<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py:51: in handle<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:220: in handle<br/>    handle_gcn(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py:51: in handle<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:102: in handle_lvc_gcn<br/>    voe.generate(payload)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1523: in generate<br/>    return self.checkin(self.checkout().generate_unsafe())<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1348: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:429: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/versioning.py:574: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:350: in wrapper<br/>    res = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/vetoes.py:393: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/meta.py:184: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1389: in checkin<br/>    raise gen_result.err<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = LvcGcnXml(eventid=&quot;MS181101ab-2-Initial&quot;, rundir=&quot;/tmp/tmprm2i74xd/MS181101ab-2-Initial/.tmp.d/LvcGcnXml-kz909uqu&quot;, parent=&quot;LvcGcnXml(eventid=&quot;MS181101ab-2-Initial&quot;, rundir=&quot;/tmp/tmprm2i74xd&quot;)&quot;)<br/>args = (), kwargs = {}<br/><br/>    @_generate_cleanup.__func__<br/>    @VetoMixin.decorate_generate<br/>    @MetaDataMixin.decorate_generate<br/>    def generate_unsafe(self, *args, **kwargs):<br/>        &quot;&quot;&quot;<br/>        Generate this file without performing any of the usual ``checkout`` and<br/>        ``checkin`` procedures; no cleanup will happen if file generation<br/>        fails. You **almost certainly** want to call ``generate`` instead, or<br/>        if you need to execute more than a single step of the pipeline,<br/>        ``FileGraph.update`` with an appropriate downselection.<br/>    <br/>        Returns<br/>        -------<br/>        gen_result : GenerationResult<br/>            A ``GenerationResult`` containing any errors raised during any part<br/>            of file generation.<br/>        &quot;&quot;&quot;<br/>        if list(self.DEPENDENCIES) and (not self.are_dependencies_met()):<br/>            LOGGER.error(&quot;%s has unmet dependencies; cannot generate yet.&quot;,<br/>                         self)<br/>            raise GenerationError(f&quot;Unmet dependencies for {self}.&quot;)<br/>        # close all figure windows to conserve memory<br/>        if &#x27;matplotlib.pyplot&#x27; in sys.modules:<br/>            sys.modules[&#x27;matplotlib.pyplot&#x27;].close(&#x27;all&#x27;)<br/>        try:<br/>            LOGGER.info(COL.BLUE + COL.BOLD + &quot;Generating &quot; +<br/>                        str(self) + COL.CLEAR)<br/>            # invalidate obsolescence caches for all files (robust<br/>            # against code changes that change obsolescence<br/>            # definitions) TODO remove this obsolescence caching crap<br/>            self.lock.remove_all_obsolescence()<br/>&gt;           self._generate()<br/><span class="error">E           TypeError: _generate() missing 1 required positional argument: &#x27;payload&#x27;</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1496: TypeError<br/> ------------------------------Captured stdout call------------------------------ <br/>CREATED TMPDIR FOR  MS181101ab-2-Initial :  /tmp/tmprm2i74xd
+SET self.run for  &lt;llama.test.test_listeners.test_gcn.TestLlamaHandlerMS181101ab object at 0x7f4734650b10&gt;  TO  Run(rundir=&quot;/tmp/tmprm2i74xd&quot;,
+    pipeline=&quot;Pipeline(&lt;[&#x27;Advok&#x27;, &#x27;CoincScatterI3LvcPdf&#x27;, &#x27;CoincScatterI3LvcPng&#x27;, &#x27;CoincScatterZtfI3LvcPdf&#x27;, &#x27;CoincScatterZtfI3LvcPng&#x27;, &#x27;CoincScatterZtfLVCPdf&#x27;, &#x27;CoincScatterZtfLVCPng&#x27;, &#x27;CoincSignificanceI3Lvc&#x27;, &#x27;CoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;CoincSummaryI3LvcPdf&#x27;, &#x27;CoincSummaryI3LvcTex&#x27;, &#x27;FermiGRBsJSON&#x27;, &#x27;IceCubeNeutrinoList&#x27;, &#x27;IceCubeNeutrinoListCoincTxt&#x27;, &#x27;IceCubeNeutrinoListTex&#x27;, &#x27;IceCubeNeutrinoListTxt&#x27;, &#x27;LVAlertAdvok&#x27;, &#x27;LVAlertJSON&#x27;, &#x27;LVCGraceDbEventData&#x27;, &#x27;LvcDistancesJson&#x27;, &#x27;LvcGcnXml&#x27;, &#x27;LvcRetractionXml&#x27;, &#x27;LvcSkymapFits&#x27;, &#x27;LvcSkymapHdf5&#x27;, &#x27;PAstro&#x27;, &#x27;RctSlkI3CoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPng&#x27;, &#x27;RctSlkLmaCoincSignificanceI3Lvc&#x27;, &#x27;RctSlkLmaCoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;RctSlkLmaCoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaLVAlertJSON&#x27;, &#x27;RctSlkLmaLVCGraceDbEventData&#x27;, &#x27;RctSlkLmaLvcDistancesJson&#x27;, &#x27;RctSlkLmaLvcGcnXml&#x27;, &#x27;RctSlkLmaLvcRetractionXml&#x27;, &#x27;RctSlkLmaSkymapInfo&#x27;, &#x27;SkymapInfo&#x27;, &#x27;ZtfTriggerList&#x27;]&gt;)&quot;)
+PROVISIONED TMPDIR FOR  MS181101ab-2-Initial , CONTENTS:  []
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     llama.listen.gcn:__init__.py:309 [94mRunning LlamaHandlers(rundir=&#x27;/tmp/tmprm2i74xd&#x27;, gcn_archive=&#x27;/tmp/tmpag3x_sre&#x27;, manually_included=None) handler on /root/.local/share/llama/inputs/tests/event_files/MS181101ab-2-Initial/lvc_gcn.xml.[0m
+INFO     llama.listen.gcn:__init__.py:183 NEW PAYLOAD. IVORN: ivo://gwnet/LVC#MS181101ab-2-Initial
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle_archive from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:252 Running handle_archive on gcn archive directory /tmp/tmpag3x_sre
+DEBUG    llama.listen.gcn:__init__.py:262 Received GCN notice: ivo://gwnet/LVC#MS181101ab-2-Initial
+INFO     llama.listen.gcn:__init__.py:272 Selected outpath /tmp/tmpag3x_sre/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23MS181101ab-2-Initial
+INFO     llama.listen.gcn:__init__.py:279 archived ivo://gwnet/LVC#MS181101ab-2-Initial
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:77 Running ``handle_lvc_gcn`` on rundir /tmp/tmprm2i74xd with handler LvcGcnXml
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:25.565949: superid: MS181101ab
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:25.566054: alerttype: Initial
+INFO     llama.listen.gcn:__init__.py:99 Event does not exist, initializing MS181101ab-2-Initial
+WARNING  llama.filehandler:__init__.py:1507 Wrapping exception raised while generating LvcGcnXml(eventid=&quot;MS181101ab-2-Initial&quot;, rundir=&quot;/tmp/tmprm2i74xd/MS181101ab-2-Initial/.tmp.d/LvcGcnXml-kz909uqu&quot;, parent=&quot;LvcGcnXml(eventid=&quot;MS181101ab-2-Initial&quot;, rundir=&quot;/tmp/tmprm2i74xd&quot;)&quot;): TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)
+ERROR    llama.filehandler:__init__.py:1388 Exception while generating LvcGcnXml(eventid=&quot;MS181101ab-2-Initial&quot;, rundir=&quot;/tmp/tmprm2i74xd&quot;): GenerationResult(fh=LvcGcnXml(eventid=&quot;MS181101ab-2-Initial&quot;, rundir=&quot;/tmp/tmprm2i74xd/MS181101ab-2-Initial/.tmp.d/LvcGcnXml-kz909uqu&quot;, parent=&quot;LvcGcnXml(eventid=&quot;MS181101ab-2-Initial&quot;, rundir=&quot;/tmp/tmprm2i74xd&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;))
+ERROR    llama.versioning:versioning.py:576 Rolling back to last commit.
+ERROR    llama.versioning:versioning.py:578 Rolled back.<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_listeners/test_gcn.py::TestLlamaHandlerS190425z::test</td>
+          <td class="col-duration">0.08</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_listeners.test_gcn.TestLlamaHandlerS190425z object at 0x7f4734843d90&gt;<br/><br/>    def test(self):<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            self.gcn_archive = tmpdir<br/>            # if you run the test at midnight, the files might be different<br/>            # based on the date switch, so look for files in both places in<br/>            # case the date switches in the middle of the test<br/>            start = datetime.utcnow()<br/>&gt;           super().test()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:82: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/classes.py:135: in test<br/>    self.execute()<br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:73: in execute<br/>    run_on_voevent_file(files=filehandler.fullpath, handler=self.handler)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:313: in run_on_voevent_file<br/>    handler(payload, fromstring(payload))<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:187: in __call__<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py:51: in handle<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:220: in handle<br/>    handle_gcn(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py:51: in handle<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:102: in handle_lvc_gcn<br/>    voe.generate(payload)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1523: in generate<br/>    return self.checkin(self.checkout().generate_unsafe())<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1348: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:429: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/versioning.py:574: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:350: in wrapper<br/>    res = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/vetoes.py:393: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/meta.py:184: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1389: in checkin<br/>    raise gen_result.err<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmppk4tc8o1/S190425z-1-Initial/.tmp.d/LvcGcnXml-hzt1piel&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmppk4tc8o1&quot;)&quot;)<br/>args = (), kwargs = {}<br/><br/>    @_generate_cleanup.__func__<br/>    @VetoMixin.decorate_generate<br/>    @MetaDataMixin.decorate_generate<br/>    def generate_unsafe(self, *args, **kwargs):<br/>        &quot;&quot;&quot;<br/>        Generate this file without performing any of the usual ``checkout`` and<br/>        ``checkin`` procedures; no cleanup will happen if file generation<br/>        fails. You **almost certainly** want to call ``generate`` instead, or<br/>        if you need to execute more than a single step of the pipeline,<br/>        ``FileGraph.update`` with an appropriate downselection.<br/>    <br/>        Returns<br/>        -------<br/>        gen_result : GenerationResult<br/>            A ``GenerationResult`` containing any errors raised during any part<br/>            of file generation.<br/>        &quot;&quot;&quot;<br/>        if list(self.DEPENDENCIES) and (not self.are_dependencies_met()):<br/>            LOGGER.error(&quot;%s has unmet dependencies; cannot generate yet.&quot;,<br/>                         self)<br/>            raise GenerationError(f&quot;Unmet dependencies for {self}.&quot;)<br/>        # close all figure windows to conserve memory<br/>        if &#x27;matplotlib.pyplot&#x27; in sys.modules:<br/>            sys.modules[&#x27;matplotlib.pyplot&#x27;].close(&#x27;all&#x27;)<br/>        try:<br/>            LOGGER.info(COL.BLUE + COL.BOLD + &quot;Generating &quot; +<br/>                        str(self) + COL.CLEAR)<br/>            # invalidate obsolescence caches for all files (robust<br/>            # against code changes that change obsolescence<br/>            # definitions) TODO remove this obsolescence caching crap<br/>            self.lock.remove_all_obsolescence()<br/>&gt;           self._generate()<br/><span class="error">E           TypeError: _generate() missing 1 required positional argument: &#x27;payload&#x27;</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1496: TypeError<br/> ------------------------------Captured stdout call------------------------------ <br/>CREATED TMPDIR FOR  S190425z-1-Initial :  /tmp/tmppk4tc8o1
+SET self.run for  &lt;llama.test.test_listeners.test_gcn.TestLlamaHandlerS190425z object at 0x7f4734843d90&gt;  TO  Run(rundir=&quot;/tmp/tmppk4tc8o1&quot;,
+    pipeline=&quot;Pipeline(&lt;[&#x27;Advok&#x27;, &#x27;CoincScatterI3LvcPdf&#x27;, &#x27;CoincScatterI3LvcPng&#x27;, &#x27;CoincScatterZtfI3LvcPdf&#x27;, &#x27;CoincScatterZtfI3LvcPng&#x27;, &#x27;CoincScatterZtfLVCPdf&#x27;, &#x27;CoincScatterZtfLVCPng&#x27;, &#x27;CoincSignificanceI3Lvc&#x27;, &#x27;CoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;CoincSummaryI3LvcPdf&#x27;, &#x27;CoincSummaryI3LvcTex&#x27;, &#x27;FermiGRBsJSON&#x27;, &#x27;IceCubeNeutrinoList&#x27;, &#x27;IceCubeNeutrinoListCoincTxt&#x27;, &#x27;IceCubeNeutrinoListTex&#x27;, &#x27;IceCubeNeutrinoListTxt&#x27;, &#x27;LVAlertAdvok&#x27;, &#x27;LVAlertJSON&#x27;, &#x27;LVCGraceDbEventData&#x27;, &#x27;LvcDistancesJson&#x27;, &#x27;LvcGcnXml&#x27;, &#x27;LvcRetractionXml&#x27;, &#x27;LvcSkymapFits&#x27;, &#x27;LvcSkymapHdf5&#x27;, &#x27;PAstro&#x27;, &#x27;RctSlkI3CoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPng&#x27;, &#x27;RctSlkLmaCoincSignificanceI3Lvc&#x27;, &#x27;RctSlkLmaCoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;RctSlkLmaCoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaLVAlertJSON&#x27;, &#x27;RctSlkLmaLVCGraceDbEventData&#x27;, &#x27;RctSlkLmaLvcDistancesJson&#x27;, &#x27;RctSlkLmaLvcGcnXml&#x27;, &#x27;RctSlkLmaLvcRetractionXml&#x27;, &#x27;RctSlkLmaSkymapInfo&#x27;, &#x27;SkymapInfo&#x27;, &#x27;ZtfTriggerList&#x27;]&gt;)&quot;)
+PROVISIONED TMPDIR FOR  S190425z-1-Initial , CONTENTS:  []
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     llama.listen.gcn:__init__.py:309 [94mRunning LlamaHandlers(rundir=&#x27;/tmp/tmppk4tc8o1&#x27;, gcn_archive=&#x27;/tmp/tmpdyeth8lh&#x27;, manually_included=None) handler on /root/.local/share/llama/inputs/tests/event_files/S190425z-1-Initial/lvc_gcn.xml.[0m
+INFO     llama.listen.gcn:__init__.py:183 NEW PAYLOAD. IVORN: ivo://gwnet/LVC#S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle_archive from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:252 Running handle_archive on gcn archive directory /tmp/tmpdyeth8lh
+DEBUG    llama.listen.gcn:__init__.py:262 Received GCN notice: ivo://gwnet/LVC#S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:272 Selected outpath /tmp/tmpdyeth8lh/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:279 archived ivo://gwnet/LVC#S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:77 Running ``handle_lvc_gcn`` on rundir /tmp/tmppk4tc8o1 with handler LvcGcnXml
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:25.809044: superid: S190425z
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:25.809101: alerttype: Initial
+INFO     llama.listen.gcn:__init__.py:99 Event does not exist, initializing S190425z-1-Initial
+WARNING  llama.filehandler:__init__.py:1507 Wrapping exception raised while generating LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmppk4tc8o1/S190425z-1-Initial/.tmp.d/LvcGcnXml-hzt1piel&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmppk4tc8o1&quot;)&quot;): TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)
+ERROR    llama.filehandler:__init__.py:1388 Exception while generating LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmppk4tc8o1&quot;): GenerationResult(fh=LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmppk4tc8o1/S190425z-1-Initial/.tmp.d/LvcGcnXml-hzt1piel&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmppk4tc8o1&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;))
+ERROR    llama.versioning:versioning.py:576 Rolling back to last commit.
+ERROR    llama.versioning:versioning.py:578 Rolled back.<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_listeners/test_gcn.py::TestLlamaHandlerS190521g::test</td>
+          <td class="col-duration">0.18</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_listeners.test_gcn.TestLlamaHandlerS190521g object at 0x7f4734651990&gt;<br/><br/>    def test(self):<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            self.gcn_archive = tmpdir<br/>            # if you run the test at midnight, the files might be different<br/>            # based on the date switch, so look for files in both places in<br/>            # case the date switches in the middle of the test<br/>            start = datetime.utcnow()<br/>&gt;           super().test()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:82: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/classes.py:135: in test<br/>    self.execute()<br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:73: in execute<br/>    run_on_voevent_file(files=filehandler.fullpath, handler=self.handler)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:313: in run_on_voevent_file<br/>    handler(payload, fromstring(payload))<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:187: in __call__<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py:51: in handle<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:102: in handle_lvc_gcn<br/>    voe.generate(payload)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1523: in generate<br/>    return self.checkin(self.checkout().generate_unsafe())<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1348: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:429: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/versioning.py:574: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:350: in wrapper<br/>    res = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/vetoes.py:393: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/meta.py:184: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1389: in checkin<br/>    raise gen_result.err<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpcdcxe2ae/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-9wm1jzl5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpcdcxe2ae&quot;)&quot;)<br/>args = (), kwargs = {}<br/><br/>    @_generate_cleanup.__func__<br/>    @VetoMixin.decorate_generate<br/>    @MetaDataMixin.decorate_generate<br/>    def generate_unsafe(self, *args, **kwargs):<br/>        &quot;&quot;&quot;<br/>        Generate this file without performing any of the usual ``checkout`` and<br/>        ``checkin`` procedures; no cleanup will happen if file generation<br/>        fails. You **almost certainly** want to call ``generate`` instead, or<br/>        if you need to execute more than a single step of the pipeline,<br/>        ``FileGraph.update`` with an appropriate downselection.<br/>    <br/>        Returns<br/>        -------<br/>        gen_result : GenerationResult<br/>            A ``GenerationResult`` containing any errors raised during any part<br/>            of file generation.<br/>        &quot;&quot;&quot;<br/>        if list(self.DEPENDENCIES) and (not self.are_dependencies_met()):<br/>            LOGGER.error(&quot;%s has unmet dependencies; cannot generate yet.&quot;,<br/>                         self)<br/>            raise GenerationError(f&quot;Unmet dependencies for {self}.&quot;)<br/>        # close all figure windows to conserve memory<br/>        if &#x27;matplotlib.pyplot&#x27; in sys.modules:<br/>            sys.modules[&#x27;matplotlib.pyplot&#x27;].close(&#x27;all&#x27;)<br/>        try:<br/>            LOGGER.info(COL.BLUE + COL.BOLD + &quot;Generating &quot; +<br/>                        str(self) + COL.CLEAR)<br/>            # invalidate obsolescence caches for all files (robust<br/>            # against code changes that change obsolescence<br/>            # definitions) TODO remove this obsolescence caching crap<br/>            self.lock.remove_all_obsolescence()<br/>&gt;           self._generate()<br/><span class="error">E           TypeError: _generate() missing 1 required positional argument: &#x27;payload&#x27;</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1496: TypeError<br/> ------------------------------Captured stdout call------------------------------ <br/>CREATED TMPDIR FOR  S190521g-1-Preliminary :  /tmp/tmpcdcxe2ae
+SET self.run for  &lt;llama.test.test_listeners.test_gcn.TestLlamaHandlerS190521g object at 0x7f4734651990&gt;  TO  Run(rundir=&quot;/tmp/tmpcdcxe2ae&quot;,
+    pipeline=&quot;Pipeline(&lt;[&#x27;Advok&#x27;, &#x27;CoincScatterI3LvcPdf&#x27;, &#x27;CoincScatterI3LvcPng&#x27;, &#x27;CoincScatterZtfI3LvcPdf&#x27;, &#x27;CoincScatterZtfI3LvcPng&#x27;, &#x27;CoincScatterZtfLVCPdf&#x27;, &#x27;CoincScatterZtfLVCPng&#x27;, &#x27;CoincSignificanceI3Lvc&#x27;, &#x27;CoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;CoincSummaryI3LvcPdf&#x27;, &#x27;CoincSummaryI3LvcTex&#x27;, &#x27;FermiGRBsJSON&#x27;, &#x27;IceCubeNeutrinoList&#x27;, &#x27;IceCubeNeutrinoListCoincTxt&#x27;, &#x27;IceCubeNeutrinoListTex&#x27;, &#x27;IceCubeNeutrinoListTxt&#x27;, &#x27;LVAlertAdvok&#x27;, &#x27;LVAlertJSON&#x27;, &#x27;LVCGraceDbEventData&#x27;, &#x27;LvcDistancesJson&#x27;, &#x27;LvcGcnXml&#x27;, &#x27;LvcRetractionXml&#x27;, &#x27;LvcSkymapFits&#x27;, &#x27;LvcSkymapHdf5&#x27;, &#x27;PAstro&#x27;, &#x27;RctSlkI3CoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPng&#x27;, &#x27;RctSlkLmaCoincSignificanceI3Lvc&#x27;, &#x27;RctSlkLmaCoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;RctSlkLmaCoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaLVAlertJSON&#x27;, &#x27;RctSlkLmaLVCGraceDbEventData&#x27;, &#x27;RctSlkLmaLvcDistancesJson&#x27;, &#x27;RctSlkLmaLvcGcnXml&#x27;, &#x27;RctSlkLmaLvcRetractionXml&#x27;, &#x27;RctSlkLmaSkymapInfo&#x27;, &#x27;SkymapInfo&#x27;, &#x27;ZtfTriggerList&#x27;]&gt;)&quot;)
+PROVISIONED TMPDIR FOR  S190521g-1-Preliminary , CONTENTS:  []
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     llama.listen.gcn:__init__.py:309 [94mRunning LlamaHandlers(rundir=&#x27;/tmp/tmpcdcxe2ae&#x27;, gcn_archive=&#x27;/tmp/tmpz_4j5_9c&#x27;, manually_included=None) handler on /root/.local/share/llama/inputs/tests/event_files/S190521g-1-Preliminary/lvc_gcn.xml.[0m
+INFO     llama.listen.gcn:__init__.py:183 NEW PAYLOAD. IVORN: ivo://gwnet/LVC#S190521g-1-Preliminary
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle_archive from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:252 Running handle_archive on gcn archive directory /tmp/tmpz_4j5_9c
+DEBUG    llama.listen.gcn:__init__.py:262 Received GCN notice: ivo://gwnet/LVC#S190521g-1-Preliminary
+INFO     llama.listen.gcn:__init__.py:272 Selected outpath /tmp/tmpz_4j5_9c/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190521g-1-Preliminary
+INFO     llama.listen.gcn:__init__.py:279 archived ivo://gwnet/LVC#S190521g-1-Preliminary
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle_lvc_gcn from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:77 Running ``handle_lvc_gcn`` on rundir /tmp/tmpcdcxe2ae with handler LvcGcnXml
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:26.030892: superid: S190521g
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:26.030943: alerttype: Preliminary
+INFO     llama.listen.gcn:__init__.py:99 Event does not exist, initializing S190521g-1-Preliminary
+WARNING  llama.filehandler:__init__.py:1507 Wrapping exception raised while generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpcdcxe2ae/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-9wm1jzl5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpcdcxe2ae&quot;)&quot;): TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)
+ERROR    llama.filehandler:__init__.py:1388 Exception while generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpcdcxe2ae&quot;): GenerationResult(fh=LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpcdcxe2ae/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-9wm1jzl5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpcdcxe2ae&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;))
+ERROR    llama.versioning:versioning.py:576 Rolling back to last commit.
+ERROR    llama.versioning:versioning.py:578 Rolled back.<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_listeners/test_gcn.py::TestGcndS190425z::test</td>
+          <td class="col-duration">0.08</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_listeners.test_gcn.TestGcndS190425z object at 0x7f4734651cd0&gt;<br/><br/>    def test(self):<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            self.gcn_archive = tmpdir<br/>            # if you run the test at midnight, the files might be different<br/>            # based on the date switch, so look for files in both places in<br/>            # case the date switches in the middle of the test<br/>            start = datetime.utcnow()<br/>&gt;           super().test()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:82: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/classes.py:135: in test<br/>    self.execute()<br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:73: in execute<br/>    run_on_voevent_file(files=filehandler.fullpath, handler=self.handler)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:313: in run_on_voevent_file<br/>    handler(payload, fromstring(payload))<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:187: in __call__<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py:51: in handle<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:220: in handle<br/>    handle_gcn(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py:51: in handle<br/>    handler(payload, root)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py:102: in handle_lvc_gcn<br/>    voe.generate(payload)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1523: in generate<br/>    return self.checkin(self.checkout().generate_unsafe())<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1348: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:429: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/versioning.py:574: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/intent.py:350: in wrapper<br/>    res = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/vetoes.py:393: in wrapper<br/>    return func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/meta.py:184: in wrapper<br/>    result = func(self, gen_result, *args, **kwargs)<br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1389: in checkin<br/>    raise gen_result.err<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmp27aj1hjn/S190425z-1-Initial/.tmp.d/LvcGcnXml-j6aj9era&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmp27aj1hjn&quot;)&quot;)<br/>args = (), kwargs = {}<br/><br/>    @_generate_cleanup.__func__<br/>    @VetoMixin.decorate_generate<br/>    @MetaDataMixin.decorate_generate<br/>    def generate_unsafe(self, *args, **kwargs):<br/>        &quot;&quot;&quot;<br/>        Generate this file without performing any of the usual ``checkout`` and<br/>        ``checkin`` procedures; no cleanup will happen if file generation<br/>        fails. You **almost certainly** want to call ``generate`` instead, or<br/>        if you need to execute more than a single step of the pipeline,<br/>        ``FileGraph.update`` with an appropriate downselection.<br/>    <br/>        Returns<br/>        -------<br/>        gen_result : GenerationResult<br/>            A ``GenerationResult`` containing any errors raised during any part<br/>            of file generation.<br/>        &quot;&quot;&quot;<br/>        if list(self.DEPENDENCIES) and (not self.are_dependencies_met()):<br/>            LOGGER.error(&quot;%s has unmet dependencies; cannot generate yet.&quot;,<br/>                         self)<br/>            raise GenerationError(f&quot;Unmet dependencies for {self}.&quot;)<br/>        # close all figure windows to conserve memory<br/>        if &#x27;matplotlib.pyplot&#x27; in sys.modules:<br/>            sys.modules[&#x27;matplotlib.pyplot&#x27;].close(&#x27;all&#x27;)<br/>        try:<br/>            LOGGER.info(COL.BLUE + COL.BOLD + &quot;Generating &quot; +<br/>                        str(self) + COL.CLEAR)<br/>            # invalidate obsolescence caches for all files (robust<br/>            # against code changes that change obsolescence<br/>            # definitions) TODO remove this obsolescence caching crap<br/>            self.lock.remove_all_obsolescence()<br/>&gt;           self._generate()<br/><span class="error">E           TypeError: _generate() missing 1 required positional argument: &#x27;payload&#x27;</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py:1496: TypeError<br/> ------------------------------Captured stdout call------------------------------ <br/>CREATED TMPDIR FOR  S190425z-1-Initial :  /tmp/tmp27aj1hjn
+SET self.run for  &lt;llama.test.test_listeners.test_gcn.TestGcndS190425z object at 0x7f4734651cd0&gt;  TO  Run(rundir=&quot;/tmp/tmp27aj1hjn&quot;,
+    pipeline=&quot;Pipeline(&lt;[&#x27;Advok&#x27;, &#x27;CoincScatterI3LvcPdf&#x27;, &#x27;CoincScatterI3LvcPng&#x27;, &#x27;CoincScatterZtfI3LvcPdf&#x27;, &#x27;CoincScatterZtfI3LvcPng&#x27;, &#x27;CoincScatterZtfLVCPdf&#x27;, &#x27;CoincScatterZtfLVCPng&#x27;, &#x27;CoincSignificanceI3Lvc&#x27;, &#x27;CoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;CoincSummaryI3LvcPdf&#x27;, &#x27;CoincSummaryI3LvcTex&#x27;, &#x27;FermiGRBsJSON&#x27;, &#x27;IceCubeNeutrinoList&#x27;, &#x27;IceCubeNeutrinoListCoincTxt&#x27;, &#x27;IceCubeNeutrinoListTex&#x27;, &#x27;IceCubeNeutrinoListTxt&#x27;, &#x27;LVAlertAdvok&#x27;, &#x27;LVAlertJSON&#x27;, &#x27;LVCGraceDbEventData&#x27;, &#x27;LvcDistancesJson&#x27;, &#x27;LvcGcnXml&#x27;, &#x27;LvcRetractionXml&#x27;, &#x27;LvcSkymapFits&#x27;, &#x27;LvcSkymapHdf5&#x27;, &#x27;PAstro&#x27;, &#x27;RctSlkI3CoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPng&#x27;, &#x27;RctSlkLmaCoincSignificanceI3Lvc&#x27;, &#x27;RctSlkLmaCoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;RctSlkLmaCoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaLVAlertJSON&#x27;, &#x27;RctSlkLmaLVCGraceDbEventData&#x27;, &#x27;RctSlkLmaLvcDistancesJson&#x27;, &#x27;RctSlkLmaLvcGcnXml&#x27;, &#x27;RctSlkLmaLvcRetractionXml&#x27;, &#x27;RctSlkLmaSkymapInfo&#x27;, &#x27;SkymapInfo&#x27;, &#x27;ZtfTriggerList&#x27;]&gt;)&quot;)
+PROVISIONED TMPDIR FOR  S190425z-1-Initial , CONTENTS:  []
+<br/> -------------------------------Captured log call-------------------------------- <br/>INFO     llama.listen.gcn:__init__.py:309 [94mRunning LlamaHandlers(rundir=&#x27;/tmp/tmp27aj1hjn&#x27;, gcn_archive=&#x27;/tmp/tmp_2wculiy&#x27;, manually_included=None) handler on /root/.local/share/llama/inputs/tests/event_files/S190425z-1-Initial/lvc_gcn.xml.[0m
+INFO     llama.listen.gcn:__init__.py:183 NEW PAYLOAD. IVORN: ivo://gwnet/LVC#S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle_archive from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:252 Running handle_archive on gcn archive directory /tmp/tmp_2wculiy
+DEBUG    llama.listen.gcn:__init__.py:262 Received GCN notice: ivo://gwnet/LVC#S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:272 Selected outpath /tmp/tmp_2wculiy/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:279 archived ivo://gwnet/LVC#S190425z-1-Initial
+INFO     llama.listen.gcn:__init__.py:186 Running handler: handle from llama.listen.gcn
+INFO     llama.listen.gcn:__init__.py:77 Running ``handle_lvc_gcn`` on rundir /tmp/tmp27aj1hjn with handler LvcGcnXml
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:26.338265: superid: S190425z
+INFO     llama.listen.gcn:__init__.py:83 2020-05-16 21:14:26.338324: alerttype: Initial
+INFO     llama.listen.gcn:__init__.py:99 Event does not exist, initializing S190425z-1-Initial
+WARNING  llama.filehandler:__init__.py:1507 Wrapping exception raised while generating LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmp27aj1hjn/S190425z-1-Initial/.tmp.d/LvcGcnXml-j6aj9era&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmp27aj1hjn&quot;)&quot;): TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)
+ERROR    llama.filehandler:__init__.py:1388 Exception while generating LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmp27aj1hjn&quot;): GenerationResult(fh=LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmp27aj1hjn/S190425z-1-Initial/.tmp.d/LvcGcnXml-j6aj9era&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190425z-1-Initial&quot;, rundir=&quot;/tmp/tmp27aj1hjn&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;))
+ERROR    llama.versioning:versioning.py:576 Rolling back to last commit.
+ERROR    llama.versioning:versioning.py:578 Rolled back.<br/></div></td></tr></tbody>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">test/test_listeners/test_gcn.py::TestGcndS190521g::test</td>
+          <td class="col-duration">6.33</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;llama.test.test_listeners.test_gcn.TestGcndS190521g object at 0x7f4737fd6310&gt;<br/><br/>    def test(self):<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            self.gcn_archive = tmpdir<br/>            # if you run the test at midnight, the files might be different<br/>            # based on the date switch, so look for files in both places in<br/>            # case the date switches in the middle of the test<br/>            start = datetime.utcnow()<br/>&gt;           super().test()<br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/test_listeners/test_gcn.py:82: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;llama.test.test_listeners.test_gcn.TestGcndS190521g object at 0x7f4737fd6310&gt;<br/><br/>    def test(self):<br/>        &quot;&quot;&quot;Run this test with ``execute`` and then check whether outputs are as<br/>        expected with ``compare``.&quot;&quot;&quot;<br/>        with tempfile.TemporaryDirectory() as tmpdir:<br/>            print(&quot;CREATED TMPDIR FOR &quot;, self.EVENTID, &quot;: &quot;, tmpdir)<br/>            self.run = Run(tmpdir)<br/>            print(&quot;SET self.run for &quot;, self, &quot; TO &quot;, self.run)<br/>            self.provision()<br/>            print(&quot;PROVISIONED TMPDIR FOR &quot;, self.EVENTID, &quot;, CONTENTS: &quot;,<br/>                  os.listdir(tmpdir))<br/>            self.execute()<br/>            print(&quot;EXECUTED TEST FOR &quot;, self, &quot; TMPDIR CONTENTS: &quot;,<br/>                  os.listdir(tmpdir))<br/>            print(&quot;TMP EVENTDIR CONTENTS: &quot;, os.listdir(self.event.eventdir))<br/>&gt;           assert self.compare()<br/><span class="error">E           AssertionError</span><br/><br/>/opt/anaconda/lib/python3.7/site-packages/llama/test/classes.py:139: AssertionError<br/> ------------------------------Captured stdout call------------------------------ <br/>CREATED TMPDIR FOR  S190521g-1-Preliminary :  /tmp/tmpk088nceq
+SET self.run for  &lt;llama.test.test_listeners.test_gcn.TestGcndS190521g object at 0x7f4737fd6310&gt;  TO  Run(rundir=&quot;/tmp/tmpk088nceq&quot;,
+    pipeline=&quot;Pipeline(&lt;[&#x27;Advok&#x27;, &#x27;CoincScatterI3LvcPdf&#x27;, &#x27;CoincScatterI3LvcPng&#x27;, &#x27;CoincScatterZtfI3LvcPdf&#x27;, &#x27;CoincScatterZtfI3LvcPng&#x27;, &#x27;CoincScatterZtfLVCPdf&#x27;, &#x27;CoincScatterZtfLVCPng&#x27;, &#x27;CoincSignificanceI3Lvc&#x27;, &#x27;CoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;CoincSummaryI3LvcPdf&#x27;, &#x27;CoincSummaryI3LvcTex&#x27;, &#x27;FermiGRBsJSON&#x27;, &#x27;IceCubeNeutrinoList&#x27;, &#x27;IceCubeNeutrinoListCoincTxt&#x27;, &#x27;IceCubeNeutrinoListTex&#x27;, &#x27;IceCubeNeutrinoListTxt&#x27;, &#x27;LVAlertAdvok&#x27;, &#x27;LVAlertJSON&#x27;, &#x27;LVCGraceDbEventData&#x27;, &#x27;LvcDistancesJson&#x27;, &#x27;LvcGcnXml&#x27;, &#x27;LvcRetractionXml&#x27;, &#x27;LvcSkymapFits&#x27;, &#x27;LvcSkymapHdf5&#x27;, &#x27;PAstro&#x27;, &#x27;RctSlkI3CoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfI3LvcPng&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPdf&#x27;, &#x27;RctSlkLmaCoincScatterZtfLVCPng&#x27;, &#x27;RctSlkLmaCoincSignificanceI3Lvc&#x27;, &#x27;RctSlkLmaCoincSignificanceSubthresholdI3Lvc&#x27;, &#x27;RctSlkLmaCoincSummaryI3LvcPdf&#x27;, &#x27;RctSlkLmaLVAlertJSON&#x27;, &#x27;RctSlkLmaLVCGraceDbEventData&#x27;, &#x27;RctSlkLmaLvcDistancesJson&#x27;, &#x27;RctSlkLmaLvcGcnXml&#x27;, &#x27;RctSlkLmaLvcRetractionXml&#x27;, &#x27;RctSlkLmaSkymapInfo&#x27;, &#x27;SkymapInfo&#x27;, &#x27;ZtfTriggerList&#x27;]&gt;)&quot;)
+PROVISIONED TMPDIR FOR  S190521g-1-Preliminary , CONTENTS:  []
+Server STDOUT:
+%s
+STDERR:
+%s  INFO:gcn.serve:bound to 127.0.0.1:8099
+INFO:gcn.serve:connected to (&#x27;127.0.0.1&#x27;, 56458):8099
+
+Listener STDOUT:
+%s
+STDERR:
+%s  /opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.utils tried to load undefined environmental variables: [91mLLAMA_OUTPUT_DIR[0m -- [93mSpecify where LLAMA data, triggers, and results should be saved locally.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.utils tried to load undefined environmental variables: [91mLLAMA_CACHEDIR[0m -- [93mSpecify where LLAMA data should be cached.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.io.default.generate tried to load undefined environmental variables: [91mLLAMA_IO_DEFAULT_GEN_MAX_WORKERS[0m -- [93m
+Specify the maximum number of subprocesses to use for local file generation
+using LLAMA&#x27;s `default` file generation manager. If not specified, the
+default of 4 subprocesses will be used.
+[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.com.s3 tried to load undefined environmental variables: [91mLLAMA_COM_S3_REGION[0m, [91mLLAMA_COM_S3_ENDPOINT[0m, [91mLLAMA_COM_S3_BUCKET[0m -- [93mSpecify the S3 region, endpoint, and bucket as env variables. Must
+    specify all, or else defaults will be used:
+    DEFAULT_REGION=nyc3, DEFAULT_ENDPOINT=nyc3.digitaloceanspaces.com,
+    DEFAULT_BUCKET=llama[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.com.gracedb tried to load undefined environmental variables: [91mLLAMA_GRACEDB_AUTH[0m -- [93mSet LLAMA_GRACEDB_AUTH to the S3 object key of the LIGO GraceDb robot keytab to automatically authenticate with GraceDb. Otherwise, do not authenticate automatically.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.serve.gui.domain tried to load undefined environmental variables: [91mLLAMA_DOMAIN[0m -- [93mSpecify the domain on which LLAMA processes are running.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.serve.gui tried to load undefined environmental variables: [91mLLAMA_GUI_PORT[0m -- [93mSpecify the port on which ``llama serve gui`` is running.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.serve.gui tried to load undefined environmental variables: [91mFILE_PREVIEWS[0m, [91mFULL_WIDTH_FILE_PREVIEWS[0m -- [93mSpecify a comma-separated list of FileHandler classes from the
+    llama.pipeline.Pipeline in use that should have file previews on event
+    pages. `FILE_PREVIEWS` will take up less than the full width of the page on
+    desktop and `FULL_WIDTH_FILE_PREVIEWS` will take up the full width.  If
+    none are specified, defaults will be used.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.serve.jupyter tried to load undefined environmental variables: [91mLLAMA_JUP_PORT[0m -- [93mSpecify the port on which ``llama serve jupyter`` is running.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.com.slack tried to load undefined environmental variables: [91mLLAMA_SLACK_MAINTAINERS[0m -- [93mSpecify the comma-delimited real names, user names, or user IDs for Slack users who should be notified of errors.[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/files/i3/json.py:54: OptionalFeatureWarning: Could not import ``realtime_tools`` IceCube project. Will use stub implementations of IceCube software instead for fetching IceCube data. If you have a workable version of ``realtime_tools`` somewhere, add it to your ``PYTHONPATH`` environmental variable to use it here.
+  warnings.warn(msg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/files/i3/json.py:78: OptionalFeatureWarning: Could not import ``realtime_gfu``. Will use stub implementations of IceCube software instead for formatting IceCube GFU neutrinos. If you have a workable version of ``realtime_gfu`` somewhere, add it to your ``PYTHONPATH`` environmental variable to use it here.
+  warnings.warn(msg, OptionalFeatureWarning)
+/opt/anaconda/lib/python3.7/site-packages/llama/classes.py:532: OptionalFeatureWarning: llama.com.do tried to load undefined environmental variables: [91mDIGITALOCEAN[0m -- [93m
+You need to specify a digitalocean API token to use this ``llama com do``. You
+can generate one from your control panel on digitalocean.com. This script
+expects the DIGITALOCEAN environmental variable to be set to your API token.
+
+Feel free to put your API token in a ``.bashrc`` (or similar) startup script,
+but:
+
+*DO NOT UNDER ANY CIRCUMSTANCES VERSION CONTROL THAT API KEY!*
+
+It is effectively a username/password combination, and if your code repository
+containing that credential is ever exposed, someone will be able to use your
+token to spin up as many servers (e.g. for crypto-mining) as they want *ON YOUR
+DIME*!  This is a **VERY COMMON ATTACK**; people will search for such keys on
+GitHub and BitBucket and find them in plain sight.
+[0m
+  warnings.warn(errmsg, OptionalFeatureWarning)
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn.__main__|   __main__.py:74  |          main|[0m Starting GCN Listener, llama version 3.5.1.
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:183 |      __call__|[0m NEW PAYLOAD. IVORN: ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:186 |      __call__|[0m Running handler: handle_archive from llama.listen.gcn
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:252 |handle_archive|[0m Running handle_archive on gcn archive directory /tmp/tmpele9uv12
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:262 |handle_archive|[0m Received GCN notice: ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:272 |handle_archive|[0m Selected outpath /tmp/tmpele9uv12/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:279 |handle_archive|[0m archived ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:186 |      __call__|[0m Running handler: handle from llama.listen.gcn
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:186 |      __call__|[0m Running handler: handle_lvc_gcn from llama.listen.gcn
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:77  |handle_lvc_gcn|[0m Running ``handle_lvc_gcn`` on rundir /tmp/tmpk088nceq with handler LvcGcnXml
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:83  |handle_lvc_gcn|[0m 2020-05-16 21:14:27.769843: superid: S190521g
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:83  |handle_lvc_gcn|[0m 2020-05-16 21:14:27.769945: alerttype: Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:99  |handle_lvc_gcn|[0m Event does not exist, initializing S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:244 |       acquire|[0m Acquired EventLock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.versioning  | versioning.py:261 |commit_changes|[0m ``git commit -m`` &#x27;Changes before generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&#x27; in /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:275 |       release|[0m Removed event lock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.vetoes      |     vetoes.py:257 |         check|[0m Running veto checks.
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1491|generate_unsafe|[0m [94m[1mGenerating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-f310_r_g&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;)[0m
+[4m|[1m[95mWARNING [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1507|generate_unsafe|[0m Wrapping exception raised while generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-f310_r_g&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;): TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:244 |       acquire|[0m Acquired EventLock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1386|       checkin|[0m Checking in GenerationResult(fh=LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-f310_r_g&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)) to LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;).
+[4m|[1m[93mERROR   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1388|       checkin|[0m Exception while generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;): GenerationResult(fh=LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-f310_r_g&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;))
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:84  |         write|[0m Writing cooldown for CoolDown(eventdir=&#x27;/tmp/tmpk088nceq/S190521g-1-Preliminary&#x27;, manifest_filehandlers=[LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)])
+[4m|[1m[93mERROR   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.versioning  | versioning.py:576 |       wrapper|[0m Rolling back to last commit.
+[4m|[1m[93mERROR   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.versioning  | versioning.py:578 |       wrapper|[0m Rolled back.
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:275 |       release|[0m Removed event lock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:27|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1351|       wrapper|[0m Deleting tempfiles from GenerationResult(fh=LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-f310_r_g&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)) from atomic generation of LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)
+exception in payload handler
+Traceback (most recent call last):
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/cli.py&quot;, line 975, in wrapper
+    return func(*args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py&quot;, line 187, in __call__
+    handler(payload, root)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py&quot;, line 51, in handle
+    handler(payload, root)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py&quot;, line 102, in handle_lvc_gcn
+    voe.generate(payload)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1523, in generate
+    return self.checkin(self.checkout().generate_unsafe())
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1348, in wrapper
+    return func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/intent.py&quot;, line 429, in wrapper
+    return func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/versioning.py&quot;, line 574, in wrapper
+    result = func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/intent.py&quot;, line 350, in wrapper
+    res = func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/vetoes.py&quot;, line 393, in wrapper
+    return func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/meta.py&quot;, line 184, in wrapper
+    result = func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1389, in checkin
+    raise gen_result.err
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1496, in generate_unsafe
+    self._generate()
+TypeError: _generate() missing 1 required positional argument: &#x27;payload&#x27;
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/gcn/voeventclient.py&quot;, line 186, in _ingest_packet
+    handler(payload, root)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/cli.py&quot;, line 980, in wrapper
+    func.__module__, func.__name__)
+AttributeError: &#x27;LlamaHandlers&#x27; object has no attribute &#x27;__name__&#x27;
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:183 |      __call__|[0m NEW PAYLOAD. IVORN: ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:186 |      __call__|[0m Running handler: handle_archive from llama.listen.gcn
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:252 |handle_archive|[0m Running handle_archive on gcn archive directory /tmp/tmpele9uv12
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:262 |handle_archive|[0m Received GCN notice: ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:272 |handle_archive|[0m Selected outpath /tmp/tmpele9uv12/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:278 |handle_archive|[0m outpath /tmp/tmpele9uv12/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190521g-1-Preliminary exists, not overwriting. dumping xml:
+[38;5;1;01m&lt;?xml version=&quot;1.0&quot; ?&gt;[39;00m
+[38;5;70;01m&lt;voe:VOEvent[39;00m[38;5;252m [39m[38;5;250mxmlns:xsi=[39m[38;5;214m&quot;http://www.w3.org/2001/XMLSchema-instance&quot;[39m
+[38;5;250mxmlns:voe=[39m[38;5;214m&quot;http://www.ivoa.net/xml/VOEvent/v2.0&quot;[39m
+[38;5;250mxsi:schemaLocation=[39m[38;5;214m&quot;http://www.ivoa.net/xml/VOEvent/v2.0 http://www.ivoa.net/xml/VOEvent/VOEvent-v2.0.xsd&quot;[39m
+[38;5;252m [39m[38;5;250mversion=[39m[38;5;214m&quot;2.0&quot;[39m[38;5;252m [39m[38;5;250mrole=[39m[38;5;214m&quot;observation&quot;[39m[38;5;252m [39m[38;5;250mivorn=[39m[38;5;214m&quot;ivo://gwnet/LVC#S190521g-1-Preliminary&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;Who[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Date[39;00m[38;5;70;01m&gt;[39;00m[38;5;252m2019-05-21T03:08:44[39m[38;5;70;01m&lt;/Date&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Author[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;contactName[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mLIGO Scientific Collaboration and Virgo Collaboration[39m[38;5;70;01m&lt;/contactName&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Author&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;/Who&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;What[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Packet_Type&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;150&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mThe Notice Type number is assigned/used within GCN, eg type=150 is an LVC_PRELIMINARY notice[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;internal&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIndicates whether this event should be distributed to LSC/Virgo members only[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Pkt_Ser_Num&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;1&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mA number that increments by 1 each time a new revision is issued for this event[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;GraceID&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;S190521g&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.id&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIdentifier in GraceDB[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;AlertType&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;Preliminary&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.version&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mVOEvent alert type[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;HardwareInj&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.number&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIndicates that this event is a hardware injection if 1, no if 0[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;OpenAlert&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;1&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.number&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIndicates that this event is an open alert if 1, no if 0[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;EventPage&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;https://gracedb.ligo.org/superevents/S190521g/view/&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.ref.url&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mWeb page for evolving status of this GW candidate[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Instruments&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;H1,L1,V1&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mList of instruments used in analysis to identify this event[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;FAR&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;3.80105501069e-09&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;arith.rate;stat.falsealarm&quot;[39m[38;5;252m [39m[38;5;250munit=[39m[38;5;214m&quot;Hz&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mFalse alarm rate for GW candidates with this strength or greater[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Group&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;CBC&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mData analysis working group[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Pipeline&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;pycbc&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mLow-latency data analysis pipeline[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Search&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;AllSky&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mSpecific low-latency search[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Group[39;00m[38;5;252m [39m[38;5;250mtype=[39m[38;5;214m&quot;GW_SKYMAP&quot;[39m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;bayestar&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;skymap_fits&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;https://gracedb.ligo.org/api/superevents/S190521g/files/bayestar.fits.gz&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.ref.url&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mSky Map FITS[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Group&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Group[39;00m[38;5;252m [39m[38;5;250mtype=[39m[38;5;214m&quot;Classification&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;BNS&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is a binary neutron star merger (both objects lighter than 3 solar masses)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;NSBH&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is a neutron star-black hole merger (primary heavier than 5 solar masses, secondary lighter than 3 solar masses)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;BBH&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.965882031742&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is a binary black hole merger (both objects heavier than 5 solar masses)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;MassGap&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source has at least one object between 3 and 5 solar masses[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Terrestrial&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0341179682578&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is terrestrial (i.e., a background noise fluctuation or a glitch)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mSource classification: binary neutron star (BNS), neutron star-black hole (NSBH), binary black hole (BBH), MassGap, or terrestrial (noise)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Group&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Group[39;00m[38;5;252m [39m[38;5;250mtype=[39m[38;5;214m&quot;Properties&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;HasNS&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that at least one object in the binary has a mass that is less than 3 solar masses[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;HasRemnant&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that a nonzero mass was ejected outside the central remnant object[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mQualitative properties of the source, conditioned on the assumption that the signal is an astrophysical compact binary merger[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Group&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;/What&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;WhereWhen[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;ObsDataLocation[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;ObservatoryLocation[39;00m[38;5;252m [39m[38;5;250mid=[39m[38;5;214m&quot;LIGO Virgo&quot;[39m[38;5;70;01m/&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;ObservationLocation[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;AstroCoordSystem[39;00m[38;5;252m [39m[38;5;250mid=[39m[38;5;214m&quot;UTC-FK5-GEO&quot;[39m[38;5;70;01m/&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;AstroCoords[39;00m[38;5;252m [39m[38;5;250mcoord_system_id=[39m[38;5;214m&quot;UTC-FK5-GEO&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                    [39m[38;5;70;01m&lt;Time[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m                        [39m[38;5;70;01m&lt;TimeInstant[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m                            [39m[38;5;70;01m&lt;ISOTime[39;00m[38;5;70;01m&gt;[39;00m[38;5;252m2019-05-21T03:02:29.447266[39m[38;5;70;01m&lt;/ISOTime&gt;[39;00m
+[38;5;252m                        [39m[38;5;70;01m&lt;/TimeInstant&gt;[39;00m
+[38;5;252m                    [39m[38;5;70;01m&lt;/Time&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;/AstroCoords&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/ObservationLocation&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/ObsDataLocation&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;/WhereWhen&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;How[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mCandidate gravitational wave event identified by low-latency analysis[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mH1: LIGO Hanford 4 km gravitational wave detector[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mL1: LIGO Livingston 4 km gravitational wave detector[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mV1: Virgo 3 km gravitational wave detector[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;/How&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mReport of a candidate gravitational wave event[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;70;01m&lt;/voe:VOEvent&gt;[39;00m
+
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:279 |handle_archive|[0m archived ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:186 |      __call__|[0m Running handler: handle from llama.listen.gcn
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:186 |      __call__|[0m Running handler: handle_lvc_gcn from llama.listen.gcn
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:77  |handle_lvc_gcn|[0m Running ``handle_lvc_gcn`` on rundir /tmp/tmpk088nceq with handler LvcGcnXml
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:83  |handle_lvc_gcn|[0m 2020-05-16 21:14:28.773293: superid: S190521g
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:83  |handle_lvc_gcn|[0m 2020-05-16 21:14:28.773434: alerttype: Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:97  |handle_lvc_gcn|[0m Event exists, not initializing S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:244 |       acquire|[0m Acquired EventLock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.versioning  | versioning.py:261 |commit_changes|[0m ``git commit -m`` &#x27;Changes before generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&#x27; in /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:275 |       release|[0m Removed event lock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.vetoes      |     vetoes.py:257 |         check|[0m Running veto checks.
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1491|generate_unsafe|[0m [94m[1mGenerating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-7zy2a1x5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;)[0m
+[4m|[1m[95mWARNING [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1507|generate_unsafe|[0m Wrapping exception raised while generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-7zy2a1x5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;): TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:244 |       acquire|[0m Acquired EventLock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1386|       checkin|[0m Checking in GenerationResult(fh=LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-7zy2a1x5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)) to LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;).
+[4m|[1m[93mERROR   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1388|       checkin|[0m Exception while generating LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;): GenerationResult(fh=LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-7zy2a1x5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;))
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:84  |         write|[0m Writing cooldown for CoolDown(eventdir=&#x27;/tmp/tmpk088nceq/S190521g-1-Preliminary&#x27;, manifest_filehandlers=[LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)])
+[4m|[1m[93mERROR   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.versioning  | versioning.py:576 |       wrapper|[0m Rolling back to last commit.
+[4m|[1m[93mERROR   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.versioning  | versioning.py:578 |       wrapper|[0m Rolled back.
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.intent      |     intent.py:275 |       release|[0m Removed event lock for /tmp/tmpk088nceq/S190521g-1-Preliminary
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:28|     MainProcess:2545  |MainThread    |llama.filehandler |   __init__.py:1351|       wrapper|[0m Deleting tempfiles from GenerationResult(fh=LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq/S190521g-1-Preliminary/.tmp.d/LvcGcnXml-7zy2a1x5&quot;, parent=&quot;LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)&quot;), err=TypeError(&quot;_generate() missing 1 required positional argument: &#x27;payload&#x27;&quot;)) from atomic generation of LvcGcnXml(eventid=&quot;S190521g-1-Preliminary&quot;, rundir=&quot;/tmp/tmpk088nceq&quot;)
+exception in payload handler
+Traceback (most recent call last):
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/cli.py&quot;, line 975, in wrapper
+    return func(*args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py&quot;, line 187, in __call__
+    handler(payload, root)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/gcn/handlers.py&quot;, line 51, in handle
+    handler(payload, root)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/listen/gcn/__init__.py&quot;, line 102, in handle_lvc_gcn
+    voe.generate(payload)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1523, in generate
+    return self.checkin(self.checkout().generate_unsafe())
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1348, in wrapper
+    return func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/intent.py&quot;, line 429, in wrapper
+    return func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/versioning.py&quot;, line 574, in wrapper
+    result = func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/intent.py&quot;, line 350, in wrapper
+    res = func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/vetoes.py&quot;, line 393, in wrapper
+    return func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/meta.py&quot;, line 184, in wrapper
+    result = func(self, gen_result, *args, **kwargs)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1389, in checkin
+    raise gen_result.err
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/filehandler/__init__.py&quot;, line 1496, in generate_unsafe
+    self._generate()
+TypeError: _generate() missing 1 required positional argument: &#x27;payload&#x27;
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/gcn/voeventclient.py&quot;, line 186, in _ingest_packet
+    handler(payload, root)
+  File &quot;/opt/anaconda/lib/python3.7/site-packages/llama/cli.py&quot;, line 980, in wrapper
+    func.__module__, func.__name__)
+AttributeError: &#x27;LlamaHandlers&#x27; object has no attribute &#x27;__name__&#x27;
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:29|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:183 |      __call__|[0m NEW PAYLOAD. IVORN: ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:29|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:186 |      __call__|[0m Running handler: handle_archive from llama.listen.gcn
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:29|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:252 |handle_archive|[0m Running handle_archive on gcn archive directory /tmp/tmpele9uv12
+[4m|[1m[94mDEBUG   [0m[4m|2020-05-16 21:14:29|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:262 |handle_archive|[0m Received GCN notice: ivo://gwnet/LVC#S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:29|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:272 |handle_archive|[0m Selected outpath /tmp/tmpele9uv12/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190521g-1-Preliminary
+[4m|[1m[92mINFO    [0m[4m|2020-05-16 21:14:29|     MainProcess:2545  |MainThread    |llama.listen.gcn  |   __init__.py:278 |handle_archive|[0m outpath /tmp/tmpele9uv12/2020-05/16/ivo%3A%2F%2Fgwnet%2FLVC%23S190521g-1-Preliminary exists, not overwriting. dumping xml:
+[38;5;1;01m&lt;?xml version=&quot;1.0&quot; ?&gt;[39;00m
+[38;5;70;01m&lt;voe:VOEvent[39;00m[38;5;252m [39m[38;5;250mxmlns:xsi=[39m[38;5;214m&quot;http://www.w3.org/2001/XMLSchema-instance&quot;[39m
+[38;5;250mxmlns:voe=[39m[38;5;214m&quot;http://www.ivoa.net/xml/VOEvent/v2.0&quot;[39m
+[38;5;250mxsi:schemaLocation=[39m[38;5;214m&quot;http://www.ivoa.net/xml/VOEvent/v2.0 http://www.ivoa.net/xml/VOEvent/VOEvent-v2.0.xsd&quot;[39m
+[38;5;252m [39m[38;5;250mversion=[39m[38;5;214m&quot;2.0&quot;[39m[38;5;252m [39m[38;5;250mrole=[39m[38;5;214m&quot;observation&quot;[39m[38;5;252m [39m[38;5;250mivorn=[39m[38;5;214m&quot;ivo://gwnet/LVC#S190521g-1-Preliminary&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;Who[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Date[39;00m[38;5;70;01m&gt;[39;00m[38;5;252m2019-05-21T03:08:44[39m[38;5;70;01m&lt;/Date&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Author[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;contactName[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mLIGO Scientific Collaboration and Virgo Collaboration[39m[38;5;70;01m&lt;/contactName&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Author&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;/Who&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;What[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Packet_Type&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;150&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mThe Notice Type number is assigned/used within GCN, eg type=150 is an LVC_PRELIMINARY notice[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;internal&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIndicates whether this event should be distributed to LSC/Virgo members only[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Pkt_Ser_Num&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;1&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mA number that increments by 1 each time a new revision is issued for this event[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;GraceID&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;S190521g&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.id&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIdentifier in GraceDB[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;AlertType&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;Preliminary&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.version&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mVOEvent alert type[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;HardwareInj&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.number&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIndicates that this event is a hardware injection if 1, no if 0[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;OpenAlert&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;int&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;1&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.number&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mIndicates that this event is an open alert if 1, no if 0[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;EventPage&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;https://gracedb.ligo.org/superevents/S190521g/view/&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.ref.url&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mWeb page for evolving status of this GW candidate[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Instruments&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;H1,L1,V1&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mList of instruments used in analysis to identify this event[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;FAR&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;3.80105501069e-09&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;arith.rate;stat.falsealarm&quot;[39m[38;5;252m [39m[38;5;250munit=[39m[38;5;214m&quot;Hz&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mFalse alarm rate for GW candidates with this strength or greater[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Group&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;CBC&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mData analysis working group[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Pipeline&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;pycbc&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mLow-latency data analysis pipeline[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Search&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;AllSky&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.code&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mSpecific low-latency search[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Group[39;00m[38;5;252m [39m[38;5;250mtype=[39m[38;5;214m&quot;GW_SKYMAP&quot;[39m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;bayestar&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;skymap_fits&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;string&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;https://gracedb.ligo.org/api/superevents/S190521g/files/bayestar.fits.gz&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;meta.ref.url&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mSky Map FITS[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Group&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Group[39;00m[38;5;252m [39m[38;5;250mtype=[39m[38;5;214m&quot;Classification&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;BNS&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is a binary neutron star merger (both objects lighter than 3 solar masses)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;NSBH&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is a neutron star-black hole merger (primary heavier than 5 solar masses, secondary lighter than 3 solar masses)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;BBH&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.965882031742&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is a binary black hole merger (both objects heavier than 5 solar masses)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;MassGap&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source has at least one object between 3 and 5 solar masses[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;Terrestrial&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0341179682578&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that the source is terrestrial (i.e., a background noise fluctuation or a glitch)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mSource classification: binary neutron star (BNS), neutron star-black hole (NSBH), binary black hole (BBH), MassGap, or terrestrial (noise)[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Group&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;Group[39;00m[38;5;252m [39m[38;5;250mtype=[39m[38;5;214m&quot;Properties&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;HasNS&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that at least one object in the binary has a mass that is less than 3 solar masses[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Param[39;00m[38;5;252m [39m[38;5;250mname=[39m[38;5;214m&quot;HasRemnant&quot;[39m[38;5;252m [39m[38;5;250mdataType=[39m[38;5;214m&quot;float&quot;[39m[38;5;252m [39m[38;5;250mvalue=[39m[38;5;214m&quot;0.0&quot;[39m[38;5;252m [39m[38;5;250mucd=[39m[38;5;214m&quot;stat.probability&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mProbability that a nonzero mass was ejected outside the central remnant object[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;/Param&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;Description[39;00m[38;5;70;01m&gt;[39;00m[38;5;252mQualitative properties of the source, conditioned on the assumption that the signal is an astrophysical compact binary merger[39m[38;5;70;01m&lt;/Description&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;/Group&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;/What&gt;[39;00m
+[38;5;252m    [39m[38;5;70;01m&lt;WhereWhen[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m        [39m[38;5;70;01m&lt;ObsDataLocation[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;ObservatoryLocation[39;00m[38;5;252m [39m[38;5;250mid=[39m[38;5;214m&quot;LIGO Virgo&quot;[39m[38;5;70;01m/&gt;[39;00m
+[38;5;252m            [39m[38;5;70;01m&lt;ObservationLocation[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;AstroCoordSystem[39;00m[38;5;252m [39m[38;5;250mid=[39m[38;5;214m&quot;UTC-FK5-GEO&quot;[39m[38;5;70;01m/&gt;[39;00m
+[38;5;252m                [39m[38;5;70;01m&lt;AstroCoords[39;00m[38;5;252m [39m[38;5;250mcoord_system_id=[39m[38;5;214m&quot;UTC-FK5-GEO&quot;[39m[38;5;70;01m&gt;[39;00m
+[38;5;252m                    [39m[38;5;70;01m&lt;Time[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m                        [39m[38;5;70;01m&lt;TimeInstant[39;00m[38;5;70;01m&gt;[39;00m
+[38;5;252m                            [39m[38;5;70;01m&lt;ISOTime[39;00m[38;5;70;01m&gt;[39;00m[38;5;252m2019-05-21T03:02:29.447266[39m[38;5;70;01m&lt;/ISOTime&gt;[39;00m
+[38;5;252m                        [39m[38;5;70;01m&lt;/TimeInstant&gt;[39;00m
+[38;5;252m                    [39
+EXECUTED TEST FOR  &lt;llama.test.test_listeners.test_gcn.TestGcndS190521g object at 0x7f4737fd6310&gt;  TMPDIR CONTENTS:  [&#x27;S190521g-1-Preliminary&#x27;]
+TMP EVENTDIR CONTENTS:  [&#x27;FLAGS.json&#x27;, &#x27;.git&#x27;, &#x27;.lvc_gcn.xml.cooldown.json&#x27;, &#x27;.tmp.d&#x27;, &#x27;.gitignore&#x27;]
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">utils.py::llama.utils.get_voevent_param</td>
+          <td class="col-duration">0.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">utils.py::llama.utils.get_voevent_time</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">utils.py::llama.utils.parameter_factory</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">utils.py::llama.utils.rotate_angs2angs</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">utils.py::llama.utils.rotate_angs2vec</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">utils.py::llama.utils.write_gzip</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">utils.py::llama.utils.write_to_zip</td>
+          <td class="col-duration">0.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">dev/data/i3/__init__.py::llama.dev.data.i3.available_versions</td>
+          <td class="col-duration">0.88</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">filehandler/__init__.py::llama.filehandler.JSONFile.checksum</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/fermi_grb.py::llama.files.fermi_grb.get_grbs_from_csv</td>
+          <td class="col-duration">0.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/lvc_gcn_xml.py::llama.files.lvc_gcn_xml.parse_ivorn</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/matlab.py::llama.files.matlab.matlab_eval</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/__init__.py::llama.files.healpix.HEALPixSkyMapFileHandler.read_healpix_from_file</td>
+          <td class="col-duration">0.28</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/__init__.py::llama.files.healpix.LvcHEALPixSkyMapFileHandler.read_healpix_from_file</td>
+          <td class="col-duration">0.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/psf.py::llama.files.healpix.psf.Psf.skymap_product</td>
+          <td class="col-duration">1.72</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/skymap.py::llama.files.healpix.skymap.HEALPixSkyMap._read_from_hdf5_group</td>
+          <td class="col-duration">0.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/skymap.py::llama.files.healpix.skymap.HEALPixSkyMap.dangle</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/skymap.py::llama.files.healpix.skymap.HEALPixSkyMap.nside2ang</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/skymap.py::llama.files.healpix.skymap.psf_gaussian</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/utils.py::llama.files.healpix.utils.nest2uniq</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/utils.py::llama.files.healpix.utils.uniq2nest_and_nside</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/utils.py::llama.files.healpix.utils.uniq2uniq_lowres</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/utils.py::llama.files.healpix.utils.uniq_intersection</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/healpix/utils.py::llama.files.healpix.utils.uniq_rasterize</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/json.py::llama.files.i3.json.blinder</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/json.py::llama.files.i3.json.get_archive</td>
+          <td class="col-duration">2.76</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/json.py::llama.files.i3.json.get_archive_and_real_neutrinos</td>
+          <td class="col-duration">6.66</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/json.py::llama.files.i3.json.get_dec_filter</td>
+          <td class="col-duration">0.06</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/json.py::llama.files.i3.json.get_ra_filter</td>
+          <td class="col-duration">0.06</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/json.py::llama.files.i3.json.get_real</td>
+          <td class="col-duration">2.26</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/json.py::llama.files.i3.json.neutrino_archive_available_years</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/utils.py::llama.files.i3.utils.ra_dec2zen_az</td>
+          <td class="col-duration">2.20</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/i3/utils.py::llama.files.i3.utils.zen_az2ra_dec</td>
+          <td class="col-duration">2.16</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/lvc_skymap/utils.py::llama.files.lvc_skymap.utils.SkymapFilename.basename</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/lvc_skymap/utils.py::llama.files.lvc_skymap.utils.SkymapFilename.extension</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/lvc_skymap/utils.py::llama.files.lvc_skymap.utils.SkymapFilename.filename</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">files/lvc_skymap/utils.py::llama.files.lvc_skymap.utils.SkymapFilename.version</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_bin.py::test_llama_pipeline_parser</td>
+          <td class="col-duration">0.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_bin.py::test_llama_run_parser</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_bin.py::test_mjd_interval</td>
+          <td class="col-duration">0.01</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_filehandler.py::test_filehandler_definition_consistency</td>
+          <td class="col-duration">0.25</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stdout call------------------------------ <br/>searching in  llama
+searching in  llama.batch
+searching in  llama.com
+searching in  llama.com.dl
+searching in  llama.com.do
+searching in  llama.com.email
+searching in  llama.com.gracedb
+searching in  llama.com.s3
+searching in  llama.com.slack
+searching in  llama.dev
+searching in  llama.dev.background
+searching in  llama.dev.background.pvalue
+searching in  llama.dev.background.table
+searching in  llama.dev.background.table_singles
+searching in  llama.dev.clean
+searching in  llama.dev.data
+searching in  llama.dev.data.i3
+searching in  llama.dev.docs
+searching in  llama.dev.docs.cli
+searching in  llama.dev.dv
+searching in  llama.dev.log
+searching in  llama.dev.log.lvalert
+searching in  llama.dev.upload
+searching in  llama.event
+searching in  llama.filehandler
+searching in  llama.files
+searching in  llama.files.coinc_significance
+searching in  llama.files.healpix
+searching in  llama.files.i3
+searching in  llama.files.lvc_skymap
+searching in  llama.files.skymap_info
+searching in  llama.files.slack
+searching in  llama.flags
+searching in  llama.install
+searching in  llama.io
+searching in  llama.io.default
+searching in  llama.listen
+searching in  llama.listen.gcn
+searching in  llama.listen.lvalert
+searching in  llama.poll
+searching in  llama.poll.gracedb
+searching in  llama.run
+searching in  llama.serve
+searching in  llama.serve.gui
+searching in  llama.serve.gui.wsgi
+searching in  llama.serve.jupyter
+searching in  llama.test
+searching in  llama.test.test_files
+searching in  llama.test.test_listeners
+<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_pipeline.py::test_default_pipeline_consistency</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_utils.py::test_memoize_helper</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_utils.py::test_write_gzip</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_utils.py::test_rotate_angs2vec</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_utils.py::test_get_grid_make_grid</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">test/test_utils.py::test_get_grid_north_pole</td>
+          <td class="col-duration">0.00</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="empty log">No log output captured.</div></td></tr></tbody></table></body></html>

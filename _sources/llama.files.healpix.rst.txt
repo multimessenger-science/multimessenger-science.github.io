@@ -1,0 +1,19 @@
+llama.files.healpix package
+===========================
+
+.. automodule:: llama.files.healpix
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. only:: html
+
+   **Submodules**
+
+
+.. toctree::
+
+   llama.files.healpix.plotters
+   llama.files.healpix.psf
+   llama.files.healpix.skymap
+   llama.files.healpix.utils

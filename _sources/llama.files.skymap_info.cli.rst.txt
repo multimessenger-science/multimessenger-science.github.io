@@ -1,0 +1,7 @@
+llama.files.skymap\_info.cli module
+===================================
+
+.. automodule:: llama.files.skymap_info.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,9 @@
+``llama files i3``
+==================
+
+.. argparse::
+   :module: llama.files.i3.__main__
+   :func: get_parser
+   :prog: llama files i3
+
+

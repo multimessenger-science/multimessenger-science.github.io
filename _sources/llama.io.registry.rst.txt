@@ -1,0 +1,7 @@
+llama.io.registry module
+========================
+
+.. automodule:: llama.io.registry
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,21 @@
+``llama dev``
+=============
+
+.. argparse::
+   :module: llama.dev.__main__
+   :func: get_parser
+   :prog: llama dev
+
+
+.. toctree::
+   :maxdepth: 6
+
+   cli.llama.dev.background.__main__
+   cli.llama.dev.clean.__main__
+   cli.llama.dev.data.__main__
+   cli.llama.dev.docs.__main__
+   cli.llama.dev.dv.__main__
+   cli.llama.dev.log.__main__
+   cli.llama.dev.upload.__main__
+
+

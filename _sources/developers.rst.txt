@@ -1,0 +1,261 @@
+.. _developer-instructions:
+
+Developer Installation
+======================
+
+Developers can also use the pre-built LLAMA docker images to develop the
+pipeline, ensuring that everyone has working versions of the LLAMA developer
+environment with minimal effort.
+
+.. _obtaining-llama-source:
+
+Obtaining the LLAMA Source Code
+-------------------------------
+
+First, pull the latest version of the code from BitBucket_. You'll
+need to:
+
+1. Make sure you have git_ installed.
+2. Make a BitBucket_ user account.
+3. :ref:`create some SSH keys on your computer <generate-ssh-keys>`, which
+   you'll use to
+4. :ref:`authenticate with BitBucket <bitbucket-ssh-authentication>` so that
+   you can actually pull the LLAMA code.
+5. If you haven't already, have Stefan or someone else with repository admin
+   privileges add your BitBucket account to the LLAMA project so that you can
+   access the source code.
+6. Make a directory where you can store the source code. I recommend having a
+   ``~/dev/`` directory in your home directory which contains all of your code
+   projects. You can make such a directory with ``mkdir ~/dev`` if it doesn't
+   already exist and navigate to that directory with ``cd ~/dev``.
+7. Finally, pull the code. If you've set everything up as described, the
+   following line should work:
+
+   .. code:: bash
+
+      git clone git@bitbucket.org:stefancountryman/multimessenger-pipeline.git
+
+8. You should now have the pipeline source code installed in a directory
+   called ``multimessenger-pipeline``; if you called the last line in
+   ``~/dev``, then the pipeline will be stored in
+   ``~/dev/multimessenger-pipeline``. Navigate to your new copy of the LLAMA
+   source code with
+
+   .. code:: bash
+
+      cd multimessenger-pipeline
+
+   and confirm that it is a working git repository with
+
+   .. code:: bash
+
+      git status
+
+   which should print:
+
+   .. code::
+
+      On branch master
+      Your branch is up to date with 'origin/master'.
+
+      nothing to commit, working tree clean
+
+.. _git: https://git-scm.com/
+.. _git.ligo.org: https://git.ligo.org
+.. _Bitbucket: https://bitbucket.org
+
+If you see this, you've successfully installed the LLAMA source code.
+
+Using the Docker Dev Image
+--------------------------
+
+There is a script in the source code (``bin/docker``) that can be used to very
+quickly and easily set up and use the LLAMA development docker image
+(``stefco/llama-dev``). ``bin/docker`` is a very simple wrapper script that
+just acts as a shortcut for the Docker commands you would need to do pipeline
+development. (Because of this, you can also use ``bin/docker`` to teach yourself
+some Docker syntax if you're interested; if not, just use the ``bin/docker``
+commands listed here). Before you can use the ``bin/docker`` script, you'll
+need to install Docker using the
+:ref:`instructions in the Quick Start guide <quick-start-install>`.
+
+List ``bin/docker`` Commands
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once you've done this, you can list the available ``bin/docker`` commands by
+running the script with no arguments. Make sure you are in the LLAMA source
+code directory, and then run:
+
+.. code:: bash
+
+   bin/docker
+
+You should see:
+
+.. include:: bin-docker-help.rst
+
+.. _bin-docker-pull:
+
+Getting the Latest Development Image
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Assuming you have Docker up and running, have received access to the LLAMA
+Docker images on Docker Hub, and have logged in to Docker Hub using ``docker
+login``, you should now be able to use the script to pull the latest LLAMA
+development image:
+
+.. code::
+
+   bin/docker pull
+
+This might take a little while since the development image is a few GB. If you
+ever need to update to the latest development image, you can use that command
+again. Otherwise, if you already have it installed, the other commands won't
+automatically update you to the latest version.
+
+If you're already runnign a LLAMA dev container and want to update it to the
+latest version, you can :ref:`remove that container <bin-docker-murder>` (after
+recording any changes you've made to the environment outside of LLAMA code
+updates, which persist automaticall), pull the latest with ``bin/docker pull``,
+and then :ref:`restart the container <bin-docker-dev>`.
+
+.. _bin-docker-dev:
+
+Starting a Dev Container
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next, we can start up a developer container from the image we just pulled. It
+will automatically syncronize the contents of your LLAMA source code folder *as
+well as your LLAMA outputs folder** with the development container. This means
+that you can make quick fixes and process data using the development container
+and have that data available on your machine in the default location
+(``$XDG_DATA_HOME/llama`` if ``$XDG_DATA_HOME`` is set, otherwise
+``~/.local/share/llama``). Start up the dev container with:
+
+.. code:: bash
+
+   bin/docker dev
+
+Or, if you want a container with access to IceCube data and the ability to
+upload to LLAMA Slack, run:
+
+.. code:: bash
+
+   bin/docker dev play
+
+*Or*, if you want full credentials, allowing you to get LIGO private data,
+upload to GraceDB, and post to IceCube Slack, get the dev container with
+production credentials using:
+
+.. code:: bash
+
+   bin/docker dev production
+
+This will start up the container in the background and log you into it; you
+should now see a promptline looking something like this (though the number
+after ``root@`` will be different):
+
+.. code:: bash
+
+   root@052c44a5f430:~#
+
+You are now logged into a fully functioning LLAMA development container
+(including, if you specified the ``play`` or ``production`` images, the
+necessary authentication credentials for people we communicate with); this
+is the same Docker image used to build the actual production LLAMA images!
+By default, you're the root user in the container, which means you can also try
+installing other software or doing other necessary sysadmin tasks in the
+container without breaking anything on your host laptop; if you manage to fix
+something in the development container that was previously broken, you should
+apply those same changes to the code that generates the LLAMA Docker images.
+
+Now that you're in, you can confirm that the current development version of
+``llama`` is installed and working with:
+
+.. code:: bash
+
+   llama --version
+   
+Of course, this won't work if you've broken your copy of the source code, since
+the installed version is running directly off the source repository (even
+within the Docker dev container; this is **not** true of the ``stefco/llama``
+containers, which have a static production copy of the software installed); if
+the above command doesn't work, you can stash away any changes to your working
+copy of the LLAMA repo by running ``git stash`` in the working directory.
+
+Now, navigate to the source code from within the dev container:
+
+.. code:: bash
+
+   cd ~/multimessenger-pipeline
+
+You are now in a syncronized copy of the working copy of LLAMA on your laptop.
+This means you can write code on your laptop using whichever text editor you
+want and then test it in the Docker container; again, the installed version
+will reflect the current state of the source code.
+
+Sketch of a Bug Fix
+~~~~~~~~~~~~~~~~~~~
+
+Let's say an event, ``S1234``, just came in. You found a critical bug, fixed it
+in the source code, and then reran it on the dev container, then manually
+uploaded the
+data product from ``~/.local/share/llama/current_run/S1234/`` on your **local**
+computer (again, the LLAMA output directory is also synced between dev
+container and your computer) to wherever it needs to go. You should now ``git
+add`` your changes to the source code to the index and then ``git commit`` your
+changes before ``git push``-ing them to the LLAMA repository, ``git tag``-ing
+them with the next appropriate version (only increment the last decimal for a
+bugfix), and then pushing the tag to trigger automated builds and deployments
+with ``git push --tags``. You can see a list of the latest versions with:
+
+.. code:: bash
+
+   git tag -l | grep 'v[0-9]*\.[0-9]*\.[0-9]' | tail
+
+.. _bin-docker-murder:
+
+Destroying your Dev Container
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, your dev container will keep running in the background but will be
+destroyed when you shut it down manually. The LLAMA code is saved on your local
+computer, so you won't lose changes to that if your container is destroyed.
+Local changes to the container's *other* installed software will, however, be
+lost. This is mostly a *good* thing, since it means you can just destroy and
+restart your container if you accidentally break something. It does, however,
+mean that if you need to try a new set of software on the dev container, you
+will need to write down the steps you're following somewhere so that you can
+reproduce them if you have to destroy and restart the dev container. If the
+changes you are making to the LLAMA *environment* are bugfixes or necessary
+updates for the pipeline's functionality, you should also commit your changes
+to the LLAMA Docker image repositories; this will automatically rebuild the
+containers to feature your changes.
+
+With that caveat out of the way, if you want to destroy your container (whether
+to :ref:`update to the latest dev image <bin-docker-pull>`, free up memory/disk
+space on your computer, or to start fresh and undo any changes you've made to
+the OS environment on your current container), you can run:
+
+.. code:: bash
+
+   bin/docker murder
+
+The somewhat dramatic naming is there to remind you that you are undoing any
+local changes to the container from the base image (other than the LLAMA
+software install) when you do this. Again, if you've only analyzed data or
+changed the LLAMA source code (and not changed the other installed software),
+you won't lose any work.
+
+Previous LLAMA Versions
+=======================
+
+This section contains deprecated or outdated installation instructions, and can
+be skipped if you just want to use the current version of the pipeline. It
+does, however, contain system administration and multi-messenger infrastructure
+information that can be useful for extending or fixing pipeline functionality,
+or for basic tasks related to working with multi-messenger data.
+
+.. toctree::
+
+   developers-pre-o3

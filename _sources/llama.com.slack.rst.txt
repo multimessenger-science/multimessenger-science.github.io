@@ -1,0 +1,7 @@
+llama.com.slack package
+=======================
+
+.. automodule:: llama.com.slack
+   :members:
+   :undoc-members:
+   :show-inheritance:

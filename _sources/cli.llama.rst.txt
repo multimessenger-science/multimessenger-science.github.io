@@ -1,0 +1,16 @@
+
+.. toctree::
+   :maxdepth: 6
+
+   cli.llama.batch.__main__
+   cli.llama.com.__main__
+   cli.llama.dev.__main__
+   cli.llama.event.__main__
+   cli.llama.files.__main__
+   cli.llama.flags.__main__
+   cli.llama.install.__main__
+   cli.llama.listen.__main__
+   cli.llama.poll.__main__
+   cli.llama.run.__main__
+   cli.llama.serve.__main__
+
